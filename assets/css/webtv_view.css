@@ -1,0 +1,64 @@
+body {
+font-family: 'Open Sans', Sans-serif;
+font-size: 50px;
+overflow: hidden;
+background-color: white;
+background-image: url(photo_accueil_desktop.jpg);
+background-size: cover;
+}
+/*.header:before,
+.header:after{
+content: "";
+display: table;
+}
+.header:after{
+clear: both;
+}
+.header{
+clear: both;
+}*/
+h1{
+background-color: white;
+z-index:-1;
+border-radius: 80px 15px;
+font-family: "Fjalla One";
+font-size: 60px; 	/* original: 50px*/
+text-shadow: gray;
+padding-left: 5px;
+
+text-transform: uppercase;
+color: #e20019;	
+
+}
+.col-1-5,
+.col-3-5{
+display: inline-block;
+vertical-align: top;
+
+}
+.col-1-5{
+width: 25%;
+text-align: center;
+}
+.col-3-5{
+width: 45%;
+padding: 2px;		
+}
+
+#logo1{
+width:100px;
+float: left;
+margin-top: -30px;	
+}
+#logo2{
+float: left;
+padding-left: 110px;	
+padding-right: 20px;
+z-index:1;
+}
+.player{
+display: block;			
+padding-left: 60px;	
+padding-top: 15px;
+width: auto;
+}
