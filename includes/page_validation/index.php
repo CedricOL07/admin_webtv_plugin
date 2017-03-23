@@ -1,3 +1,4 @@
+<!-- Cette page ne marche pas, la page de validation de n'active pas apres création d'une playlist -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -9,6 +10,7 @@
     <!-- Main content -->
     <section class="content" style="margin-top:4%;margin-left:0;">
 
+      <!-- Affichage de la configuration de la playlist ( Bootstrap nécessaire) -->
         <div class="row">
 
             <div class="col-md-12">
@@ -46,6 +48,8 @@
 
         </div>
         <script type="text/javascript">
+        /* Le script récupere les paramètres de configuration de la playlist qui à été créee ,
+        génère un camenbert qui résume la configuration */
             $(document).ready(function(){
 
 
@@ -95,14 +99,14 @@
 
                     // Instantiate and draw our chart, passing in some options.
                     chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
-                    chart.draw(data,options); 
+                    chart.draw(data,options);
 
                 }
                 refaire();
                 function refaire(){
-
+                  // Récupérations de valeurs en % des genres dela playlist
                     $.ajax({
-                        url: ajaxurl, 
+                        url: ajaxurl,
                         data:{
                             'action':'recuperer_derniers_pourcentages_enregistrees',
                         },
@@ -133,7 +137,7 @@
 
                                 data.removeRow(3);
                                 data.insertRows(3, [['Musique du monde',parseInt(value.pourcentage_musiquemonde)]]);
-                                chart.draw(data,options); 
+                                chart.draw(data,options);
                                 data.removeRow(4);
                                 data.insertRows(4, [['Hard Rock & Métal', parseInt(value.pourcentage_hardrock)]]);
 
@@ -145,7 +149,7 @@
 
                                 data.removeRow(7);
                                 data.insertRows(7, [['autres', parseInt(value.pourcentage_autres)]]);
-                                chart.draw(data,options); 
+                                chart.draw(data,options);
 
                             });
                         },
@@ -153,7 +157,7 @@
                             alert(xhr.status);
                             alert(thrownError);
                         }
-                    });                               
+                    });
                 }
 
             });
