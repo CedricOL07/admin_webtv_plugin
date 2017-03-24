@@ -10,7 +10,7 @@
 *******************************************************************************************************************************/
 
 
-
+// Wordpress Hook
 add_action( 'wp_ajax_recup_genres_gestionbdd_pluginwebtv', 'recup_genres_gestionbdd_pluginwebtv' );
 add_action( 'wp_ajax_recup_qualite_gestionbdd_pluginwebtv', 'recup_qualite_gestionbdd_pluginwebtv' );
 add_action( 'wp_ajax_get_song_by_genre_gestionbdd_pluginwebtv', 'get_song_by_genre_gestionbdd_pluginwebtv' );
@@ -35,17 +35,33 @@ add_action( 'wp_ajax_recuperer_artistes', 'recuperer_artistes' );
 
 //Récupère les artistes de la base de données
 function recup_artistes_gestionbdd_pluginwebtv(){
-    global $wpdb;
-    $query="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin;";
-    $result=$wpdb->get_results($query);
+
+    // wpdb wordpress datatbase
+    global $wpdb; 
+
+    // requete des noms des artiste de la base de donnée
+    $query="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin;"; 
+
+    // get_results récupère la requête stocké dans la variable $query de la variable wpdb et la stock dans la variable result.
+    $result=$wpdb->get_results($query); 
+
+    // fonction d'envoie de wordpress(envoie la variable result sur le site wordpress)
     wp_send_json_success($result);
 }
 
 //Récupère les titres de toutes les vidéos de la base de données
 function recup_titres_gestionbdd_pluginwebtv(){
-    global $wpdb;
-    $query="SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin;";
+
+    // wpdb wordpress datatbase
+    global $wpdb; 
+
+    //requete des noms des vidéos de la base de donnée
+    $query="SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin;"; 
+
+    // get_results récupère la requête stocké dans la variable $query de la variable wpdb et la stock dans la variable result.
     $result=$wpdb->get_results($query);
+
+    // fonction d'envoie de wordpress(envoie la variable result sur le site wordpress)
     wp_send_json_success($result);
 }
 
@@ -53,9 +69,15 @@ function recup_titres_gestionbdd_pluginwebtv(){
 //Récupère les genres de la base de données
 function recup_genres_gestionbdd_pluginwebtv(){
     global $wpdb;
-    $sql_query = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin;";
-    $tableau_donnees = $wpdb->get_results($sql_query);
+    $query = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin;";
+
+    // get_results récupère la requête stocké dans la variable $query de la variable wpdb et la stock dans la variable result.
+    $tableau_donnees = $wpdb->get_results($query);
+
+    // get_results récupère la requête stocké dans la variable tableau_donnees de la variable wpdb et la stock dans la variable result.
     wp_send_json_success($tableau_donnees);
+
+    // fini la requête Wordpress ajax
     wp_die();
 }
 
@@ -67,6 +89,8 @@ function recup_qualite_gestionbdd_pluginwebtv(){
     wp_send_json_success($tableau_donnees);
     wp_die();
 
+// memes commentaires que la fonction recup_genres_gestionbdd_pluginwebtv()
+
 }
 
 //Récupère les vidéos d'un certain genre contenu dans la base de données
@@ -75,24 +99,35 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
     global $wpdb;
     $genre;
 
+
+    // isset correspond à un .equal
+    // $_POST[] recupère le texte écris par le client dans l'espace réservé et le récupère après la validation en l'occurence on récupère le genre et on le stock dans la variable $genre
+    //cette variable $_POST est une variable super global directement nullement besoin de préciser.
     if(isset($_POST['genre'])){
         $genre=$_POST['genre'];
 
+
     }else{
-        $genre='';
+        $genre=''; // sinon genre est vide
     }
 
 
-
+// recupère le nom d'un artiste selon l'id demandé
     function recup_artiste_gestionbdd_pluginwebtv($id){
         global $wpdb;
+
+        // condition de l'id est décrite dans la requete sql.
         $query = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id'";
         $final=$wpdb->get_results($query);
-        foreach($final as $art){
-            return $art->nom;
+
+        // parcours tous les éléments du tableau et les récupères puis retourne seulement le nom de l'artiste avec l'id demandé
+        foreach($final as $artiste){
+            return $artiste->nom;
         }
 
     }
+
+    //recupère le genre par l'id demandé
     function recup_genre_gestionbdd_pluginwebtv($id){
         global $wpdb;
         $query = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id'";
@@ -101,16 +136,21 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
             return $genres->Genre;
         }
 
+    // meme procédure que la fonction recup_artiste_gestionbdd_pluginwebtv($id) au-dessus
     }
+
+
     function recup_video_url_gestionbdd_pluginwebtv($id){
         global $wpdb;
-        $query = "SELECT titre,url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id'";
+        $query = "SELECT titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id'";
         $final=$wpdb->get_results($query);
         foreach($final as $urls){
             return $urls->url;
         }
-
+        // meme procédure que la fonction recup_artiste_gestionbdd_pluginwebtv($id)
     }
+
+
     function recup_video_titre_gestionbdd_pluginwebtv($id){
         global $wpdb;
         $query = "SELECT titre,url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id'";
@@ -118,8 +158,10 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
         foreach($final as $titres){
             return $titres->titre;
         }
-
+        // meme procédure que la fonction recup_artiste_gestionbdd_pluginwebtv($id)
     }
+
+
     function recup_annee_gestionbdd_pluginwebtv($id){
         global $wpdb;
         $query = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id'";
@@ -127,7 +169,11 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
         foreach($final as $annees){
             return $annees->annee;
         }
+
+        // meme procédure que la fonction recup_artiste_gestionbdd_pluginwebtv($id)
     }
+
+
     function recup_album_gestionbdd_pluginwebtv($id){
         global $wpdb;
         $query = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin  WHERE id='$id'";
@@ -135,9 +181,12 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
         foreach($final as $albums){
             return $albums->album;
         }
+
+        // meme procédure que la fonction recup_artiste_gestionbdd_pluginwebtv($id)
     }
 
 
+    //  Création d'un tableau avec les différentes caractéristiques d'un tableau
     $tableau_videos=array(
         'titre'=>'',
         'url'=>'',
@@ -148,6 +197,8 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
         'qualite'=>''
 
     );
+
+    // création d'un tableau global permettant de stocké le tableau de vidéo 
     $tableau_glob=array();
 
     $query = "SELECT id FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE Genre='$genre';";
@@ -156,6 +207,9 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
         $id_genre=$r->id;
         $query1 ="SELECT * FROM " . $wpdb->prefix . "relation_webtv_plugin  WHERE genre_id='$id_genre';";
         $result=$wpdb->get_results($query1);
+        
+        // incrémente les informations de la BDD issu du genre et de l'id choisi dans un tableau.
+
         foreach($result as $row){
 
             $s=recup_artiste_gestionbdd_pluginwebtv($row->artiste_id);
@@ -177,9 +231,14 @@ function get_song_by_genre_gestionbdd_pluginwebtv(){
     }
 
 
+    //Réuni toutes les informations dans un tableau et le programme envoie sur le wordpress
     wp_send_json_success($tableau_glob);
     wp_die();
 }
+
+
+
+
 
 //Récupère les vidéos d'un certain artiste contenu dans le base de données
 function get_song_by_artiste_gestionbdd_pluginwebtv(){
@@ -187,9 +246,14 @@ function get_song_by_artiste_gestionbdd_pluginwebtv(){
     global $wpdb;
     $artiste;
 
+
+    /* si le contenu taper par le client dans l'espace réserver à l'artiste 
+    et qui valide  cette fonction permet de récupérer le contenu et de la stocké dans la variable artiste*/
     if(isset($_POST['artiste'])){
         $artiste=$_POST['artiste'];
 
+
+    // sinon retourne un espace vide.
     }else{
         $artiste='';
     }
@@ -240,6 +304,8 @@ function get_song_by_artiste_gestionbdd_pluginwebtv(){
             return $annees->annee;
         }
     }
+
+// fonction presque identique à recup_album_gestionbdd_pluginwebtv($id)
     function recup_album_gestionbdd_pluginwebtv($id){
         global $wpdb;
         $query = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin  WHERE id='$id'";
