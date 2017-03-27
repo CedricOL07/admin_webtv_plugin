@@ -8,6 +8,9 @@
 **                                                                                                                
 **
 *******************************************************************************************************************************/
+/*
+Appel des différentes fonctions du programme  
+*/
 
 add_action( 'wp_ajax_traitement_infos_nouveaux_reglages', 'traitement_infos_nouveaux_reglages' );
 add_action( 'wp_ajax_verifier_dates_debut_calendrier', 'verifier_dates_debut_calendrier' );
@@ -28,8 +31,12 @@ add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetit
 
 
 
-
 function traitement_infos_nouveaux_reglages(){
+
+/*
+Cette focntion initialise les variable créer $par_defaut,$nom_reglage,...
+par les instructions données par le client lors de la demande POST.
+*/
 
     global $montantpop;
     global $wpdb;
@@ -88,7 +95,9 @@ function traitement_infos_nouveaux_reglages(){
 
 
     function recup_artistes(){
-        global $tab_url;
+    /*
+
+    */
         global $tab_titres;
         global $tab_artistes;
         global $wpdb;
@@ -151,11 +160,15 @@ function traitement_infos_nouveaux_reglages(){
             }
         }
 
+
         // On recupere la date la plus récente
         //On la retourne
         return $date_la_plus_recente;
 
     }
+
+
+    
     function enregistrer_reglage_pardefaut($nom,$pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres){
         global $wpdb;
         $pardefaut=true;
@@ -169,6 +182,12 @@ function traitement_infos_nouveaux_reglages(){
     }
 
     function enregistrer_reglage_passerdesquepossible($nom,$pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubs_internes,$pubs_externes,$artiste_highlight){
+        /*
+        Fonction : Cette fonction permet d'enregistrer les clips de musics les uns à la suite des autres tout en les délimitant par un début et une fin.
+        paramètre : $nom,$pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubs_internes,$pubs_externes,$artiste_highlight
+        */
+
+
         global $wpdb;
         //On récupère la date de fin de la playlist en cours et verifier si aucune date de début ne correspond on met la playlist par defaut directement apres
         //Récupérer dans de fin de la playlist en cours (normalement date = heure suivante de l'heure en cours )
@@ -239,6 +258,8 @@ function traitement_infos_nouveaux_reglages(){
             //On compare les dates de fin et de début pour voir si il y a un créneau de plus d'une heure--> On regarde alors
             // var_dump($tableau_dates_fin);
             $creneau_trouve=false;
+
+            //Placement de l'heure du début à l'heure de fin du crénau de la playlist 
             for($i=0;$i<sizeof($tableau_dates_debut);$i++){
                 if($tableau_dates_fin[$i]!=$tableau_dates_debut[$i+1]){
 
@@ -253,6 +274,7 @@ function traitement_infos_nouveaux_reglages(){
                     $heure_fin=$heure_fin_prochain_creneau1->format('m/d/Y H:i');
 
 
+                    //S'il n'y a pas de crénau de playlist le programme insert automatiquement dans la base de donnée la playlist choisit
                     if($creneau_trouve==false){
 
                         $enregistrer_premier_creneau="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde,pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,publicites_internes,publicites_externes,artiste_highlight,Debut,Fin) VALUES('$nom','$pourcentagepoprock','$pourcentagehiphop','$pourcentagejazzblues','$pourcentagemusiquemonde','$pourcentagehardrock','$pourcentageelectro','$pourcentagechanson','$pourcentageautres','$pub_inter','$pub_exter','$artiste_highlight','$heure_debut','$heure_fin');";
@@ -278,12 +300,14 @@ function traitement_infos_nouveaux_reglages(){
 
 
     if($par_defaut=='true'){
+    
+    /* enregistrement de la playlist par défaut : elle réunit tous les styles différents*/
 
         enregistrer_reglage_pardefaut($nom_reglage,$_POST['pourcentage_poprock'],$_POST['pourcentage_hiphop'],$_POST['pourcentage_jazzblues'],$_POST['pourcentage_musiquemonde'],$_POST['pourcentage_hardrock'],$_POST['pourcentage_electro'],$_POST['pourcentage_chanson'],$_POST['pourcentage_autres']);
 
     }else{
 
-        // Cas ou on passe la playlist des que possible
+        // Cas ou on passe la playlist des que possible, le programme envoie une playlist choisie par le product owner différente de la playlist par défaut.
         if($passer_des_que_possible=='true'){
 
             enregistrer_reglage_passerdesquepossible($nom_reglage,$_POST['pourcentage_poprock'],$_POST['pourcentage_hiphop'],$_POST['pourcentage_jazzblues'],$_POST['pourcentage_musiquemonde'],$_POST['pourcentage_hardrock'],$_POST['pourcentage_electro'],$_POST['pourcentage_chanson'],$_POST['pourcentage_autres'],$pubs_internes,$pubs_externes,$artiste_en_highlight);
@@ -308,6 +332,8 @@ function traitement_infos_nouveaux_reglages(){
 
 
 function recuperer_programmation(){
+/* permet de récupérer le nom, le début et la fin d'une playlist enregistrée dans la base de donnée*/
+
     global $wpdb;
     $query="SELECT nom,Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
     $result=$wpdb->get_results($query);
@@ -316,7 +342,6 @@ function recuperer_programmation(){
 
 }
 
-//
 function verifier_dates_debut_calendrier(){
     $creneau_libre='libre';
     // Fonction à laquelle on envoit la date pour voir si elle est disponible
@@ -375,9 +400,10 @@ function verifier_dates_fin_calendrier(){
         array_push($tableau_date_debut,$deb);
         array_push($tableau_date_fin,$fin);
     }
-    // Deux cas : - La date de fin est dans un créneau déjà utilisé (cas simple)
-    //           - La date de fine est en dehors d'un créneau mais l'interval de passage comprend un interval déjà enregistré (datefin-datebut )
 
+
+    // Deux cas : - La date de fin est dans un créneau déjà utilisé (cas simple)
+    //           - La date de fin est en dehors d'un créneau mais l'intervalle de passage comprend un interval déjà enregistré (date fin-date debut )
     for($i=0;$i<sizeof($tableau_date_debut);$i++){
 
         if($date_f>$tableau_date_debut[$i] && $date_f<=$tableau_date_fin[$i] || $date_deb<$tableau_date_debut[$i] && $date_f>$tableau_date_debut[$i] ){
@@ -519,7 +545,9 @@ function supprimer_toutes_videos(){
 }
 
 function inserer_contenu_pluginwebtv(){
-
+    /*
+    A l'aide des infos données par le product owner provenant de la page de gestion de BDD, le programme insert directement les nouveaux paramètres enregistrées dans la base de donnée. 
+    */
     $titre;
     $artiste;
     $url;
@@ -632,7 +660,7 @@ function recuperer_artiste_with_title(){
 
 
 function eviter_repetition_tous_les_n_morceaux($nb_limite){
-    
+/* On compare deux tableaux indentique. Le premier tableau est comparé une cellule par une cellule. Chaque cellule sont comparées à toutes les autres cellules du second tableau et si il y a 2 meme morcreaux identique ont supprime un morceaux.*/    
     
     
     $position=0;
