@@ -37,21 +37,22 @@
                     <h3>general</h3>
                     <?php //include( MY_PLUGIN_PATH . 'templates/gestionbdd/general_view.template.php');?>
                 </div>-->
-
                 <div id="menu1" class="tab-pane fade in active">
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/interface_entete/interface_entete.html');?>
-                </div>                    
+                    <?php include( MY_PLUGIN_PATH . 'includes\GestionBDD\interface_entete.html');?>
+ 
+                    
+                    
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    
+                    <?php include( MY_PLUGIN_PATH . 'templates/gestionbdd/'tableau_clips_videos.html);?>
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                 
+                    <?php include( MY_PLUGIN_PATH . 'templates/gestionbdd/supprimer_contenu.template.php');?></div>
+                <div id="menu4" class="tab-pane fade">
 
-                <!--<div id="menu3" class="tab-pane fade">-->
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_clips_videos/tableau_clips_videos.html');?>
-                
-                <!--</div>-->
-
-                <!-- <div id="menu4" class="tab-pane fade">-->
-
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos.html');?>
-                        
-                <!--</div>-->
+                    <?php include( MY_PLUGIN_PATH . 'templates/gestionbdd/supprimer_reglage.template.php');?></div>
 
             
             </div>
