@@ -275,12 +275,17 @@ $(document).ready(function(){
 
     var artistes_enregistres=new Array();
     var artiste_highlight;
+    var recuperer_artistes = $_POST['recuperer_artistes']
 
     $('#hightlight-selector').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',
-        onChange: function() {
+        onChange: function(recuperer_artistes) {
+            $.each(data.data,function(key,value){
+                //console.log(value.nom);
+                $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+            });
             artiste_highlight=$('#hightlight-selector').val();
         }
     });
@@ -298,9 +303,10 @@ $(document).ready(function(){
             $.each(data.data,function(key,value){
                 //console.log(value.nom);
                 $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-
             });
+
             $("#hightlight-selector").multiselect('rebuild');
+
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
