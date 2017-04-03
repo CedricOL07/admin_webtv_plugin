@@ -158,6 +158,8 @@
 
                         
                         <div class="col-md-11 col-sm-11 box" id="partie_highlight">
+                        <!--Attention à la dimension de la balise ! 11 est le maximum de colonne insérées dans la box. c'est à dire que les div dans cette boite leur somme de colonne ne doivent pas dépasser 11. Exemple en dessous 6 (une div) et l'autre 5 (une div) 		5 + 6 = 11 -->
+
                             <div id="highlights">  
 
 
@@ -169,13 +171,10 @@
 
                                 <div for="tags" class="glyphicon glyphicon-search">
 
+                                	 <select name="classement_artites_higlights" id="classement_artites_higlights" multiple>
+
+                                	 </select>
                                 </div>
-
-                                <select id="hightlight-selector" multiple="multiselect">
-
-                                    <option value="default">-- Choisir un artiste  --</option>
-                                    <option value="value.nom">bob</option>
-                                </select>
 
                             </div>
                         </div>
