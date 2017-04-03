@@ -39,7 +39,7 @@
                 </div>-->
 
                 <div id="menu1" class="tab-pane fade in active">
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/interface_entete/interface_entete.html');?>
+                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/ajouter_video/ajouter_video.html');?>
                 </div>                    
 
                 <!--<div id="menu3" class="tab-pane fade">-->
