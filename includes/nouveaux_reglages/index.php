@@ -21,6 +21,7 @@
         ?>
 
 
+	<!--Pour modifier les emplacements des boxes il y a des commentaires laissé dans le code notamement dans la partie publicité-->
 
     <body class="hold-transition skin-black sidebar-mini">
 
@@ -121,7 +122,8 @@
 
 
                 <!-- ************************Publicités *******************************-->
-                    
+
+                    <!--Pour modifier l'emplacement des box(2,3,4) dans une box1 sous bootstrap il faut d'abord modifier la premiere box2 qui est dans la box1 afin de voir la place quelle prend et ainsi de suite (Exemple: modifier la box2 avec l'id="select_pub_label" avant de modifier la box3 avec l'id="pub_selector_box" qui sont toutes les deux dans la box1 .-->
 
                         <div class="col-md-11 col-sm-11 box" id="partie_publicites">
 
@@ -131,24 +133,35 @@
 
                             </div>
 
-                            <div class="col-md-6 col-sm-6" id="pub-box">
+                            <div class="col-md-11 col-sm-11" id="pub-box">
 
-                                <div class="col-md-4 col-sm-4" id="select_pub_label"> 
+                                <div class="col-md-3 col-sm-3" id="select_pub_label"> 
 
-                                Selectionner une pub : 
+                                Sélectionner une pub externe : 
 
                                 </div>
                   
-                                <div class="col-md-6 col-sm-6" id="pub_selector_box">
+                                <div class="col-md-3 col-sm-3" id="pub_selector_externe_box" >
 
-                                    <select id="pubs-selector" >
-                                        <option value="default">-- Choisir une pub  --</option>
+                                    <select name="pubs-selector-externe"  id="pubs-selector-externe"  multiple>
 
                                     </select>
 
                                 </div>
-                            </div>
 
+                                <div class="col-md-3 col-sm-3" id="select_pub_label"> 
+
+                                Selectionner une pub interne : 
+
+                                </div>
+
+                                <div class="col-md-1 col-sm-1" id="pub_selector_interne_box" >
+
+                                	<select name="pubs-selector-interne"  id="pubs-selector-interne" multiple>
+                                    </select>
+
+                                </div>
+                            </div>
                         </div>
 
 
