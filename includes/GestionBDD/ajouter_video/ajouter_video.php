@@ -24,8 +24,8 @@ $genre=$_POST['genre'];
 do_action('pluginwebtv_ajouter_video', $titre, $album, $url, $annee_prod, $artiste, $qualite, $genre)
 
 // Redirection vers la page de gestion du contenu
-header('Location: gestionbdd.php');
-exit();
+//header('Location: gestionbdd.php');
+//exit();
 
 
 function ajouter_video($titre, $album, $url, $annee_prod, $artiste, $qualite, $genre){
@@ -120,5 +120,7 @@ function ajouter_video($titre, $album, $url, $annee_prod, $artiste, $qualite, $g
 
 ?>
 
+
+<h3> Retour à la <a href="gestionbdd.php"> page de gestion</a> de la base de donnée </h3>
 
 
