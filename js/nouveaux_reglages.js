@@ -275,20 +275,15 @@ $(document).ready(function(){
 
     var artistes_enregistres=new Array();
     var artiste_highlight;
-    var recuperer_artistes = $_POST['recuperer_artistes']
-
-    $('#hightlight-selector').multiselect({
+    
+   /* $('#hightlight-selector').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',
-        onChange: function(recuperer_artistes) {
-            $.each(data.data,function(key,value){
-                //console.log(value.nom);
-                $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-            });
+        onChange: function() {
             artiste_highlight=$('#hightlight-selector').val();
         }
-    });
+    });*/
 
 
     $.ajax({
@@ -302,10 +297,10 @@ $(document).ready(function(){
 
             $.each(data.data,function(key,value){
                 //console.log(value.nom);
-                $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+                $('#classement_artites_higlights').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
             });
 
-            $("#hightlight-selector").multiselect('rebuild');
+            //$("#hightlight-selector").multiselect('rebuild');
 
 
         },
@@ -568,7 +563,7 @@ $(document).ready(function(){
     function pubs(){
         function remove(value){
 
-
+            //permet de détecter si il n'y a rien dans le tableau
             var idx = this.indexOf(value);
             if (idx != -1) {
                 return this.splice(idx, 1); // The second parameter is the number of elements to remove.
@@ -629,7 +624,7 @@ $(document).ready(function(){
                     $('.pubs_externes_group').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-
+                $('#pubs-selector-externe').append('<option value=jack>exemple(problème)</option>');
                 $("#pubs-selector").multiselect('rebuild');
 
 
@@ -650,12 +645,14 @@ $(document).ready(function(){
             },
             dataType: 'JSON',
             success: function(data){
-                $('#pubs-selector').append('<optgroup class="pubs_internes_group" label="Publicités Internes">');
+                //$('#pubs-selector').append('<optgroup class="pubs_internes_group" label="Publicités Internes">');
                 $.each(data.data,function(key,value){
-                    $('.pubs_internes_group').append('<option value="'+value+'">'+ value +'</option>');
+                    $('#pubs-selector-interne').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-                $("#pubs-selector").multiselect('rebuild');
+                    $('#pubs-selector-interne').append('<option value=jack>exemple(problème)</option>');
+                
+                    $("#pubs-selector").multiselect('rebuild');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
