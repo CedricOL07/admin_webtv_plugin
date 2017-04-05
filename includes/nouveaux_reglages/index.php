@@ -184,9 +184,17 @@
 
                                 <div for="tags" class="glyphicon glyphicon-search">
 
-                                	 <select name="classement_artites_higlights" id="classement_artites_higlights" multiple>
+                                	 <select class="col-md-7 col-sm-7" name="classement_artites_higlights" id="classement_artites_higlights" multiple>
 
                                 	 </select>
+
+                                    <div class="col-md-2 col-sm-2">
+                                      Artiste sélectionné : 
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2" id="artiste_select">
+                                    <!--emplacement prévu pour l'artiste sélectionner les fonctions sont dans le nouveau_reglages.js -->
+                                    </div>
                                 </div>
 
                             </div>
@@ -252,7 +260,7 @@
                         </div>
                     </div>
 
-
+                    <!-- ******Bouton enregistrer et annulé***** -->
 
                     <div class="col-md-6 col-sm-6 col-md-offset-8 col-sm-offset-8" id="boutons_div">
                         <div  class="col-md-12 col-sm-12 " id="boutons"> <!----- boutons ----->
@@ -267,6 +275,7 @@
                                 <button type="button" class="btn btn-default" id="bouton_annuler_reglage">
                                         Annuler
                                 </button>
+                                <div id="rafraichissement"></div>
 
                             </a>   
                         </div>

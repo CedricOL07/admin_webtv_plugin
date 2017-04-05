@@ -217,6 +217,8 @@ $(document).ready(function(){
         ); 
     }
 
+/*------------------ Modification sur la mise en place du début et de la fin de la playlist ------------------*/
+
 
     var date_debut_selectionnee;
     var date_fin_selectionnee;
@@ -241,7 +243,7 @@ $(document).ready(function(){
     $( "#from" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:ss',
+        timeFormat: 'HH:mm',
         stepHour: 1,
         stepMinute: 0,
         onClose: function( selectedDate ) {
@@ -255,7 +257,7 @@ $(document).ready(function(){
     $( "#to" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:ss',
+        timeFormat: 'HH:mm',
         stepHour: 1,
         stepMinute: 0,
         onClose: function( selectedDate ) {
@@ -278,14 +280,17 @@ $(document).ready(function(){
     var artistes_enregistres=new Array();
     var artiste_highlight;
     
-   /* $('#hightlight-selector').multiselect({
+    $('#hightlight-selector').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',
         onChange: function() {
             artiste_highlight=$('#hightlight-selector').val();
+            console.log(artiste_highlight);
+            alert("jack");
+            $('#artiste_select').append(artiste_highlight);
         }
-    });*/
+    });
 
 
     $.ajax({
@@ -842,7 +847,7 @@ $(document).ready(function(){
     */
 
     $("#bouton_annuler_reglage").click(function(){
-           alert('Régagle annulé'); 
+        alert('Régagle annulé'); 
         exit();
     });
 
