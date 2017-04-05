@@ -165,8 +165,7 @@
                 }
 
                  $("#annuler").click(function(){
-                alert('Régagle annulé'); 
-                document.reload();
+                location.reload();
                 });
             });
         </script>
