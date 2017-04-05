@@ -88,7 +88,6 @@ $(document).ready(function(){
                 //console.log(response);
                 if(response=='occupe'){
                     $('#label_warning_calendar').text('Une playlist est déjà prévue à cette heure, choisissez un autre créneau');
-                    //  $('#calendrier_dates').toggleClass('hidden display');
                     $('#from').datetimepicker('setDate', null);         
                 }
             }

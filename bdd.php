@@ -5,7 +5,7 @@ function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
   $user="root"; //Nom d'utilisateur
   $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="web_tv"; // Nom de la base de données
+  $bddname="test"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -55,7 +55,7 @@ function vider_bdd(){
   $user="root"; //Nom d'utilisateur
   $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="web_tv"; // Nom de la base de données
+  $bddname="test"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -68,7 +68,7 @@ function vider_bdd(){
   }
 
   $mysqli->close();
-  printf('TABLES VIDEES');
+  //printf('TABLES VIDEES');
 
 }
 

@@ -117,7 +117,10 @@ desired effect
                         <div class="col-md-4" style="margin-top:2%;">
                             <div class="row">
 
+                               <div>
+                                    <?php include( MY_PLUGIN_PATH . 'bdd.php') ?>
 
+                                </div>
                                 <div class="col-md-4" id="lecteur_video">
                                     <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
                                         <div class="jp-type-playlist">
