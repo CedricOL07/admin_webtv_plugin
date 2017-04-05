@@ -255,7 +255,7 @@ $(document).ready(function(){
     $( "#to" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:00',
+        timeFormat: 'HH:ss',
         stepHour: 1,
         stepMinute: 0,
         onClose: function( selectedDate ) {
