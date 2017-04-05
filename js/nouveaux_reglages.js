@@ -236,10 +236,12 @@ $(document).ready(function(){
         $('#label_warning_calendar').html('');
 
     });
+
+    // Il faut modifier le time format avec HH:ss pour pour pouvoir modifier les secondes sur la page
     $( "#from" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:00',
+        timeFormat: 'HH:ss',
         stepHour: 1,
         stepMinute: 0,
         onClose: function( selectedDate ) {
@@ -840,7 +842,7 @@ $(document).ready(function(){
     */
 
     $("#bouton_annuler_reglage").click(function(){
-        //    alert('Régagle annulé'); 
+           alert('Régagle annulé'); 
         exit();
     });
 
