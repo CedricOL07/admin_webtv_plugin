@@ -244,8 +244,8 @@ $(document).ready(function(){
         defaultDate: "+1w",
         changeMonth: true,
         timeFormat: 'HH:mm',
-        stepHour: 1,
-        stepMinute: 0,
+        stepHour: 1,// permet de chosir le pas pour les heures
+        stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
@@ -258,8 +258,8 @@ $(document).ready(function(){
         defaultDate: "+1w",
         changeMonth: true,
         timeFormat: 'HH:mm',
-        stepHour: 1,
-        stepMinute: 0,
+        stepHour: 1,// permet de chosir le pas pour les herues
+        stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
             $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;

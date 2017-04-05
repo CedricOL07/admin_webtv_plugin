@@ -43,6 +43,9 @@
                     <label><strong>Publicités externes :</strong></label>
                 </div>
 
+                <div>
+                     <input type='button' class='btn btn-primary' id='annuler' value='Exit' />
+                </div>
 
             </div>
 
@@ -152,6 +155,7 @@
                                 chart.draw(data,options);
 
                             });
+
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             alert(xhr.status);
@@ -160,6 +164,10 @@
                     });
                 }
 
+                 $("#annuler").click(function(){
+                alert('Régagle annulé'); 
+                document.reload();
+                });
             });
         </script>
     </section>
