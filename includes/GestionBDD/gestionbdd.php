@@ -11,9 +11,9 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/assets/js/dist/bootstrap-multiselect.js');?>"></script>
         <link rel="stylesheet" href="<?php echo plugins_url('admin_webtv_plugin/assets/css/bootstrap-multiselect.css');?>" type="text/css"/>
-        
-        
-       
+
+
+
     </head>
     <style type="text/css">
         body{
@@ -40,22 +40,22 @@
 
                 <div id="menu1" class="tab-pane fade in active">
                     <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/interface_entete/interface_entete.html');?>
-                </div>                    
+                </div>
 
                 <!--<div id="menu3" class="tab-pane fade">-->
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_clips_videos/tableau_clips_videos.html');?>
-                
+                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_template.php');?>
+
                 <!--</div>-->
 
                 <!-- <div id="menu4" class="tab-pane fade">-->
 
                     <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos.html');?>
-                        
+
                 <!--</div>-->
 
-            
+
             </div>
-            
+
         </div>
 
         <script>

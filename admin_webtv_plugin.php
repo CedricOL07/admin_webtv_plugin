@@ -4,8 +4,8 @@
  * Description: Plugin de l'interface de gestion des playlists pour la webtv du Fil
  * Version: 1.0
  * Author: Equipe Projet Ingénierie WEBTVFil
- * Author URI: 
- * License: 
+ * Author URI:
+ * License:
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -17,7 +17,8 @@ function php_includes(){
 
     include('includes/GenerationPlaylist.php');
     include('includes/nouveaux_reglages/traitement_donnees.php');
-    include('includes/GestionBDD/gestionbdd-ajax.php');
+    //include('includes/GestionBDD/gestionbdd-ajax.php');
+    include('includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_ajax.php');
 }
 php_includes();
 
@@ -30,12 +31,12 @@ php_includes();
 
 function plugin_webtvfil(){
 
-    
+
     if ( is_plugin_active( 'wordpress-bootstrap-css/hlt-bootstrapcss.php')==false){
 
         $page_menu=add_menu_page( 'WEBTV Plugin Menu', 'WEBTV', 'manage_options', 'sous-menu-webtv', 'callback_menu_erreur', plugins_url( 'admin_webtv_plugin/image/iconetv.png' ));
     }else{
-        
+
      //add_management_page('WEBTV_ADMIN','WEBTV','manage_options','webtv-tools','tools_callback');//Page dans outils
         $page_menu=add_menu_page( 'WEBTV Plugin Menu', 'WEBTV', 'manage_options', 'sous-menu-webtv', 'callback_menu_webtv', plugins_url( 'admin_webtv_plugin/image/iconetv.png' ));
         $page_nouveaux_reglages=add_submenu_page( 'sous-menu-webtv', 'Nouveaux Réglages', 'Nouvelle Playlist', 'manage_options', 'myplugin-submenu1', 'nouveaux_reglages_callback' );
@@ -49,7 +50,7 @@ function plugin_webtvfil(){
         add_action('admin_print_styles-'.$gestioncontenu,'scripts_gestion_contenu');
         add_action('admin_print_styles-' .  $page_nouveaux_reglages, 'scripts_nouveaux_reglages');
     }
-    
+
 }
 
 add_action( 'admin_menu', 'plugin_webtvfil' );
@@ -64,22 +65,23 @@ function scripts_page_principale(){
 	wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
     wp_enqueue_script("jplayerplaylistjs",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
     wp_enqueue_script("jqueryjplayerjs",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
-    wp_enqueue_style("nouveaureglagecustomcss",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE); 
+    wp_enqueue_style("nouveaureglagecustomcss",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
 }
 
 
 function scripts_gestion_contenu(){
-    wp_enqueue_script("gestionbddjs",  plugins_url("js/gestionbdd.js", __FILE__), FALSE);
+    wp_register_script("tableau_clips_videosjs",plugins_url('admin_webtv_plugin/includes/GestionBDD/tableau_clips_videos/tableau_clips_videos.js', __FILE__), FALSE);
+    wp_enqueue_script('tableau_clips_videosjs');
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
     wp_enqueue_script('bootstrap_multiselectjs');
     wp_enqueue_style("bootstrap_multiselectcss",plugins_url('assets/css/bootstrap-multiselect.css',__FILE__) , FALSE);
-  
+
 }
 
 function scripts_nouveaux_reglages(){
 
         wp_register_script( 'nouveaureglagejs', plugins_url('js/nouveaux_reglages.js',__FILE__), array(), null, false );
-    
+
    //Utile pour passer une url vers un fichier javascript en utilisant plugins_url()
     //On accede à l'url passé dans le tableau avec   alert(jsnouveaureglage.jsnouveaureglagepath);
     $translation_array = array(
@@ -88,7 +90,7 @@ function scripts_nouveaux_reglages(){
         'a_value' => '10'
     );
     wp_localize_script( 'nouveaureglagejs', 'jsnouveaureglage', $translation_array );
-    wp_enqueue_script('nouveaureglagejs'); 
+    wp_enqueue_script('nouveaureglagejs');
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
     wp_enqueue_script('bootstrap_multiselectjs');
     wp_enqueue_style("bootstrap_multiselectcss",plugins_url('assets/css/bootstrap-multiselect.css',__FILE__) , FALSE);
@@ -103,7 +105,7 @@ function eliminer_anciennes_playlists(){
     global $wpdb;
     $timezone = new DateTimeZone('Europe/Berlin');
     $date_actuelle= new DateTime("",new DateTimeZone('Europe/Berlin'));
-    $query="SELECT nom,Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;"; 
+    $query="SELECT nom,Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
     $result=$wpdb->get_results($query);
     foreach($result as $res){
         $debut=$res->Debut;
@@ -119,10 +121,10 @@ function eliminer_anciennes_playlists(){
                 $query1="DELETE FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom';";
                 $wpdb->query($query1);
 
-            }     
+            }
         }
         //ON efface les playlists qui sont finies
-    } 
+    }
 }
 
 add_action( 'pluginwebtv_eliminer_anciennes_playlists', 'eliminer_anciennes_playlists');
@@ -132,7 +134,7 @@ do_action('pluginwebtv_eliminer_anciennes_playlists');
 
 function creer_page_webtv(){
     wp_enqueue_script("playerpagejs",  plugins_url("js/player_page.js", __FILE__), FALSE);
-    wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));        
+    wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
    // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
     wp_enqueue_style("playrebluemondaycss1", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
@@ -143,11 +145,11 @@ function creer_page_webtv(){
     require_once('templates/WEBTV/webtv.template.php');
 
 }
-add_shortcode('webtvlefil' , 'creer_page_webtv' ); 
+add_shortcode('webtvlefil' , 'creer_page_webtv' );
 
 function shortcode_plugin_telecom(){
     wp_enqueue_script("playerpagejs",  plugins_url("js/player_page.js", __FILE__), FALSE);
-    wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));        
+    wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
     // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
     wp_enqueue_style("playrebluemondaycss1", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
@@ -158,7 +160,7 @@ function shortcode_plugin_telecom(){
     require_once('templates/WEBTV/webtv-telecom.template.php');
 }
 
-add_shortcode('webtvtelecom' , 'shortcode_plugin_telecom' ); 
+add_shortcode('webtvtelecom' , 'shortcode_plugin_telecom' );
 
 function chargement_jquery_cdn()
 {
@@ -169,14 +171,14 @@ function chargement_jquery_cdn()
     wp_enqueue_script('jquery-ui');
     wp_register_style( 'jquery-uicss', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css', array(), null, false );
     wp_enqueue_style('jquery-uicss');
-    wp_register_script('bootstrapjs', '//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', array(), '3.3.6'); 
+    wp_register_script('bootstrapjs', '//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', array(), '3.3.6');
     wp_enqueue_script('bootstrapjs');
     wp_register_script( 'momentjs', '//cdn.jsdelivr.net/momentjs/latest/moment.min.js',FALSE);
     wp_enqueue_script('momentjs');
     wp_register_script( 'loaderjs', 'https://www.gstatic.com/charts/loader.js',FALSE);
     wp_enqueue_script('loaderjs');
     wp_enqueue_style("datatimepickercss", '//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css', FALSE);
-  
+
 
 }
 add_action( 'admin_enqueue_scripts', 'chargement_jquery_cdn' );
@@ -184,8 +186,8 @@ add_action( 'wp_enqueue_scripts', 'chargement_jquery_cdn' );
 
 
 function gestion_bdd_callback(){
-  
-    include('includes/GestionBDD/gestionbdd.php');  
+
+    include('includes/GestionBDD/gestionbdd.php');
 }
 
 
@@ -193,7 +195,7 @@ function include_pagevalidation(){
 
     require_once('includes/page_validation/index.php');
     //wp_register_script( 'pagerecapitulatifjs', plugins_url('js/page_recapitulatif_reglage.js',__FILE__), array(), null, false );
-    //wp_enqueue_script('pagerecapitulatifjs'); 
+    //wp_enqueue_script('pagerecapitulatifjs');
 }
 
 function callback_menu_webtv(){
@@ -201,7 +203,7 @@ function callback_menu_webtv(){
 }
 function callback_menu_erreur(){
     include('includes/page_principale/erreur.php');
-    
+
 }
 
 
@@ -209,13 +211,13 @@ function callback_menu_erreur(){
 
 function reglages_enregistres_callback(){
     require_once('includes/reglages_enregistrees/index.php');
-    
+
 }
 
 function nouveaux_reglages_callback(){
-  
+
  require_once('includes/nouveaux_reglages/index.php');
-  
+
 }
 
 function creation_tables_plugin(){
@@ -261,7 +263,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;";
 
-    $alter_table_genre=" ALTER TABLE `" . $wpdb->prefix . "genre_webtv_plugin` 
+    $alter_table_genre=" ALTER TABLE `" . $wpdb->prefix . "genre_webtv_plugin`
         ADD UNIQUE (Genre),
  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;";
 
@@ -290,7 +292,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `ParDefaut` tinyint(1) NOT NULL DEFAULT '0',
     PRIMARY KEY (`nom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-    
+
 
     $creer_table_qualite="   CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "qualite_webtv_plugin` (
     `valeur` int(255) NOT NULL,
@@ -311,7 +313,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
     $alter_table_relation=" ALTER TABLE `" . $wpdb->prefix . "relation_webtv_plugin`
-    
+
     ADD CONSTRAINT `relation_ibfk_1` FOREIGN KEY (`video_id`) REFERENCES `" . $wpdb->prefix . "videos_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (artiste_id) REFERENCES `" . $wpdb->prefix . "artiste_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_3` FOREIGN KEY (`genre_id`) REFERENCES `" . $wpdb->prefix . "genre_webtv_plugin` (`id`) ON DELETE CASCADE,
@@ -331,10 +333,10 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
 
     $alter_table_videos="    ALTER TABLE `" . $wpdb->prefix . "videos_webtv_plugin`
 MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
-    
 
-    
-// Creation des tables     
+
+
+// Creation des tables
     $wpdb->query($creer_table_album);
     $wpdb->query($creer_table_annee);
     $wpdb->query($creer_table_artiste);
@@ -344,9 +346,9 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($creer_table_qualite);
     $wpdb->query($creer_table_relation);
     $wpdb->query($creer_table_videos);
- 
 
-//Mise en place des clés 
+
+//Mise en place des clés
 $wpdb->query($alter_table_album);
     $wpdb->query($alter_table_annee);
     $wpdb->query($alter_table_artiste);
@@ -354,7 +356,7 @@ $wpdb->query($alter_table_album);
     $wpdb->query($alter_table_qualite);
     $wpdb->query($alter_table_videos);
     $wpdb->query($alter_table_relation);
-    
+
 }
 register_activation_hook(__FILE__, 'creation_tables_plugin');
 
@@ -376,7 +378,7 @@ global $wpdb;
 (8, 'Rays of Resistance'),
 (5, 'Roses'),
 (12, 'War Eternal');";
-    
+
     $remplir_table_annee="
     INSERT INTO `" . $wpdb->prefix . "annee_webtv_plugin` (`id`, `annee`) VALUES
     (37, '1970'),
@@ -394,7 +396,7 @@ global $wpdb;
 (7, '2014'),
 (8, '2015'),
 (9, '2016');";
-    
+
     $remplir_table_artiste="
     INSERT INTO `" . $wpdb->prefix . "artiste_webtv_plugin` (`id`, `nom`) VALUES
     (38, 'Action Bronson'),
@@ -445,7 +447,7 @@ global $wpdb;
 (37, 'Travis Bretzer'),
 (9, 'UB40'),
 (43, 'Voilaaa');";
-    
+
     $remplir_table_genre="
 
     INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES
@@ -460,9 +462,9 @@ global $wpdb;
 (5, 'Pop-rock'),
 (11, 'Publicité Externe'),
 (10, 'Publicité Interne');";
-    
-    
-    
+
+
+
     $remplir_table_playlist="
     INSERT INTO `" . $wpdb->prefix . "playlist_webtv_plugin` (`titre`, `url`, `artiste`) VALUES
     ('You Will Know My Name', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/04/ARCH-ENEMY-You-Will-Know-My-Name-OFFICIAL-VIDEO.mp4', 'Arch Enemy'),
@@ -561,7 +563,7 @@ global $wpdb;
 (51, 51, 2, 13, 47, 5),
 (53, 53, 12, 13, 8, 5),
 (54, 54, 12, 13, 2, 4);";
-    
+
     $remplir_table_videos=" INSERT INTO `" . $wpdb->prefix . "videos_webtv_plugin` (`id`, `titre`, `url`) VALUES
     (14, 'A bouche que veux-tu', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/04/Brigitte-A-bouche-que-veux-tu.mp4'),
 (30, 'Action (feat. Cat Power & Mike D.) ', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/05/Cassius-Action-ft.-Cat-Power-Mike-D.mp4'),
@@ -617,9 +619,9 @@ global $wpdb;
 (43, 'Viene de Mi', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/05/La-Yegros-Viene-de-Mi.mp4'),
 (20, 'Will Soon Be a Woman', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/04/Ibrahim-Maalouf-Will-Soon-Be-a-Woman.mp4'),
 (2, 'You Will Know My Name', 'http://www.prometheearchimonde.net/wp-content/uploads/2016/04/ARCH-ENEMY-You-Will-Know-My-Name-OFFICIAL-VIDEO.mp4');";
-    
-    
-    
+
+
+
     $wpdb->query($remplir_table_album);
     $wpdb->query($remplir_table_annee);
     $wpdb->query($remplir_table_artiste);
@@ -629,8 +631,8 @@ global $wpdb;
     $wpdb->query($remplir_table_qualite);
     $wpdb->query($remplir_table_relation);
     $wpdb->query($remplir_table_videos);
-    
-    
+
+
 }
 register_activation_hook(__FILE__, 'remplissage_tables');
 
@@ -645,8 +647,8 @@ function pluginwebtv_supprimer_tables(){
     $effacer_table_videos="DROP TABLE " . $wpdb->prefix . "videos_webtv_plugin;";
     $effacer_table_qualite="DROP TABLE " . $wpdb->prefix . "qualite_webtv_plugin;";
     $effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
-    
-    
+
+
     $wpdb->query($effacer_table_playlistenregistres);
     $wpdb->query($effacer_table_album);
     $wpdb->query($effacer_table_annee);
@@ -655,7 +657,7 @@ function pluginwebtv_supprimer_tables(){
     $wpdb->query($effacer_table_videos);
     $wpdb->query($effacer_table_relation);
     $wpdb->query($effacer_table_videos);
-    
+
 }
 
 register_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
@@ -668,7 +670,7 @@ function effacer_video_jouee_player(){
  global $wpdb;
    $video_courante= $_POST['videocourante'];
     $query="DELETE FROM " . $wpdb->prefix . "playlist_webtv_plugin WHERE titre='$video_courante';";
-    $wpdb->query($query);  
+    $wpdb->query($query);
 }
 
 add_action( 'wp_ajax_effacer_video_jouee_player', 'effacer_video_jouee_player' );
@@ -681,8 +683,8 @@ function recuperer_videos_player_page_principale() {
     $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 150;";
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
-        
-    
+
+
 }
 
 
