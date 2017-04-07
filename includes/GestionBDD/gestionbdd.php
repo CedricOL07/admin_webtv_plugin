@@ -38,9 +38,9 @@
                     <?php //include( MY_PLUGIN_PATH . 'templates/gestionbdd/general_view.template.php');?>
                 </div>-->
 
-                <div id="menu1" class="tab-pane fade in active">
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/interface_entete/interface_entete.html');?>
-                </div>
+                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/ajouter_video/ajouter_video.html');?>
+
+
 
                 <!--<div id="menu3" class="tab-pane fade">-->
                     <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_template.php');?>

@@ -88,7 +88,6 @@ $(document).ready(function(){
                 //console.log(response);
                 if(response=='occupe'){
                     $('#label_warning_calendar').text('Une playlist est déjà prévue à cette heure, choisissez un autre créneau');
-                    //  $('#calendrier_dates').toggleClass('hidden display');
                     $('#from').datetimepicker('setDate', null);         
                 }
             }
@@ -217,6 +216,8 @@ $(document).ready(function(){
         ); 
     }
 
+/*------------------ Modification sur la mise en place du début et de la fin de la playlist ------------------*/
+
 
     var date_debut_selectionnee;
     var date_fin_selectionnee;
@@ -236,12 +237,14 @@ $(document).ready(function(){
         $('#label_warning_calendar').html('');
 
     });
+
+    // Il faut modifier le time format avec HH:ss pour pour pouvoir modifier les secondes sur la page
     $( "#from" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:00',
-        stepHour: 1,
-        stepMinute: 0,
+        timeFormat: 'HH:mm',
+        stepHour: 1,// permet de chosir le pas pour les heures
+        stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
@@ -253,9 +256,9 @@ $(document).ready(function(){
     $( "#to" ).datetimepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        timeFormat: 'HH:00',
-        stepHour: 1,
-        stepMinute: 0,
+        timeFormat: 'HH:mm',
+        stepHour: 1,// permet de chosir le pas pour les herues
+        stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
             $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;
@@ -275,18 +278,16 @@ $(document).ready(function(){
 
     var artistes_enregistres=new Array();
     var artiste_highlight;
-    var recuperer_artistes = $_POST['recuperer_artistes']
-
+    
     $('#hightlight-selector').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',
-        onChange: function(recuperer_artistes) {
-            $.each(data.data,function(key,value){
-                //console.log(value.nom);
-                $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-            });
+        onChange: function() {
             artiste_highlight=$('#hightlight-selector').val();
+            console.log(artiste_highlight);
+            alert("jack");
+            $('#artiste_select').append(artiste_highlight);
         }
     });
 
@@ -302,10 +303,10 @@ $(document).ready(function(){
 
             $.each(data.data,function(key,value){
                 //console.log(value.nom);
-                $('#hightlight-selector').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+                $('#classement_artites_higlights').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
             });
 
-            $("#hightlight-selector").multiselect('rebuild');
+            //$("#hightlight-selector").multiselect('rebuild');
 
 
         },
@@ -568,7 +569,7 @@ $(document).ready(function(){
     function pubs(){
         function remove(value){
 
-
+            //permet de détecter si il n'y a rien dans le tableau
             var idx = this.indexOf(value);
             if (idx != -1) {
                 return this.splice(idx, 1); // The second parameter is the number of elements to remove.
@@ -629,7 +630,7 @@ $(document).ready(function(){
                     $('.pubs_externes_group').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-
+                $('#pubs-selector-externe').append('<option value=jack>exemple(problème)</option>');
                 $("#pubs-selector").multiselect('rebuild');
 
 
@@ -650,12 +651,14 @@ $(document).ready(function(){
             },
             dataType: 'JSON',
             success: function(data){
-                $('#pubs-selector').append('<optgroup class="pubs_internes_group" label="Publicités Internes">');
+                //$('#pubs-selector').append('<optgroup class="pubs_internes_group" label="Publicités Internes">');
                 $.each(data.data,function(key,value){
-                    $('.pubs_internes_group').append('<option value="'+value+'">'+ value +'</option>');
+                    $('#pubs-selector-interne').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-                $("#pubs-selector").multiselect('rebuild');
+                    $('#pubs-selector-interne').append('<option value=jack>exemple(problème)</option>');
+                
+                    $("#pubs-selector").multiselect('rebuild');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -843,7 +846,7 @@ $(document).ready(function(){
     */
 
     $("#bouton_annuler_reglage").click(function(){
-        //    alert('Régagle annulé'); 
+        alert('Régagle annulé'); 
         exit();
     });
 

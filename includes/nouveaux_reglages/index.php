@@ -3,7 +3,6 @@
         <meta charset="utf-8">
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <title>WEBTVFIL</title>
 
         <!--<style type="text/css">
@@ -22,6 +21,7 @@
         ?>
 
 
+	<!--Pour modifier les emplacements des boxes il y a des commentaires laissé dans le code notamement dans la partie publicité-->
 
     <body class="hold-transition skin-black sidebar-mini">
 
@@ -122,7 +122,8 @@
 
 
                 <!-- ************************Publicités *******************************-->
-                    
+
+                    <!--Pour modifier l'emplacement des box(2,3,4) dans une box1 sous bootstrap il faut d'abord modifier la premiere box2 qui est dans la box1 afin de voir la place quelle prend et ainsi de suite (Exemple: modifier la box2 avec l'id="select_pub_label" avant de modifier la box3 avec l'id="pub_selector_box" qui sont toutes les deux dans la box1 .-->
 
                         <div class="col-md-11 col-sm-11 box" id="partie_publicites">
 
@@ -132,24 +133,35 @@
 
                             </div>
 
-                            <div class="col-md-6 col-sm-6" id="pub-box">
+                            <div class="col-md-11 col-sm-11" id="pub-box">
 
-                                <div class="col-md-4 col-sm-4" id="select_pub_label"> 
+                                <div class="col-md-3 col-sm-3" id="select_pub_label"> 
 
-                                Selectionner une pub : 
+                                Sélectionner une pub externe : 
 
                                 </div>
                   
-                                <div class="col-md-6 col-sm-6" id="pub_selector_box">
+                                <div class="col-md-3 col-sm-3" id="pub_selector_externe_box" >
 
-                                    <select id="pubs-selector" >
-                                        <option value="default">-- Choisir une pub  --</option>
+                                    <select name="pubs-selector-externe"  id="pubs-selector-externe"  multiple>
 
                                     </select>
 
                                 </div>
-                            </div>
 
+                                <div class="col-md-3 col-sm-3" id="select_pub_label"> 
+
+                                Selectionner une pub interne : 
+
+                                </div>
+
+                                <div class="col-md-1 col-sm-1" id="pub_selector_interne_box" >
+
+                                	<select name="pubs-selector-interne"  id="pubs-selector-interne" multiple>
+                                    </select>
+
+                                </div>
+                            </div>
                         </div>
 
 
@@ -159,6 +171,8 @@
 
                         
                         <div class="col-md-11 col-sm-11 box" id="partie_highlight">
+                        <!--Attention à la dimension de la balise ! 11 est le maximum de colonne insérées dans la box. c'est à dire que les div dans cette boite leur somme de colonne ne doivent pas dépasser 11. Exemple en dessous 6 (une div) et l'autre 5 (une div) 		5 + 6 = 11 -->
+
                             <div id="highlights">  
 
 
@@ -170,13 +184,18 @@
 
                                 <div for="tags" class="glyphicon glyphicon-search">
 
+                                	 <select class="col-md-7 col-sm-7" name="classement_artites_higlights" id="classement_artites_higlights" multiple>
+
+                                	 </select>
+
+                                    <div class="col-md-2 col-sm-2">
+                                      Artiste sélectionné : 
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2" id="artiste_select">
+                                    <!--emplacement prévu pour l'artiste sélectionner les fonctions sont dans le nouveau_reglages.js -->
+                                    </div>
                                 </div>
-
-                                <select id="hightlight-selector" multiple="multiselect">
-
-                                    <option value="default">-- Choisir un artiste  --</option>
-                                    <option value="value.nom">bob</option>
-                                </select>
 
                             </div>
                         </div>
@@ -241,7 +260,7 @@
                         </div>
                     </div>
 
-
+                    <!-- ******Bouton enregistrer et annulé***** -->
 
                     <div class="col-md-6 col-sm-6 col-md-offset-8 col-sm-offset-8" id="boutons_div">
                         <div  class="col-md-12 col-sm-12 " id="boutons"> <!----- boutons ----->
@@ -256,6 +275,7 @@
                                 <button type="button" class="btn btn-default" id="bouton_annuler_reglage">
                                         Annuler
                                 </button>
+                                <div id="rafraichissement"></div>
 
                             </a>   
                         </div>
