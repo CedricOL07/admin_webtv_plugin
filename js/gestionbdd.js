@@ -6,28 +6,28 @@ $(document).ready(function(){
 */
 
     $.ajax({
-        url: ajaxurl, 
+        url: ajaxurl,
         data:{
             'action':'recup_qualite_gestionbdd_pluginwebtv',
         },
         dataType: 'JSON',
         success: function(data){
-            console.log(data);
+          //  console.log(data);
             $.each(data.data,function(key,value){
 
-                $('#qualite').append('<option value="'+ value.valeur+'">'+ value.valeur +'</option>');
+              //  $('#qualite').append('<option value="'+ value.valeur+'">'+ value.valeur +'</option>');
             });
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
             alert(thrownError);
         }
-    }); 
+    });
 
 
     // Requete wordpress
     $.ajax({
-        url: ajaxurl, 
+        url: ajaxurl,
         data:{
             'action':'recup_genres_gestionbdd_pluginwebtv',
         },
@@ -44,14 +44,14 @@ $(document).ready(function(){
             alert(xhr.status);
             alert(thrownError);
         }
-    }); 
+    });
 
     $('#bouton_inserer_contenu').click(function(){
-        
+
         var titre=$('#input_titre_inserer').val();
         var url_video=$('#input_url_inserer').val();
         var artiste_video=$('#input_artiste_inserer').val();
-        
+
         var genres=$('#genres').val();
         var album=$('#input_album').val();
         var annee=$('#input_annee').val();
@@ -100,20 +100,20 @@ $(document).ready(function(){
           }
       }
        /**/
-        
-        
+
+
     });
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
     /*
 *---------------------------------------------  RECUPERER DU CONTENU  --------------------------------------------
 */
-
+/*
 
     //Recuperer par genre
     $('#bouton_recuperer_par_genre').click(function(){
@@ -136,7 +136,7 @@ $(document).ready(function(){
                 });
 
             }
-        );  
+        );
     });
 
     $('#bouton-recuperer-par_artiste').click(function(){
@@ -172,7 +172,7 @@ $(document).ready(function(){
                 }
                 //Afficher resultat (tableau associatif) dans un <table> ou similaire
             }
-        );  
+        );
 
     });
 
@@ -180,27 +180,27 @@ $(document).ready(function(){
 
     /*
 *---------------------------------------------  SUPPRESSION DE CONTENU   ---------------------------------------------------
-*/  
-    
-    
-    
+*/
+
+/*
+
     $("#dialog_verifier_tous_supprimer").dialog({
         autoOpen: false,
         modal: true
     });
-    
+
     /***********************  TOUT SUPPRIMER ********************/
-    
-    
+/*
+
     $('#bouton_tout_supprimer').click(function(){
-        
-       
+
+
         $("#dialog").dialog({
             buttons : {
                 "Confirmer" : function() {
 
                     $.ajax({
-                        url: ajaxurl, 
+                        url: ajaxurl,
                         data:{
                             'action':'supprimer_toutes_videos',
                         },
@@ -209,9 +209,9 @@ $(document).ready(function(){
                             $(this).dialog("close");
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
-                       
+
                         }
-                    }); 
+                    });
 
                 },
                 "Annuler" : function() {
@@ -221,20 +221,20 @@ $(document).ready(function(){
         });
 
         $("#dialog").dialog("open");
-        
-        
-        
+
+
+
     });
-    
-    
-    
-    
+
+
+
+
 
     /***********************  INPUT RECHERCHE ARTISTE ********************/
     var liste_artistes_bdd=[];
 
     $.ajax({
-        url: ajaxurl, 
+        url: ajaxurl,
         data:{
             'action':'recup_artistes_gestionbdd_pluginwebtv',
         },
@@ -250,7 +250,7 @@ $(document).ready(function(){
             alert(xhr.status);
             alert(thrownError);
         }
-    }); 
+    });
 
     $('#input_supprimer_artiste').autocomplete({
         source : liste_artistes_bdd
@@ -260,7 +260,7 @@ $(document).ready(function(){
     var liste_titres_bdd=[];
 
     $.ajax({
-        url: ajaxurl, 
+        url: ajaxurl,
         data:{
             'action':'recup_titres_gestionbdd_pluginwebtv',
         },
@@ -276,7 +276,7 @@ $(document).ready(function(){
             alert(xhr.status);
             alert(thrownError);
         }
-    }); 
+    });
 
     $('#input_supprimer_morceau').autocomplete({
         source : liste_titres_bdd
@@ -286,7 +286,7 @@ $(document).ready(function(){
 
 
     /**************************** Boutons ********************************/
-
+/*
     $("#dialog").dialog({
         autoOpen: false,
         modal: true
@@ -319,7 +319,7 @@ $(document).ready(function(){
 
                                 //On supprime tous les morceaux de l'artiste
                             $.ajax({
-                                url: ajaxurl, 
+                                url: ajaxurl,
                                 data:{
                                     'action':'supprimer_tous_les_morceaux_artiste_gestionbdd_pluginwebtv',
                                     'artiste':artiste_a_supprimer,
@@ -346,22 +346,22 @@ $(document).ready(function(){
 
                 }
             }
-        ); 
+        );
 
 
 
     });
 
-    
-  /*  
+
+  /*
     $('#titres_boite').multiselect({
         enableFiltering: true,
         nonSelectedText: 'Choisir une ou plusieurs publicites',
     });
-    
-    
-    
-    
+
+
+
+
     $('#bouton_supprimer_un_morceau_artiste').click(function(){
 
 
@@ -374,16 +374,16 @@ $(document).ready(function(){
                 'artiste':artiste_a_supprimer,
             },
             function(response){
-        
+
                 if(response.data=='artiste_pas_dans_bdd'){
                     $('#div_liste_artistes1').toggleClass('hidden display');
                 }else{
-               
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                 }
             }
         );
@@ -398,7 +398,7 @@ $(document).ready(function(){
 
 
         $.ajax({
-            url: ajaxurl, 
+            url: ajaxurl,
             data:{
                 'action':'get_song_by_name_gestionbdd_pluginwebtv,
             },
@@ -414,7 +414,7 @@ $(document).ready(function(){
                 alert(xhr.status);
                 alert(thrownError);
             }
-        }); 
+        });
 
     });*/
 
@@ -425,12 +425,12 @@ $(document).ready(function(){
 ***************************************    Bouton supprimer morceau *********************
 *
 */
+/*
 
-    
     $('#bouton_supprimer_morceau').click(function(){
-       
+
         var titre=$('#input_supprimer_morceau').val();
-        
+
         $("#dialog").dialog({
             buttons : {
                 "Confirmer" : function() {
@@ -445,7 +445,7 @@ $(document).ready(function(){
                             $(this).dialog("close");
                         }
                     );
-                 
+
                 },
                 "Annuler" : function() {
                     $(this).dialog("close");
@@ -454,17 +454,14 @@ $(document).ready(function(){
         });
 
         $("#dialog").dialog("open");
-        
-        
-        
-        
-        
-        
-    });
+
+
+
+
+
+
+    });*/
 
 
 
 });
-
-
-
