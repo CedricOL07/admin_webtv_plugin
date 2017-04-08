@@ -46,6 +46,7 @@ $(document).ready(function(){
         let qualite=$(this).find('td').eq(6).html();
         let url=$(this).find('td').eq(7).html();
 
+        // Création d'un JSON qui contient les informations sur les clips a supprimer
         let obj={};
         obj.titre=titre;
         obj.artiste=artiste;
@@ -55,7 +56,20 @@ $(document).ready(function(){
         obj.qualite=qualite;
         obj.url=url;
 
-        data.push(obj)
+        data.push(obj);
+
+        if(data.length>0){
+          $.post(
+            ajaxurl,
+            {
+              'action':'supprimer_clips',
+              'data':data,
+            },function(){
+                $("#tableau_corps tr:has(:checked)").each(function(){
+                  $(this).remove();
+                });
+            });
+        };
       });
       console.log(JSON.stringify(data));
     }
