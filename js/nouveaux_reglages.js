@@ -350,7 +350,7 @@ $(document).ready(function(){
     var artistes_enregistres=new Array();
     var artiste_highlight;
     
-    $('#hightlight-selector').change({
+    $('#hightlight-selector').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',

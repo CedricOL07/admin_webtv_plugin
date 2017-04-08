@@ -60,6 +60,8 @@
 
                                 
                                     <!--  ************* Couleur playlist ****************-->
+
+                                    <label for="amount">Pop Rock</label>
         
                                     <div id="slider_pop_rock"></div>
 
@@ -191,7 +193,7 @@
                                     <div class="col-md-2 col-sm-2">
                                       Artiste sélectionné : 
                                     </div>
-                                    
+
                                     <div id="affichage_artiste higlight">
                                     </div>
 
