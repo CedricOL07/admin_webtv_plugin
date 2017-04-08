@@ -12,7 +12,7 @@
 
 add_action( 'pluginwebtv_ajouter_video', 'ajouter_video',10,7);
 
-
+/*
 $titre=$_POST['titre'];
 $album=$_POST['album'];
 $url=$_POST['url'];
@@ -27,8 +27,17 @@ do_action('pluginwebtv_ajouter_video', $titre, $album, $url, $annee_prod, $artis
 //header('Location: gestionbdd.php');
 //exit();
 
+*/
 
-function ajouter_video($titre, $album, $url, $annee_prod, $artiste, $qualite, $genre){
+if (isset($_POST['myFunction']) && $_POST['myFunction'] != '')
+{
+ 
+   ${$_POST['myFunction']}($_POST['myParams']['titre', 'url_video', 'artiste_video', 'genre', 'album', 'annee', 'qualite']);
+   console.log("Entrée dans ajouter_video.php...")
+}
+ 
+
+function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qualite){
     global $wpdb;
 
     $video_id, $artiste_id, $genre_id, $album_id, $annee_id;

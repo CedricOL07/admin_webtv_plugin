@@ -1,0 +1,12 @@
+
+
+
+Récupérer adresse video avec requete sql
+stoquer dans 'url'
+
+
+<div>
+	<object type="application/x-shockwave-flash" width="425" height="355" data="url">
+		<param name="movie" value="url" />
+	</object>
+</div>

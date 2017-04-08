@@ -48,6 +48,66 @@ $(document).ready(function(){
 
     $('#bouton_inserer_contenu').click(function(){
 
+	// Appel d'une fonction php pour insérer du contenu dynamiquement
+		
+		console.log('Entrée dans le js');
+		if(titre != '' && url_video != '' && artiste_video != '' && genres != '')
+		{
+			var titre=$('#input_titre_inserer').val();
+			var url_video=$('#input_url_inserer').val();
+			var artiste_video=$('#input_artiste_inserer').val();
+
+			var genre=$('#genre').val();
+			var album=$('#input_album').val();
+			var annee=$('#input_annee').val();
+			var qualite=$('#qualite').val();
+			console.log(genre);
+			console.log('test');
+			
+			$.ajax({
+				
+				url: '../includes/GestionBDD/ajouter_video/ajouter_video.php',
+				type:'POST',
+				data:
+				{
+					myFunction:'ajouter_video',
+					myParams:{
+						titre:'titre',
+						url_video='url_video',
+						artiste_video='artiste_video',
+						genre='genre',
+						album='album',
+						annee='annee',
+						qualite='qualite'
+					}
+				},
+				success: function(data)
+				{
+					alert(data);
+				}
+					
+			});
+		}else{
+			if(titre == ''){
+				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
+			}else{
+				if(url_video== ''){
+					$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'url pour la vidéo, veuillez en entrer une</span></strong>');
+				}else{
+					if(artiste_video == ''){
+						$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'artiste pour la vidéo, veuillez en entrer un</span></strong>');
+					}else{
+						if(genres == ''){
+							$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné de genres pour la vidéo, veuillez en entrer un</span></strong>');
+						}
+					}
+				}
+			}
+		}
+	
+	
+	
+	/* *************ANCIENNE VERSION*************
         var titre=$('#input_titre_inserer').val();
         var url_video=$('#input_url_inserer').val();
         var artiste_video=$('#input_artiste_inserer').val();
@@ -99,7 +159,9 @@ $(document).ready(function(){
               }
           }
       }
-       /**/
+       /*
+	   
+	   */
 
 
     });
