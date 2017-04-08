@@ -6,7 +6,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html>
     <head>
         <meta charset="utf-8">
-        
+
         <title>WEBTVFIL</title>
         <!-- Tell the browser to be responsive to screen width --
 
@@ -22,17 +22,17 @@ apply the skin class to the body tag so the changes take effect.
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script
 <![endif]-->
-       
-        
-   
+
+
+
         <!-- Fichiers CSS locaux -->
       <!--  <link rel="stylesheet" href="../../assets/css/homepage.css">
         <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
         <link rel="stylesheet" href="../../assets/css/skins/_all-skins.min.css">-->
        <!-- <link rel="stylesheet" href="../../assets/css/style.css">-->
-       
-        
-        
+
+
+
        <!-- <link href="assets/css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css" />-->
        <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
         <!------ JQuery ------->
@@ -64,16 +64,16 @@ desired effect
 |---------------------------------------------------------|
 -->
     <body class="hold-transition skin-black sidebar-mini">
-        
+
         <div class="wrapper">
 
             <!-- Main Header -->
-        
+
             <!-- Left side column. contains the logo and sidebar -->
             <!-- Control Sidebar -->
 
 
-            <?php 
+            <?php
             //include( MY_PLUGIN_PATH . '../../templates/homepage/sidebar_homepage.template.php');?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -83,7 +83,7 @@ desired effect
                         WEBTVFIL
                         <!--<small>Optional description</small>-->
                     </h1>
-                   
+
                 </section>
 
                 <!-- Main content -->
@@ -91,7 +91,7 @@ desired effect
 
 
                 <div class="container-fluid">
-                 
+
                     <div class="bootstrap-wpadmin">
                     <div class="row">
                         <div class="col-md-12">
@@ -108,19 +108,14 @@ desired effect
                             </h3>
                             <div id="table-programmation-page-principale"  style="overflow:auto;height:300px;">
                                 <table id="table_programmation" class="table table-hover table-striped" >
-                       
+
                                 </table>
                             </div>
 
                         </div>
-                      
+
                         <div class="col-md-4" style="margin-top:2%;">
                             <div class="row">
-
-                               <div>
-                                    <?php include( MY_PLUGIN_PATH . 'bdd.php') ?>
-
-                                </div>
                                 <div class="col-md-4" id="lecteur_video">
                                     <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
                                         <div class="jp-type-playlist">
@@ -182,11 +177,11 @@ desired effect
                             </div>
 
                         </div>
-                      
-                      
+
+
 
                     </div>
-                    
+
                 </div>
                 </div>
                 <style type="text/css">
@@ -202,20 +197,20 @@ desired effect
             <!-- /.content-wrapper -->
 
             <!-- Main Footer -->
-            
+
 
 
             <!-- ./wrapper -->
 
-           
 
-         
+
+
 
             <!-- Bootstrap 3.3.6 -->
-           
+
             <!----- PLayer video page principale  -->
-      
- 
+
+
 
 
             <!-- Optionally, you can add Slimscroll and FastClick plugins.
@@ -223,6 +218,6 @@ Both of these plugins are recommended to enhance the
 user experience. Slimscroll is required when using the
 fixed layout. -->
         </div>
-  
+
     </body>
 </html>
