@@ -191,6 +191,9 @@
                                     <div class="col-md-2 col-sm-2">
                                       Artiste sélectionné : 
                                     </div>
+                                    
+                                    <div id="affichage_artiste higlight">
+                                    </div>
 
                                     <div class="col-md-2 col-sm-2" id="artiste_select">
                                     <!--emplacement prévu pour l'artiste sélectionner les fonctions sont dans le nouveau_reglages.js -->
@@ -218,6 +221,18 @@
 
                                     <input type="button" id="bouton_choisir_date" value="Choisir la date" class="btn btn-primary display"/>
 
+                                    <div>
+                                    <input type="button" id="bouton_voir_programmation" value="Voir la programmation" class="btn btn-primary display" />
+									</div>
+
+                                    <div id="calendrier_dates">
+
+                                    </div>
+
+                                    <div>
+                                    <input type="button" name="cacher" id="cacher_programmation" value="cacher" class="hidden" >  
+									</div>
+
                                     <div id="picker_choisir_date">
                                     </div>
 
@@ -225,10 +240,11 @@
 
                                         <div id="datetimepicker">
 
-                                            <label for="from">Debut</label>
-                                            <input type="text" id="from" name="from"/>
-                                            <label for="to">Fin</label>
-                                            <input type="text" id="to" name="to"/>
+                                            <div>Debut
+                                            <input type="text" id="from" name="from"/></div>
+                                            <div>Fin
+                                            <input type="text" id="to" name="to"/></div>
+                                            <!--<input type="button" id="confirmer_date" value="confirmer" class="btn btn-primary"/>-->
                                             <input type="button" id="annuler_choisir_date" value="annuler" class="btn btn-primary"/>
 
                                         </div>
@@ -236,11 +252,18 @@
                                         <label id="label_warning_calendar" style="color:red;">
                                         </label>
 
-                                        <div id="calendrier_dates">
 
-                                        <input type="button" id="bouton_voir_programmation" value="Voir la programmation" class="btn btn-primary display" />  
-
+                               			<div>
+                                        <input type="button" id="bouton_voir_programmation_partie_choix_date" value="Voir la programmation" class="btn btn-primary display" /> 
                                         </div>
+                                        <div id="calendrier_dates_partie_choix_date">
+                                        </div>
+
+                                        <div>
+                                    	<input type="button" name="cacher" id="cacher_programmation_partie_choix_date" value="cacher" class="hidden"> 
+										</div>
+
+
                                     </div>
                                 </div>
 
@@ -254,6 +277,7 @@
                                     </div>
 
                                     <input type='button' class='btn btn-primary' id='annuler_date_dispo' value='Annuler' />
+
 
                                 </div>
                             </div>

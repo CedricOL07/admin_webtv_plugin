@@ -24,27 +24,41 @@ $(document).ready(function(){
     /*
 * ---------------------------------- AFFICHAGE DYNAMIQUE BOUTONS (CLIQUABLE/NON CLIQUABLE)---------------------------------------
 */
+    
 
-
-
+    
     $('#bouton_voir_premiere_date_disponible').click(function(){
         $('#trigger_premiere_date_dispo').toggleClass('hidden display');
         $('#bouton_voir_premiere_date_disponible').toggleClass('display hidden');
         $('#bouton_choisir_date').attr("disabled", "disabled");
         recuperer_creneau_dispo();
     });
+
     $('#bouton_choisir_date').click(function(){
+        $('#bouton_voir_programmation').hide();
         $('#bouton_choisir_date').hide();
         $('#trigger_choisir_date').toggleClass('hidden display');
+        $('#bouton_voir_premiere_date_disponible').hide();
         $('#bouton_voir_premiere_date_disponible').attr("disabled", "disabled");
-        $('#calendrier_dates').show();
+        $('#calendrier_dates').hide();
+        $("#cacher_programmation").hide();
     });
 
+   /* $("#confirmer_date").click(function () {
+        $('#bouton_voir_programmation_partie_choix_date').hide();
+        $('#bouton_voir_premiere_date_disponible').hide();
+        afficher_programmation_partie_choix_date();
+
+    })*/
+
     $('#annuler_choisir_date').click(function(){
+        $('#bouton_voir_programmation').show();
         $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
         $('#trigger_choisir_date').toggleClass('display hidden');
         $('#bouton_choisir_date').show();
         $('#calendrier_dates').hide();
+        $('#bouton_voir_premiere_date_disponible').show();
+
     });
     $('#annuler_date_dispo').click(function(){
         $('#trigger_premiere_date_dispo').toggleClass('display hidden');
@@ -55,6 +69,38 @@ $(document).ready(function(){
         $('#trigger_choisir_date').toggleClass('display hidden');
         $('#bouton_voir_premiere_date_disponible').removeAttr("disabled"); 
         $('#bouton_choisir_date').toggleClass('hidden display');
+    });
+
+    $('#bouton_voir_programmation').click(function(){
+        $('#bouton_voir_programmation').hide();
+        $("#cacher_programmation").show();// montre le bouton
+        $("#cacher_programmation").html();//permet de l'écrire dans la page html
+        $('#calendrier_dates').show();
+        $('#calendrier_dates').html('');
+        afficher_programmation();
+
+    });
+
+    $('#bouton_voir_programmation_partie_choix_date').click(function(){
+        $('#bouton_voir_programmation_partie_choix_date').hide();
+        $("#cacher_programmation_partie_choix_date").show();// montre le bouton
+        $("#cacher_programmation_partie_choix_date").html();//permet de l'écrire dans la page html
+        $('#calendrier_dates_partie_choix_date').show();
+        $('#calendrier_dates_partie_choix_date').html('');
+        afficher_programmation_partie_choix_date();
+
+    });
+
+    $('#cacher_programmation').click(function(){
+        $('#calendrier_dates').hide();
+        $('#cacher_programmation').hide();
+        $('#bouton_voir_programmation').show();
+    });
+
+    $('#cacher_programmation_partie_choix_date').click(function(){
+        $('#calendrier_dates_partie_choix_date').hide();
+        $('#cacher_programmation_partie_choix_date').hide();
+        $('#bouton_voir_programmation_partie_choix_date').show();
     });
 
     //Checkbox pour mettre par defaut ou non le réglage   
@@ -143,6 +189,36 @@ $(document).ready(function(){
         );
     }
 
+// création d'une fonction similaire à afficher_programmation à cause des doublons de classe car la l'affichge n'etais pas bon 
+// avec le bouton voir la programmation_partie_choix_date.
+    function afficher_programmation_partie_choix_date(){
+
+        $.post(
+            ajaxurl,
+            {
+                'action': 'recuperer_programmation'
+            },
+            function(response){
+                $('#calendrier_dates_partie_choix_date').append('<table id="table_cal" style="width:100%">');
+             
+                $('#table_caltbody').append('<tr>');
+                $('#table_cal').append('<th>Réglage</th>');
+                $('#table_cal').append('<th>Debut</th>');
+                $('#table_cal').append('<th>Fin</th>');
+                $('#table_cal').append('</tr>');
+
+                $.each(response.data,function(key,value){
+                    if(value.Debut != '' && value.nom !=''){
+                        $('#table_cal').append('<tr><td>'+value.nom+'</td><td>'+value.Debut+'</td><td>'+value.Fin+'</td></tr>');
+
+                    }
+                });
+                $('#calendrier_dates_partie_choix_date').append('<style type="text/css">table, th, td {border: 1px solid black;}</style>');
+            }
+        );
+    }
+
+
     function afficher_playlists_jour(datedebut){
         /* $.post(
             ajaxurl,
@@ -221,18 +297,13 @@ $(document).ready(function(){
 
     var date_debut_selectionnee;
     var date_fin_selectionnee;
-    $('#bouton_voir_programmation').click(function(){
-        $('#calendrier_dates').show();
-        $('#calendrier_dates').html('');
-        afficher_programmation();
 
-
-    });
 
     $('#from').click(function(){
         $('#label_warning_calendar').html('');
 
     });
+
     $('#to').click(function(){
         $('#label_warning_calendar').html('');
 
@@ -249,7 +320,7 @@ $(document).ready(function(){
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
             // afficher_playlists_jour(date_debut_selectionnee);
-            verifier_date_debut(date_debut_selectionnee);
+            //verifier_date_debut(date_debut_selectionnee);
 
         }
     });
@@ -263,7 +334,7 @@ $(document).ready(function(){
             $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;
             // afficher_playlists_jour_fin(date_fin_selectionnee);
-            verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
+            //verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
         }
     });
 
@@ -279,13 +350,13 @@ $(document).ready(function(){
     var artistes_enregistres=new Array();
     var artiste_highlight;
     
-    $('#hightlight-selector').multiselect({
+    $('#hightlight-selector').change({
         includeSelectAllOption: true,
         enableFiltering: true,
         noSelectText: 'Choisir un artiste à mettre en avant',
         onChange: function() {
             artiste_highlight=$('#hightlight-selector').val();
-            console.log(artiste_highlight);
+            alerte(artiste_highlight);
             alert("jack");
             $('#artiste_select').append(artiste_highlight);
         }
@@ -630,7 +701,7 @@ $(document).ready(function(){
                     $('.pubs_externes_group').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-                $('#pubs-selector-externe').append('<option value=jack>exemple(problème)</option>');
+                $('#pubs-selector-externe').append('<option value=exemple>exemple(problème)</option>');
                 $("#pubs-selector").multiselect('rebuild');
 
 
@@ -656,7 +727,7 @@ $(document).ready(function(){
                     $('#pubs-selector-interne').append('<option value="'+value+'">'+ value +'</option>');
 
                 });
-                    $('#pubs-selector-interne').append('<option value=jack>exemple(problème)</option>');
+                    $('#pubs-selector-interne').append('<option value=exemple>exemple(problème)</option>');
                 
                     $("#pubs-selector").multiselect('rebuild');
             },
@@ -682,7 +753,9 @@ $(document).ready(function(){
 *--------------------------------------------------------   Boutons   ----------------------------------------------------------
 *
 */
-
+    /*
+    * --------------------------------------------- BOUTON CONFIRMER HORAIRE---------------------------------------------
+    */
 
 
 
@@ -692,7 +765,6 @@ $(document).ready(function(){
     */
     $("#bouton_enregistrer_reglage").click(function(){
 
-  
  
         var pardefaut=false;
         var artiste_mis_en_avant=artiste_highlight;
@@ -706,8 +778,8 @@ $(document).ready(function(){
 
         var nom_disponible=true;
         /*
-* --------------------------------------  VERIFICATION DES NOMS   ------------------------------------------
-*/
+            * --------------------------  VERIFICATION DES NOMS   -----------------------------------
+            */
         
     
 
@@ -771,11 +843,14 @@ $(document).ready(function(){
                 
                // return false;
             } else {
+                
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date 
                     if( $('#bouton_voir_premiere_date_disponible').is(':disabled')){
-                        var duree= $('#bouton_choisir_date').val();    
-                        date_passage=duree;
+                        alert($('#from').val());
+                        var debut= $('#from').val();  
+                        var fin= $('#to').val();    
+                        //date_passage=duree;
                         duree_picked=true;
               
                     }
@@ -823,22 +898,23 @@ $(document).ready(function(){
                     );  
                   
                     $('.wrapper').load(jsnouveaureglage.jsnouveaureglagepath);
-                    
-                    //return false;
+
+                    //débloque le bouton choisir la date lors de l'actualisation
+                    $('#bouton_choisir_date').removeAttr("disabled");
+                    $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
                 }else{
                     alert('Veuillez choisir une option de diffusion pour la playlist');
                     return false;
                 }
                 }
-                    
-
+               
+           
         }
         /*tableau_pourcentages= { poprock:'', rap:'', jazzblues:'',musiquemonde:'', hardrock:'', electro:'' };*/
         
     });
 
-
-
+/*
 
 
     /*

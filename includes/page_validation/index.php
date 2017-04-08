@@ -164,7 +164,8 @@
                     });
                 }
 
-                 $("#annuler").click(function(){
+                $("#annuler").click(function(){
+                $('#bouton_choisir_date').removeAttr("disabled");//débloque le bouton choisir la date lors de l'actualisation
                 location.reload();
                 });
             });
