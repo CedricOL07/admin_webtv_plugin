@@ -24,7 +24,7 @@
         <input type="text" class="form-control" id="rechercher" placeholder="Rechercher" />
         <table class="table table-bordered">
           <thead>
-            <tr style="background-color:#9191FA;color:black;">
+            <tr style="background-color:#9191FA;color:black;"  id="tr0">
               <th><label><input type="checkbox" onClick="toggle(this)" />Tout sélectionner</label></th>
               <th>Titre</th>
               <th>Artiste</th>

@@ -1,6 +1,6 @@
 <?php
 add_action('wp_ajax_recuperer_clips', 'recuperer_clips' );
-
+add_action('wp_ajax_supprimer_clips','supprimer_clips');
 
 
 function recuperer_clips(){
@@ -34,6 +34,10 @@ function recuperer_clips(){
   echo json_encode($resultats);
   // libération de la base de données
   wp_die();
-}
+};
+
+function supprimer_clips(){
+
+};
 
  ?>
