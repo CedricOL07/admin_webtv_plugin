@@ -32,15 +32,24 @@ do_action('pluginwebtv_ajouter_video', $titre, $album, $url, $annee_prod, $artis
 if (isset($_POST['myFunction']) && $_POST['myFunction'] != '')
 {
  
-   ${$_POST['myFunction']}($_POST['myParams']['titre', 'url_video', 'artiste_video', 'genre', 'album', 'annee', 'qualite']);
-   console.log("Entrée dans ajouter_video.php...")
+   ${$_POST['myFunction']}($_POST['myParams']['titre'], 
+                            $_POST['myParams']['url_video'], $_POST['myParams']['artiste_video'],
+                            $_POST['myParams']['genre'], $_POST['myParams']['album'], 
+                            $_POST['myParams']['annee'], $_POST['myParams']['qualite']);
+   console.log("Entrée dans ajouter_video.php...");
 }
  
 
 function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qualite){
     global $wpdb;
 
-    $video_id, $artiste_id, $genre_id, $album_id, $annee_id;
+    console.log("Fonction ajouter_video");
+
+    $video_id;
+    $artiste_id;
+    $genre_id;
+    $album_id;
+    $annee_id;
     $existante=false;
     $is_album=false;
     $is_artiste=false;
@@ -128,8 +137,5 @@ function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qua
 
 
 ?>
-
-
-<h3> Retour à la <a href="gestionbdd.php"> page de gestion</a> de la base de donnée </h3>
 
 

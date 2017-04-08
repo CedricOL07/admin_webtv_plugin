@@ -49,56 +49,70 @@ $(document).ready(function(){
     $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
-		
+		/* */
 		console.log('Entrée dans le js');
-		if(titre != '' && url_video != '' && artiste_video != '' && genres != '')
-		{
-			var titre=$('#input_titre_inserer').val();
-			var url_video=$('#input_url_inserer').val();
-			var artiste_video=$('#input_artiste_inserer').val();
-
-			var genre=$('#genre').val();
-			var album=$('#input_album').val();
-			var annee=$('#input_annee').val();
-			var qualite=$('#qualite').val();
-			console.log(genre);
-			console.log('test');
+		
+		var titre=$('#titre').val();
+		var url_video=$('#url').val();
+		var artiste_video=$('#artiste').val();
+		var genre=$('#genre').val();
+		var album=$('#album').val();
+		var annee=$('#annne_prod').val();
+		var qualite=$('#qualite').val();
+		console.log(genre);
+		console.log('test');
 			
+		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
+		{	
 			$.ajax({
 				
-				url: '../includes/GestionBDD/ajouter_video/ajouter_video.php',
+				url: ajaxurl,
 				type:'POST',
 				data:
 				{
-					myFunction:'ajouter_video',
-					myParams:{
-						titre:'titre',
-						url_video='url_video',
-						artiste_video='artiste_video',
-						genre='genre',
-						album='album',
-						annee='annee',
-						qualite='qualite'
-					}
+					'action':'pluginwebtv_ajouter_video',
+					'myParams':{
+						'titre':titre,
+						'url_video':url_video,
+						'artiste_video':artiste_video,
+						'genre':genre,
+						'album':album,
+						'annee':annee,
+						'qualite':qualite
+					},
+					dataType: 'JSON',
 				},
 				success: function(data)
 				{
-					alert(data);
+					console.log(data);
+				},
+				
+				error: function(){
+					console.log('ERREUR lors de l\'insertion de la vidéo');
 				}
 					
 			});
 		}else{
 			if(titre == ''){
 				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
+					console.log('PAS DE TITRE');
 			}else{
 				if(url_video== ''){
 					$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'url pour la vidéo, veuillez en entrer une</span></strong>');
+					console.log('PAS D\'URL');
 				}else{
 					if(artiste_video == ''){
 						$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'artiste pour la vidéo, veuillez en entrer un</span></strong>');
+					console.log('PAS D\'ARTISTE');
 					}else{
-						if(genres == ''){
-							$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné de genres pour la vidéo, veuillez en entrer un</span></strong>');
+						if(annee == ''){
+							$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné d\'année pour la vidéo, veuillez en entrer une</span></strong>');
+					console.log('PAS D\'ANNEE');
+						}else{
+							if(album == ''){
+								$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné d\'album pour la vidéo, veuillez en entrer un</span></strong>');
+					console.log('PAS D\'ALBUM');
+							}
 						}
 					}
 				}
@@ -106,15 +120,15 @@ $(document).ready(function(){
 		}
 	
 	
-	
 	/* *************ANCIENNE VERSION*************
-        var titre=$('#input_titre_inserer').val();
-        var url_video=$('#input_url_inserer').val();
-        var artiste_video=$('#input_artiste_inserer').val();
+	
+        var titre=$('#titre').val();
+        var url_video=$('#url').val();
+        var artiste_video=$('#artiste').val();
 
-        var genres=$('#genres').val();
-        var album=$('#input_album').val();
-        var annee=$('#input_annee').val();
+        var genres=$('#genre').val();
+        var album=$('#album').val();
+        var annee=$('#annne_prod').val();
         var qualite=$('#qualite').val();
         console.log(genres);
         console.log('test');
@@ -293,7 +307,8 @@ $(document).ready(function(){
 
 
     /***********************  INPUT RECHERCHE ARTISTE ********************/
-    var liste_artistes_bdd=[];
+ /*
+ var liste_artistes_bdd=[];
 
     $.ajax({
         url: ajaxurl,
@@ -317,9 +332,11 @@ $(document).ready(function(){
     $('#input_supprimer_artiste').autocomplete({
         source : liste_artistes_bdd
     });
+*/
 
     /***********************  INPUT RECHERCHE TITRE ********************/
-    var liste_titres_bdd=[];
+ /*
+ var liste_titres_bdd=[];
 
     $.ajax({
         url: ajaxurl,
@@ -344,7 +361,7 @@ $(document).ready(function(){
         source : liste_titres_bdd
     });
 
-
+*/
 
 
     /**************************** Boutons ********************************/
