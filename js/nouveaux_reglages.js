@@ -133,8 +133,6 @@ $(document).ready(function(){
 
         else{
 
-        
-        alert(artiste_highlight_sans_espace);
         $('#affichage_artiste_higlight').show();
         $('#affichage_artiste_higlight').append('<option id="'+artiste_highlight_sans_espace+'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
         
@@ -143,7 +141,8 @@ $(document).ready(function(){
     });
 
     //supprimer un artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
-     $('#supprimer_artistes_higlight').click(function(){
+    // erreur lorsqu'il y deux fois le meme artiste surement à cause du doublon de l'id mettre en place un compteur pour eviter doublond le 'id
+    $('#supprimer_artistes_higlight').click(function(){
         var artiste_highlight=$('#classement_artites_higlights').val();
         var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
         if (artiste_highlight==null){
@@ -151,8 +150,7 @@ $(document).ready(function(){
         }
 
         else{
-       
-        alert(artiste_highlight_sans_espace);
+
         $('#'+artiste_highlight_sans_espace).hide('<option id="'+artiste_highlight_sans_espace+'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
 
         }
