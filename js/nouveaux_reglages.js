@@ -31,6 +31,7 @@ $(document).ready(function(){
         $('#trigger_premiere_date_dispo').toggleClass('hidden display');
         $('#bouton_voir_premiere_date_disponible').toggleClass('display hidden');
         $('#bouton_choisir_date').attr("disabled", "disabled");
+        $('#bouton_voir_premiere_date_disponible').attr("disabled", "disabled");
         recuperer_creneau_dispo();
     });
 
@@ -63,7 +64,8 @@ $(document).ready(function(){
     $('#annuler_date_dispo').click(function(){
         $('#trigger_premiere_date_dispo').toggleClass('display hidden');
         $('#bouton_voir_premiere_date_disponible').toggleClass('hidden display');
-        $('#bouton_choisir_date').removeAttr("disabled"); 
+        $('#bouton_choisir_date').removeAttr("disabled");
+        $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
     });
     $('#annuler_choix_date').click(function(){
         $('#trigger_choisir_date').toggleClass('display hidden');
