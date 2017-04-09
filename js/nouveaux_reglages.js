@@ -26,7 +26,7 @@ $(document).ready(function(){
 */
     
 
-    
+    // probleme si on clique une deuxieme fois sans annuler on ne peut plus choisir la date... à corriger
     $('#bouton_voir_premiere_date_disponible').click(function(){
         $('#trigger_premiere_date_dispo').toggleClass('hidden display');
         $('#bouton_voir_premiere_date_disponible').toggleClass('display hidden');
@@ -118,6 +118,55 @@ $(document).ready(function(){
         } 
     });
 
+    //recupere les artistes en higlight
+    $('#select_artiste_higlight').click(function(){
+
+        var artiste_highlight = $('#classement_artites_higlights').val();
+        var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
+        //mettre string devant artiste_highlight sinon la fonction replace n'est pas une fonction.
+
+        if (artiste_highlight == null){
+            alert('Aucun artiste selectionné à ajouter.')
+        }
+
+        else{
+
+        
+        alert(artiste_highlight_sans_espace);
+        $('#affichage_artiste_higlight').show();
+        $('#affichage_artiste_higlight').append('<option id="'+artiste_highlight_sans_espace+'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
+        
+        }
+
+    });
+
+    //supprimer un artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
+     $('#supprimer_artistes_higlight').click(function(){
+        var artiste_highlight=$('#classement_artites_higlights').val();
+        var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
+        if (artiste_highlight==null){
+            alert('Aucun artiste selectionné à supprimer.');
+        }
+
+        else{
+       
+        alert(artiste_highlight_sans_espace);
+        $('#'+artiste_highlight_sans_espace).hide('<option id="'+artiste_highlight_sans_espace+'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
+
+        }
+    });
+    
+     // supprimer dernier artistes choisi
+    $('#supprimer_artistes_higlight_le_dernier_selectionne').click(function(){
+
+        if (artiste_highlight==null){
+            alert('Aucun artiste afficher.');
+        }
+
+        else{
+            alert("ok");
+        }
+     });
 
     /*
 * ------------------------- DATEPICKER ET AFFICHAGE DE LA PROGRAMMATION ET CRENEAUX DISPONIBLES  ------------------------------------
@@ -350,17 +399,6 @@ $(document).ready(function(){
     var artistes_enregistres=new Array();
     var artiste_highlight;
     
-    $('#hightlight-selector').multiselect({
-        includeSelectAllOption: true,
-        enableFiltering: true,
-        noSelectText: 'Choisir un artiste à mettre en avant',
-        onChange: function() {
-            artiste_highlight=$('#hightlight-selector').val();
-            alerte(artiste_highlight);
-            alert("jack");
-            $('#artiste_select').append(artiste_highlight);
-        }
-    });
 
 
     $.ajax({
@@ -373,7 +411,7 @@ $(document).ready(function(){
         success: function(data){
 
             $.each(data.data,function(key,value){
-                //console.log(value.nom);
+  
                 $('#classement_artites_higlights').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
             });
 
