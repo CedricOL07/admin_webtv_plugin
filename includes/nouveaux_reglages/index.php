@@ -142,15 +142,26 @@
                                 Sélectionner une pub externe : 
 
                                 </div>
-                  
-                                <div class="col-md-3 col-sm-3" id="pub_selector_externe_box" >
 
-                                    <select name="pubs-selector-externe"  id="pubs-selector-externe"  multiple>
-
-                                    </select>
-
+                                <div class="col-md-2 col-sm-2" id="affichage_pubs_externes" style="font-style: lighter">
                                 </div>
+                  
+                                <div class="col-md-2 col-sm-2" id="pub_selector_externe_box" >
+
+                                    <select name="pubs_selector_externe"  id="pubs_selector_externe"  multiple>
+                                    </select>
+                                </div>
+
+	                                <div class="col-md-6 col-sm-6">
+                                 		<input type="button" name="select_pubs_externes" id="select_pubs_externes" value="select"> 
+                                		</input>
+
+                                		<input type="button" name="supprimer_pubs_externes" id="supprimer_pubs_externes" value="supprimer avec le même nom de la pub avec la liste">
+                                		</input>
+                                	</div>
+
                             </div>
+
                             <div  class="col-md-11 col-sm-11" id="pub-box">
                                 <div class="col-md-3 col-sm-3" id="select_pub_label"> 
 
@@ -158,11 +169,21 @@
 
                                 </div>
 
-                                <div class="col-md-1 col-sm-1" id="pub_selector_interne_box" >
+                                <div class="col-md-2 col-sm-2" id="affichage_pubs_internes" style="font-style: lighter">
+                                </div>
 
-                                	<select name="pubs-selector-interne"  id="pubs-selector-interne" multiple>
+                                <div class="col-md-2 col-sm-2" id="pub_selector_interne_box" >
+
+                                	<select name="pubs_selector_interne"  id="pubs_selector_interne" multiple>
                                     </select>
 
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                 	<input type="button" name="select_pubs_internes" id="select_pubs_internes" value="select"> 
+                                	</input>
+
+                                	<input type="button" name="supprimer_pubs_internes" id="supprimer_pubs_internes" value="supprimer avec le même nom de la pub avec la liste">
+                                	</input>
                                 </div>
                              </div>
                         </div>
@@ -187,13 +208,13 @@
 
                                 <div for="tags" class="glyphicon glyphicon-search">
 
-                                	 <select class="col-md-7 col-sm-7" name="classement_artites_higlights" id="classement_artites_higlights" multiple>
+                                	 <select class="col-md-7 col-sm-7" name="classement_artistes_higlights" id="classement_artistes_higlights" multiple>
                                 	 </select>
 
                                 	 <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select"> 
                                 	 </input>
 
-                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer avec le même nom dans la liste">
+                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer avec le même nom de l'artiste avec la liste">
 
                                 	 <!--<input type="button" name="supprimer_artistes_higlight_le_dernier_selectionne" id="supprimer_artistes_higlight_le_dernier_selectionne" value="supprimer le dernier selectionné">-->
 
