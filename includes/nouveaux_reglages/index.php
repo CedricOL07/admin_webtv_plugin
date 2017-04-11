@@ -150,7 +150,8 @@
                                     </select>
 
                                 </div>
-
+                            </div>
+                            <div  class="col-md-11 col-sm-11" id="pub-box">
                                 <div class="col-md-3 col-sm-3" id="select_pub_label"> 
 
                                 Selectionner une pub interne : 
@@ -163,7 +164,7 @@
                                     </select>
 
                                 </div>
-                            </div>
+                             </div>
                         </div>
 
 
@@ -192,9 +193,9 @@
                                 	 <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select"> 
                                 	 </input>
 
-                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer même nom dans la liste">
+                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer avec le même nom dans la liste">
 
-                                	 <input type="button" name="supprimer_artistes_higlight_le_dernier_selectionne" id="supprimer_artistes_higlight_le_dernier_selectionne" value="supprimer le dernier selectionné">
+                                	 <!--<input type="button" name="supprimer_artistes_higlight_le_dernier_selectionne" id="supprimer_artistes_higlight_le_dernier_selectionne" value="supprimer le dernier selectionné">-->
 
                                     <div class="col-md-2 col-sm-2">
                                       Artiste sélectionné : 
