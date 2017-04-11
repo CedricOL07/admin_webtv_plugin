@@ -37,7 +37,22 @@ function recuperer_clips(){
 };
 
 function supprimer_clips(){
-
+  //echo('TEST response');
+  global $wpdb;
+  if(isset($_POST['data'])){
+    $data=$_POST['data'];
+    foreach($data as $valeurs){
+      $titre=$valeurs['titre'];
+      // Récuperation des id pour la suppression des valeurs dans la table de relations
+      $video_id=$wpdb->get_var("SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre'",0,0);
+      //Suppression de la base de données
+      $wpdb->query("DELETE FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre';");
+      $wpdb->query("DELETE FROM ".$wpdb->prefix."relation_webtv_plugin WHERE video_id=$video_id;");
+  }
+  echo "SUCCESS";
+  }
+  else echo "FAILED";
+  wp_die();
 };
 
  ?>

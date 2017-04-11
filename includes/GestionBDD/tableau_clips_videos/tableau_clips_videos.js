@@ -63,15 +63,16 @@ $(document).ready(function(){
             ajaxurl,
             {
               'action':'supprimer_clips',
-              'data':data,
-            },function(){
+              'data':data
+            },function(response){
                 $("#tableau_corps tr:has(:checked)").each(function(){
                   $(this).remove();
+                  console.log(response);
                 });
             });
         };
       });
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
     }
 
   });
