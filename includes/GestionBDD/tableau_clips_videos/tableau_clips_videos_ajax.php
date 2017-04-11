@@ -37,7 +37,7 @@ function recuperer_clips(){
 };
 
 function supprimer_clips(){
-  //echo('TEST response');
+  //A faire : Prise en compte d'entrée multiples (plusieurs titres avec le meme artiste, meme année etc.)
   global $wpdb;
   if(isset($_POST['data'])){
     $data=$_POST['data'];
