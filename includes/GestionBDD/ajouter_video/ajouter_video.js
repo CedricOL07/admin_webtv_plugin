@@ -20,13 +20,12 @@ $(document).ready(function(){
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
 
-			$.ajax({
-				url:ajaxurl,
-				type:'POST',
-				dataType:"json",
-				data:{
+			$.post(
+				ajaxurl,
+				{
 					'action':'ajouter_video',
-					'myParams':{
+					'myParams':
+					{
 						'titre':titre,
 						'url_video':url_video,
 						'artiste_video':artiste_video,
@@ -36,11 +35,11 @@ $(document).ready(function(){
 						'qualite':qualite
 					}
 				},
-				success:function(data)
+			function(data)
 				{
-					console.log(data);
-			}
-			});
+					console.log("existante :" + data);
+				}
+			);
 					
 			
 		}else{

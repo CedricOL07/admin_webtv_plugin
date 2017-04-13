@@ -41,96 +41,101 @@ function ajouter_video(){
     $album = $_POST['myParams']['album'];
     $annee_prod = $_POST['myParams']['annee'];
     $qualite = $_POST['myParams']['qualite'];   
+
     //echo "Fonction ajouter_video";
+    /*$titre = $_POST['myParams']['titre'];
+    echo($titre); */
 
-    $video_id;
-    $artiste_id;
-    $genre_id;
-    $album_id;
-    $annee_id;
-    $existante=false;
-    $is_album=false;
-    $is_artiste=false;
-    $is_annee=false;
+    $video_id=0;
+    $artiste_id=0;
+    $genre_id=0;
+    $album_id=0;
+    $annee_id=0;
+    $existante="false";
+    $is_album="false";
+    $is_artiste="false";
+    $is_annee="false";
 
-    $titre="SELECT id, titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre' AND url='$url' ORDER BY RAND() LIMIT 1;"; 
-    $resultat=$wpdb->get_results($titre);
+    // Regarde si le titre est existant
+    $req_titre="SELECT id, titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='".$titre."' AND url='".$url."' LIMIT 1;"; 
+    $resultat=$wpdb->get_results($req_titre);
     foreach($resultat as $result){
-        echo "Video déjà existante !";
-        $existante=true;
+        $existante="true";
     }
 
-    if ($existante==false)
+
+    if ($existante=="false")
     {
     	//Remplissage tableau videos_webtv_plugin
-    	$max = "SELECT max(id) FROM " . $wpdb->prefix . "videos_webtv_plugin;"; 
-    	$video_id=$wpdb->get_results($max)+1;
-    	$remplir_table_videos=" INSERT INTO `" . $wpdb->prefix . "videos_webtv_plugin` (`id`,`titre`,`url`) VALUES ($video_id, $titre, $url);";
+    	$maxi = "SELECT max(id) FROM ".$wpdb->prefix."videos_webtv_plugin;"; 
+    	$video_id=$wpdb->get_var($maxi);
+        $video_id=$video_id+1;
+    	$remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
     	$wpdb->query($remplir_table_videos);
 
     	// On détermine les id des autres paramètres
 
-    	$max = "SELECT max(id) FROM " . $wpdb->prefix . "album_webtv_plugin;"; 
-    	$album_id=$wpdb->get_results($max)+1;
-    	$max = "SELECT max(id) FROM " . $wpdb->prefix . "annee_webtv_plugin;"; 
-    	$annee_id=$wpdb->get_results($max)+1;
-    	$max = "SELECT max(id) FROM " . $wpdb->prefix . "artiste_webtv_plugin;"; 
-    	$artiste_id=$wpdb->get_results($max)+1;
+    	$maxial = "SELECT max(id) FROM ".$wpdb->prefix."album_webtv_plugin;"; 
+        $album_id=$wpdb->get_var($maxial)+1;
+    	$maxian = "SELECT max(id) FROM ".$wpdb->prefix."annee_webtv_plugin;"; 
+    	$annee_id=$wpdb->get_var($maxian);
+        $annee_id=$annee_id+1;
+    	$maxiar = "SELECT max(id) FROM ".$wpdb->prefix."artiste_webtv_plugin;"; 
+    	$artiste_id=$wpdb->get_var($maxiar);
+        $artiste_id=$artiste_id+1;
     	
-    	// Album
-    	$alb="SELECT id, album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE album='$album' ORDER BY RAND() LIMIT 1;"; 
-    	$resultat=$wpdb->get_results($alb);
+   	// Album
+    	$req_album="SELECT id FROM " . $wpdb->prefix . "album_webtv_plugin WHERE album='".$album."' LIMIT 1;"; 
+    	$resultat=$wpdb->get_results($req_album);
     	foreach($resultat as $result){
-        	$album_id = $result->id;
-        	$is_album=true;
+        	$album_id = $wpdb->get_var($req_album);
+        	$is_album="true";
     	}
-    	if ($is_album==false)
+    	if ($is_album=="false")
     	{
-    		$remplir_table_album="INSERT INTO `" . $wpdb->prefix . "album_webtv_plugin` (`id`, `album`) VALUES ($album_id, $album);";
+    		$remplir_table_album="INSERT INTO `" . $wpdb->prefix . "album_webtv_plugin` (`id`, `album`) VALUES (".$album_id.", '".$album."');";
 		    $wpdb->query($remplir_table_album);
     	}
 
     	// Artiste
-    	$art="SELECT id, nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE nom ='$artiste' ORDER BY RAND() LIMIT 1;"; 
-    	$resultat=$wpdb->get_results($art);
+    	$req_artiste="SELECT id FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE nom ='".$artiste."' LIMIT 1;"; 
+    	$resultat=$wpdb->get_results($req_artiste);
     	foreach($resultat as $result){
-        	$artiste_id = $result->id;
-        	$is_artiste=true;
+        	$artiste_id = $wpdb->get_var($req_artiste);
+        	$is_artiste="true";
     	}
-    	if ($is_artiste==false)
+    	if ($is_artiste=="false")
     	{
-    		$remplir_table_artiste="INSERT INTO `" . $wpdb->prefix . "artiste_webtv_plugin` (`id`, `nom`) VALUES ($artiste_id, $artiste);";
+    		$remplir_table_artiste="INSERT INTO `" . $wpdb->prefix . "artiste_webtv_plugin` (`id`, `nom`) VALUES (".$artiste_id.", '".$artiste."');";
 		    $wpdb->query($remplir_table_artiste);
     	}
 
     	// Année
-    	$ann="SELECT id, annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE annee ='$annee' ORDER BY RAND() LIMIT 1;"; 
-    	$resultat=$wpdb->get_results($ann);
+    	$req_annee="SELECT id FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE annee =".$annee_prod." LIMIT 1;"; 
+    	$resultat=$wpdb->get_results($req_annee);
     	foreach($resultat as $result){
-        	$annee_id = $result->id;
-        	$is_annee=true;
+        	$annee_id = $wpdb->get_var($req_annee);
+        	$is_annee="true";
     	}
-    	if ($is_annee==false)
+    	if ($is_annee=="false")
     	{
-    		$remplir_table_annee="INSERT INTO `" . $wpdb->prefix . "annee_webtv_plugin` (`id`, `annee`) VALUES ($annee_id, $annee);";
+    		$remplir_table_annee="INSERT INTO `" . $wpdb->prefix . "annee_webtv_plugin` (`id`, `annee`) VALUES (".$annee_id.", '".$annee_prod."');";
 		    $wpdb->query($remplir_table_annee);
     	}
 
     	// Genre
-    	$gen="SELECT id, Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE Genre ='$genre' ORDER BY RAND() LIMIT 1;"; 
-    	$resultat=$wpdb->get_results($gen);
-    	foreach($resultat as $result){
-        	$genre_id = $result->id;
-    	}
-
+    	$req_genre="SELECT id FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE Genre ='".$genre."' LIMIT 1;"; 
+    	$genre_id = $wpdb->get_var($req_genre);
+    	
+        // Complétion de la table de relation
+        $remplir_table_relation="INSERT INTO " . $wpdb->prefix . "relation_webtv_plugin(video_id,artiste_id,genre_id,album_id,annee_id,qualite_id) VALUES ('$video_id','$artiste_id','$genre_id','$album_id','$annee_id','$qualite')";
+        $wpdb->query($remplir_table_relation);
     }
     
-
-	$remplir_table_relation="INSERT INTO `" . $wpdb->prefix . "relation_webtv_plugin` (`video_id`, `artiste_id`, `genre_id`, `album_id`, `annee_id`, `qualite_id`) VALUES ($video_id, $artiste_id, $genre_id, $album_id, $annee_id, $qualite);";
-    $wpdb->query($remplir_table_relation);
+ 
     //echo "Video insérée avec succès";
 
-    return $existante;
+    echo $existante;
     wp_die();
 }
 
