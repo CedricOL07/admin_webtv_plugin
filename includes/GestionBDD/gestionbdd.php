@@ -38,7 +38,7 @@
                     <?php //include( MY_PLUGIN_PATH . 'templates/gestionbdd/general_view.template.php');?>
                 </div>-->
 
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/ajouter_video/ajouter_video.html');?>
+                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/ajouter_video/ajouter_video_template.php');?>
 
 
 

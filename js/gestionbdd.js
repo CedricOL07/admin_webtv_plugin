@@ -46,10 +46,10 @@ $(document).ready(function(){
         }
     });
 
-    $('#bouton_inserer_contenu').click(function(){
+   /* $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
-		/* */
+		 
 		console.log('Entrée dans le js');
 		
 		var titre=$('#titre').val();
@@ -64,13 +64,13 @@ $(document).ready(function(){
 			
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
-			$.ajax({
+
+			$.post({
 				
-				url: ajaxurl,
-				type:'POST',
+				ajaxurl,
 				data:
 				{
-					'action':'pluginwebtv_ajouter_video',
+					'action':'ajouter_video',
 					'myParams':{
 						'titre':titre,
 						'url_video':url_video,
@@ -79,8 +79,7 @@ $(document).ready(function(){
 						'album':album,
 						'annee':annee,
 						'qualite':qualite
-					},
-					dataType: 'JSON',
+					}
 				},
 				success: function(data)
 				{
@@ -118,7 +117,7 @@ $(document).ready(function(){
 				}
 			}
 		}
-	
+	*/
 	
 	/* *************ANCIENNE VERSION*************
 	

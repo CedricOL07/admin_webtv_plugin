@@ -150,6 +150,7 @@
 
                                     <select name="pubs_selector_externe"  id="pubs_selector_externe"  multiple>
                                     </select>
+                                    
                                 </div>
 
 	                                <div class="col-md-6 col-sm-6">
@@ -160,7 +161,7 @@
                                 		</input>
                                 	</div>
 
-                            </div>
+                           		</div>
 
                             <div  class="col-md-11 col-sm-11" id="pub-box">
                                 <div class="col-md-3 col-sm-3" id="select_pub_label"> 

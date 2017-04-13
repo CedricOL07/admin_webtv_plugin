@@ -26,6 +26,8 @@ $(document).ready(function(){
 */
     //bouton remise en état de fonction
     $('#select_artiste_higlight').removeAttr("disabled", "disabled");
+    $('#bouton_voir_premiere_date_disponible').removeAttr("disabled", "disabled");
+    $('#bouton_choisir_date').removeAttr("disabled", "disabled");
     
     // probleme si on clique une deuxieme fois sans annuler on ne peut plus choisir la date... à corriger
     $('#bouton_voir_premiere_date_disponible').click(function(){
@@ -274,7 +276,7 @@ $(document).ready(function(){
             ajaxurl,
             {
                 'action': 'verifier_dates_debut_calendrier',
-                'date_debut':date,           
+                'date_debut':date           
             },
             function(response){
                 //console.log(response);
@@ -293,8 +295,8 @@ $(document).ready(function(){
             ajaxurl,
             {
                 'action': 'verifier_dates_fin_calendrier',
-                'date_debut':datedebut,
-                'date_fin':datefin
+                'date_debut': datedebut,
+                'date_fin': datefin
             },
             function(response){
                 // console.log(response);
@@ -466,7 +468,7 @@ $(document).ready(function(){
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
             // afficher_playlists_jour(date_debut_selectionnee);
-            //verifier_date_debut(date_debut_selectionnee);
+ 
 
         }
     });
@@ -479,8 +481,7 @@ $(document).ready(function(){
         onClose: function( selectedDate ) {
             $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;
-            // afficher_playlists_jour_fin(date_fin_selectionnee);
-            //verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
+            // afficher_playlists_jour_fin(date_fin_selectionnee);            
         }
     });
 
@@ -544,7 +545,7 @@ $(document).ready(function(){
                 $.each(data.data,function(key,value){
       
                     $('#pubs_selector_externe').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-                    $('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+                    //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
                 });
                 
                 //$("#hightlight-selector").multiselect('rebuild');
@@ -579,9 +580,9 @@ $(document).ready(function(){
                 $.each(data.data,function(key,value){
       
                 $('#pubs_selector_interne').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-                $('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+                //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
                 });
-                 $('#pubs_selector_interne').append('<option value="exemple>exemple </option>');
+                 //$('#pubs_selector_interne').append('<option value="exemple>exemple </option>');
                 //$("#hightlight-selector").multiselect('rebuild');
 
 
@@ -1055,8 +1056,12 @@ $(document).ready(function(){
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date 
                     if( $('#bouton_voir_premiere_date_disponible').is(':disabled')){
                         
-                        var debut= $('#from').val();  
-                        var fin= $('#to').val(); 
+                        date_debut_selectionnee= $('#from').val();  
+                        date_fin_selectionnee= $('#to').val(); 
+                        verifier_date_debut(date_debut_selectionnee);
+                        verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
+                        /*alert(date_debut_selectionnee);
+                        alert(date_fin_selectionnee);*/
                         //date_passage=duree;
                         duree_picked=true;
               
@@ -1103,10 +1108,10 @@ $(document).ready(function(){
                           
                         }
                     );  
-                    alert(nom_reglage);
+                    /*alert(nom_reglage);
                     alert(artiste_mis_en_avant);
                     alert(date_debut);
-                    alert(date_fin);
+                    alert(date_fin);*/
                     $('.wrapper').load(jsnouveaureglage.jsnouveaureglagepath);// chemin de redirection
 
                     //débloque le bouton choisir la date lors de l'actualisation
