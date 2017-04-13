@@ -19,6 +19,7 @@ function php_includes(){
     include('includes/nouveaux_reglages/traitement_donnees.php');
     include('includes/GestionBDD/gestionbdd-ajax.php');
     include('includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_ajax.php');
+    include('includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos_ajax.php');
     include('includes/GestionBDD/ajouter_video/ajouter_video.php');
 }
 php_includes();

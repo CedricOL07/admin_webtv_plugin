@@ -49,7 +49,7 @@
 
                 <!-- <div id="menu4" class="tab-pane fade">-->
 
-                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos.html');?>
+                    <?php include( MY_PLUGIN_PATH . 'includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos_template.php');?>
 
                 <!--</div>-->
 
