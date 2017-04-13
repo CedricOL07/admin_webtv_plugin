@@ -5,7 +5,6 @@ $(document).ready(function(){
   $('#afficher').click(function(){
     $('#tableau').toggle('fast');
     $('#button_line').toggle('fast');
-    //console.log("afficher/cacher tableau");
   });
 
   //Récuperation des clips depuis la BDD
@@ -22,7 +21,7 @@ $(document).ready(function(){
       // Création tableau de clips
       $.each(data,function(key,value){
 
-        ligne+='<tr><td><label><input type="checkbox" name="foo"></label></td>';
+        ligne+='<tr id="tr'+compteur+'"><td><label><input type="checkbox" name="foo"></label></td>';
         ligne+='<td>'+value.titre+'</td><td>'+value.artiste+'</td><td>'+value.album+'</td><td>'+value.genre+'</td><td>'+value.annee+'</td><td>'+value.qualite+'</td><td>'+value.url+'</td>';
         ligne+='</tr>';
         compteur++;
@@ -73,21 +72,8 @@ $(document).ready(function(){
             });
         };
       });
+      //console.log(JSON.stringify(data));
     }
 
   });
-
-  // Scripts pour la modification du tableau -> Update BDD
-  //Rendre la case du tableau éditable quand on double clique dessus
-  $('#tableau_corps').on('dblclick','td',function(){
-    $(this).prop('contenteditable', true);
-    console.log('case rendue éditable');
-  });
-
-  //Remettre la case en non éditable a la désélection
-  $('#tableau_corps').on('blur','td',function(){
-    $(this).prop('contenteditable', false);
-    console.log('case rendue non éditable');
-  });
-
 });

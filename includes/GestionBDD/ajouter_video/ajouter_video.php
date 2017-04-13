@@ -10,7 +10,7 @@
 ****************************************************************************************************************************/
 
 
-add_action( 'pluginwebtv_ajouter_video', 'ajouter_video',10,7);
+add_action('wp_ajax_ajouter_video', 'ajouter_video');
 
 /*
 $titre=$_POST['titre'];
@@ -29,21 +29,19 @@ do_action('pluginwebtv_ajouter_video', $titre, $album, $url, $annee_prod, $artis
 
 */
 
-if (isset($_POST['myFunction']) && $_POST['myFunction'] != '')
-{
- 
-   ${$_POST['myFunction']}($_POST['myParams']['titre'], 
-                            $_POST['myParams']['url_video'], $_POST['myParams']['artiste_video'],
-                            $_POST['myParams']['genre'], $_POST['myParams']['album'], 
-                            $_POST['myParams']['annee'], $_POST['myParams']['qualite']);
-   console.log("Entrée dans ajouter_video.php...");
-}
  
 
-function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qualite){
+function ajouter_video(){
     global $wpdb;
 
-    console.log("Fonction ajouter_video");
+    $titre = $_POST['myParams']['titre'];
+    $url = $_POST['myParams']['url_video'];
+    $artiste = $_POST['myParams']['artiste_video'];
+    $genre = $_POST['myParams']['genre'];
+    $album = $_POST['myParams']['album'];
+    $annee_prod = $_POST['myParams']['annee'];
+    $qualite = $_POST['myParams']['qualite'];   
+    //echo "Fonction ajouter_video";
 
     $video_id;
     $artiste_id;
@@ -58,7 +56,7 @@ function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qua
     $titre="SELECT id, titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre' AND url='$url' ORDER BY RAND() LIMIT 1;"; 
     $resultat=$wpdb->get_results($titre);
     foreach($resultat as $result){
-        console.log("Video déjà existante !");
+        echo "Video déjà existante !";
         $existante=true;
     }
 
@@ -130,8 +128,10 @@ function ajouter_video($titre, $url, $artiste, $genre, $album, $annee_prod, $qua
 
 	$remplir_table_relation="INSERT INTO `" . $wpdb->prefix . "relation_webtv_plugin` (`video_id`, `artiste_id`, `genre_id`, `album_id`, `annee_id`, `qualite_id`) VALUES ($video_id, $artiste_id, $genre_id, $album_id, $annee_id, $qualite);";
     $wpdb->query($remplir_table_relation);
-    console.log("Video insérée avec succès");
+    //echo "Video insérée avec succès";
 
+    return $existante;
+    wp_die();
 }
 
 
