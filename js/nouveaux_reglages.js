@@ -26,6 +26,8 @@ $(document).ready(function(){
 */
     //bouton remise en état de fonction
     $('#select_artiste_higlight').removeAttr("disabled", "disabled");
+    $('#bouton_voir_premiere_date_disponible').removeAttr("disabled", "disabled");
+    $('#bouton_choisir_date').removeAttr("disabled", "disabled");
     
     // probleme si on clique une deuxieme fois sans annuler on ne peut plus choisir la date... à corriger
     $('#bouton_voir_premiere_date_disponible').click(function(){
@@ -110,7 +112,7 @@ $(document).ready(function(){
     $('#checkbox_par_defaut').click(function(){
 
         if(this.checked){
-            //alert('coché');
+            
             $('#partie_highlight').hide();
             $('#partie_publicites').hide();
             $('#partie_diffusion').hide();
@@ -121,63 +123,150 @@ $(document).ready(function(){
         } 
     });
 
-    //recupere les artistes en higlight
-     var compteur = 0 ;// permet d'avoir un id unique à notre option afin d'eviter les doublons
+    //recupere et affiche les artistes en higlight
+    var compteur_artistes_highlights = 0 ;// permet d'avoir un id unique à notre option afin d'eviter les doublons
+    var artiste_choisi; // permet de récupérer l'artiste choisi lors de l'enregistrement
+    
     $('#select_artiste_higlight').click(function(){
 
-        var artiste_highlight = $('#classement_artites_higlights').val();
+        var artiste_highlight = $('#classement_artistes_higlights').val();
         var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
         //mettre string devant artiste_highlight sinon la fonction replace n'est pas une fonction.
 
         if (artiste_highlight == null){
-            alert('Aucun artiste selectionné à ajouter.')
+
+            alert('Aucun artiste selectionné à ajouter.');
+
         }
 
         else{
-        $('#select_artiste_higlight').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
-        compteur++;
-        $('#affichage_artiste_higlight').show();
-        $('#affichage_artiste_higlight').append('<option id="'+artiste_highlight_sans_espace + compteur +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
+
+            compteur_artistes_highlights++; // on place le compteur au début afin d'éviter qu'il soit décalé.   
+            $('#select_artiste_higlight').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+            $('#affichage_artiste_higlight').show();
+            $('#affichage_artiste_higlight').append('<option id="'+artiste_highlight_sans_espace + compteur_artistes_highlights +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
+            artiste_choisi = $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).val();
         
-        //alert(compteur);
         }
         //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
     });
 
-    //supprimer un artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
-    // erreur lorsqu'il y deux fois le meme artiste surement à cause du doublon de l'id mettre en place un compteur pour eviter doublond le 'id
+    //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
     $('#supprimer_artistes_higlight').click(function(){
 
-        var artiste_highlight = $('#classement_artites_higlights').val();
+        var artiste_highlight = $('#classement_artistes_higlights').val();
         var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
 
-        if (artiste_highlight==null){
+        if (artiste_highlight == null){
             alert('Aucun artiste selectionné à supprimer.');
         }
 
         else{
             //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
-            if ($('#classement_artites_higlights').val() == $('#'+artiste_highlight_sans_espace + compteur).val() ) {
+            if ($('#classement_artistes_higlights').val() == $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).val() ) {
          
-            $('#select_artiste_higlight').removeAttr("disabled", "disabled");
-            $('#'+artiste_highlight_sans_espace + compteur).hide('<option id="'+ artiste_highlight_sans_espace + compteur +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
+                $('#select_artiste_higlight').removeAttr("disabled", "disabled");
+                $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).hide('<option id="'+ artiste_highlight_sans_espace + compteur_artistes_highlights +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
            
             }
         }
     });
-    /*
-     // supprimer dernier artistes choisi
-    $('#supprimer_artistes_higlight_le_dernier_selectionne').click(function(){
 
-        if (artiste_highlight==null){
-            alert('Aucun artiste afficher.');
+    /*
+    ***********Recupere et affiche les pubs externes**********
+    */
+
+    var compteur_pubs = 0 ;// permet d'avoir un id unique à notre option afin d'eviter les doublons et se restreindre à 3 pubs max (externes et internes comprises)
+     //recupere et affiche les pubs externes
+    $('#select_pubs_externes').click(function(){
+
+        var pubs_externes = $('#pubs_selector_externe').val();
+        var pubs_externes_sans_espaces = String(pubs_externes).replace(' ',"_");
+        //mettre string devant pubs_externessinon la fonction replace n'est pas une fonction.
+
+        if (pubs_externes == null){
+            alert('Aucune pub externe selectionnée à ajouter.')
         }
 
         else{
-            alert("ok");
+            compteur_pubs++; // on place le compteur au début afin d'éviter qu'il soit décalé.   
+            $('#select_pubs_externes').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+            $('#affichage_pubs_externes').show();
+            $('#affichage_pubs_externes').append('<option id="'+pubs_externes_sans_espaces + compteur_pubs +'" value="'+pubs_externes+'">'+ pubs_externes +'</option>');
+        
         }
-     });
+        //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
+    });
+
+    //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
+    $('#supprimer_pubs_externes').click(function(){
+
+        var pubs_externes = $('#pubs_selector_externe').val();
+        var pubs_externes_sans_espaces = String(pubs_externes).replace(' ',"_");
+
+
+        if (pubs_externes==null){
+            alert('Aucune pub externe selectionnée à supprimer.');
+        }
+
+        else{
+            
+            //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
+            if ($('#pubs_selector_externe').val() == $('#'+pubs_externes_sans_espaces + compteur_pubs).val() ) {
+                
+                $('#select_pubs_externes').removeAttr("disabled", "disabled");
+                $('#'+pubs_externes_sans_espaces + compteur_pubs).hide('<option id="'+ pubs_externes_sans_espaces + compteur_pubs +'" value="'+pubs_externes+'">'+ pubs_externes +'</option>');
+           
+            }
+        }
+    });
+
+
+    /*
+    ***********Recupere et affiche les pubs internes**********
     */
+    $('#select_pubs_internes').click(function(){
+
+        var pubs_internes = $('#pubs_selector_interne').val();
+        var pubs_internes_sans_espace = String(pubs_internes).replace(' ',"_");
+        //mettre string devant pubs_internes sinon la fonction replace n'est pas une fonction.
+
+        if (pubs_internes == null){
+            alert('Aucune pub interne selectionnée à ajouter.')
+        }
+
+        else{
+        compteur_pubs++; // on place le compteur au début afin d'éviter qu'il soit décalé.   
+        $('#select_pubs_internes').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+        $('#affichage_pubs_internes').show();
+        $('#affichage_pubs_internes').append('<option id="'+pubs_internes_sans_espace + compteur_pubs +'" value="'+pubs_internes+'">'+ pubs_internes +'</option>');
+        
+        }
+        //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
+    });
+
+    //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
+    $('#supprimer_pubs_internes').click(function(){
+
+        var pubs_internes = $('#pubs_selector_interne').val();
+        var pubs_internes_sans_espace = String(pubs_internes).replace(' ',"_");
+
+        if (pubs_internes==null){
+            alert('Aucune pubs interne selectionnée à supprimer.');
+        }
+
+        else{
+            //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
+            if ($('#pubs_selector_interne').val() == $('#'+pubs_internes_sans_espace + compteur_pubs).val() ) {
+         
+            $('#select_pubs_internes').removeAttr("disabled", "disabled");
+            $('#'+pubs_internes_sans_espace + compteur_pubs).hide('<option id="'+ pubs_internes_sans_espace + compteur_pubs +'" value="'+pubs_internes+'">'+ pubs_internes +'</option>');
+           
+            }
+        }
+    });
+
+
     /*
 * ------------------------- DATEPICKER ET AFFICHAGE DE LA PROGRAMMATION ET CRENEAUX DISPONIBLES  ------------------------------------
 */
@@ -187,7 +276,7 @@ $(document).ready(function(){
             ajaxurl,
             {
                 'action': 'verifier_dates_debut_calendrier',
-                'date_debut':date,           
+                'date_debut':date           
             },
             function(response){
                 //console.log(response);
@@ -206,8 +295,8 @@ $(document).ready(function(){
             ajaxurl,
             {
                 'action': 'verifier_dates_fin_calendrier',
-                'date_debut':datedebut,
-                'date_fin':datefin
+                'date_debut': datedebut,
+                'date_fin': datefin
             },
             function(response){
                 // console.log(response);
@@ -379,7 +468,7 @@ $(document).ready(function(){
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
             // afficher_playlists_jour(date_debut_selectionnee);
-            //verifier_date_debut(date_debut_selectionnee);
+ 
 
         }
     });
@@ -392,8 +481,7 @@ $(document).ready(function(){
         onClose: function( selectedDate ) {
             $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;
-            // afficher_playlists_jour_fin(date_fin_selectionnee);
-            //verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
+            // afficher_playlists_jour_fin(date_fin_selectionnee);            
         }
     });
 
@@ -402,40 +490,111 @@ $(document).ready(function(){
 
 
     /*
-* --------------------------------------  RECHERCHE INTELLIGENTE POUR HIGHLIGHTS   ------------------------------------------
+* -------------------------------------- RECUPERER ARTISTES POUR HIGHLIGHTS   ------------------------------------------
 */
 
 
-    var artistes_enregistres=new Array();
-    var artiste_highlight;
+   /* var artistes_enregistres=new Array();
+    var artiste_highlight;*/
     
+    // la fonction recuperer_artistes est dans le fichier gestionbdd-ajax (11/04/2017)
+    function artistehighlight(){
+        $.ajax({
+            url: ajaxurl, 
+            data:{
+                'action':'recuperer_artistes',
+
+            },
+            dataType: 'JSON',
+            success: function(data){
+
+                $.each(data.data,function(key,value){
+      
+                    $('#classement_artistes_higlights').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+                });
+
+                //$("#hightlight-selector").multiselect('rebuild');
 
 
-    $.ajax({
-        url: ajaxurl, 
-        data:{
-            'action':'recuperer_artistes',
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+    }
+    artistehighlight();
 
-        },
-        dataType: 'JSON',
-        success: function(data){
+    /*
+* -------------------------------------- RECUPERER PUBS EXTERNES   ------------------------------------------
+*/
 
-            $.each(data.data,function(key,value){
-  
-                $('#classement_artites_higlights').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-            });
+   /* var artistes_enregistres=new Array();
+    var artiste_highlight;*/
+    
+    // la fonction recup_pubs_externes est dans le fichier gestionbdd-ajax (11/04/2017)
+    function pubs_externes(){
+        $.ajax({
+            url: ajaxurl, 
+            data:{
+                'action':'recup_pubs_externes',
+            },
+            dataType: 'JSON',
+            success: function(data){
 
-            //$("#hightlight-selector").multiselect('rebuild');
+                $.each(data.data,function(key,value){
+      
+                    $('#pubs_selector_externe').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+                    //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+                });
+                
+                //$("#hightlight-selector").multiselect('rebuild');
 
 
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
-        }
-    });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+    }
+    pubs_externes();
+    /*
+* -------------------------------------- RECUPERER PUBS INTERNES   ------------------------------------------
+*/
+
+    /*var artistes_enregistres=new Array();
+    var artiste_highlight;*/
+    
+    // la fonction recup_pubs_internes est dans le fichier gestionbdd-ajax (11/04/2017)
+    function pubs_internes () {
+        $.ajax({
+            url: ajaxurl, // chemin permettant d'accéder aux fonctions liées à Wordpress
+            data:{
+                'action':'recup_pubs_internes',
+
+            },
+            dataType: 'JSON',
+            success: function(data){
+
+                $.each(data.data,function(key,value){
+      
+                $('#pubs_selector_interne').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
+                //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+                });
+                 //$('#pubs_selector_interne').append('<option value="exemple>exemple </option>');
+                //$("#hightlight-selector").multiselect('rebuild');
 
 
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+
+    }
+    pubs_internes ();
 
     /*
 * ---------------------------------- SLIDERS + CAMEMBERT DYNAMIQUE (GOOGLE PIECHART)----------------------------------------
@@ -683,7 +842,7 @@ $(document).ready(function(){
 */
 
 
-    var pubs_internes= new Array();
+    /*var pubs_internes= new Array();
     var pubs_externes = new Array();
     function pubs(){
         function remove(value){
@@ -793,7 +952,7 @@ $(document).ready(function(){
 
 
 
-
+*/
 
 
     /*
@@ -814,17 +973,18 @@ $(document).ready(function(){
     $("#bouton_enregistrer_reglage").click(function(){
 
  
-        var pardefaut=false;
-        var artiste_mis_en_avant=artiste_highlight;
-        var pubsinternes=pubs_internes;
-        var pubsexternes=pubs_externes;
-        var nom_reglage=$("#input_nom_reglage").val(); 
-        var tableau_pourcentages =recuperer_pourcentages(); 
-        var passer_des_que_possible=false;
+        var pardefaut = false;
+        var artiste_mis_en_avant = artiste_choisi;
+        var pubsinternes = pubs_internes;
+        var pubsexternes = pubs_externes;
+        var nom_reglage = $("#input_nom_reglage").val(); 
+        var tableau_pourcentages = recuperer_pourcentages(); 
+        var passer_des_que_possible = false;
         var date_debut;
         var date_fin;
 
-        var nom_disponible=true;
+        var nom_disponible = true;
+
         /*
             * --------------------------  VERIFICATION DES NOMS   -----------------------------------
             */
@@ -832,16 +992,16 @@ $(document).ready(function(){
     
 
         
-       for(var i=0;i<tableau_noms_reglages_enregistres.length;i++){
-            if(tableau_noms_reglages_enregistres[i]==nom_reglage){
-                nom_disponible=false;
+       for(var i = 0; i < tableau_noms_reglages_enregistres.length ; i++){
+            if(tableau_noms_reglages_enregistres[i] == nom_reglage){
+                nom_disponible = false;
             }
         }
         //à l'insertion du champ
 
 
 
-        if(nom_disponible==false){
+        if(nom_disponible == false){
 
 
             alert('Le nom de réglage que vous avez entré  est déjà utilisé, veuillez en choisir un nouveau');
@@ -851,7 +1011,7 @@ $(document).ready(function(){
 
             if( $('input[name=checkbox_par_defaut]').is(':checked') ){
                 //Si il a choisi de mettre la playlist comme par défaut
-                pardefaut=true;
+                pardefaut = true;
               //  console.log("PAR DEFAUT ");
                 
 
@@ -895,9 +1055,13 @@ $(document).ready(function(){
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date 
                     if( $('#bouton_voir_premiere_date_disponible').is(':disabled')){
-                        alert($('#from').val());
-                        var debut= $('#from').val();  
-                        var fin= $('#to').val();    
+                        
+                        date_debut_selectionnee= $('#from').val();  
+                        date_fin_selectionnee= $('#to').val(); 
+                        verifier_date_debut(date_debut_selectionnee);
+                        verifier_date_fin(date_debut_selectionnee,date_fin_selectionnee);
+                        /*alert(date_debut_selectionnee);
+                        alert(date_fin_selectionnee);*/
                         //date_passage=duree;
                         duree_picked=true;
               
@@ -944,8 +1108,11 @@ $(document).ready(function(){
                           
                         }
                     );  
-                  
-                    $('.wrapper').load(jsnouveaureglage.jsnouveaureglagepath);
+                    /*alert(nom_reglage);
+                    alert(artiste_mis_en_avant);
+                    alert(date_debut);
+                    alert(date_fin);*/
+                    $('.wrapper').load(jsnouveaureglage.jsnouveaureglagepath);// chemin de redirection
 
                     //débloque le bouton choisir la date lors de l'actualisation
                     $('#bouton_choisir_date').removeAttr("disabled");
@@ -953,9 +1120,9 @@ $(document).ready(function(){
                 }else{
                     alert('Veuillez choisir une option de diffusion pour la playlist');
                     return false;
+                    }
                 }
-                }
-               
+
            
         }
         /*tableau_pourcentages= { poprock:'', rap:'', jazzblues:'',musiquemonde:'', hardrock:'', electro:'' };*/

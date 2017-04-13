@@ -366,7 +366,7 @@ function verifier_dates_debut_calendrier(){
     //SI la date de début est != de celle des playlists enregistrées et que l'intervalle entre une date de début et sa date de fin ne comprend pas cette date alors on renvoit true
 
     for($i=0;$i<sizeof($tableau_date_debut);$i++){
-
+        printf($tableau_date_debut[$i] );
         if($date_deb>=$tableau_date_debut[$i] && $date_deb<=$tableau_date_fin[$i]){
             //Le créneau est déjà utilisé
             $creneau_libre='occupe';
@@ -388,6 +388,7 @@ function verifier_dates_fin_calendrier(){
     $date_deb=DateTime::createFromFormat('m/d/Y H:i', $date_debut,new DateTimeZone('Europe/Berlin'));
 
     $date_fin=$_POST['date_fin'];
+    printf($date_fin);
     $date_f=DateTime::createFromFormat('m/d/Y H:i', $date_fin,new DateTimeZone('Europe/Berlin'));
     global $wpdb;
     $query="SELECT Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
@@ -405,7 +406,7 @@ function verifier_dates_fin_calendrier(){
     // Deux cas : - La date de fin est dans un créneau déjà utilisé (cas simple)
     //           - La date de fin est en dehors d'un créneau mais l'intervalle de passage comprend un interval déjà enregistré (date fin-date debut )
     for($i=0;$i<sizeof($tableau_date_debut);$i++){
-
+        printf($tableau_date_debut[$i]);
         if($date_f>$tableau_date_debut[$i] && $date_f<=$tableau_date_fin[$i] || $date_deb<$tableau_date_debut[$i] && $date_f>$tableau_date_debut[$i] ){
             //Le créneau est déjà utilisé
             $creneau_libre='occupe';
