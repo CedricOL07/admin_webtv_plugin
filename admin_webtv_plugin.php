@@ -73,12 +73,12 @@ function scripts_page_principale(){
 function scripts_gestion_contenu(){
 
     // Register déclare le script à wordpress sans l'executer
-    wp_register_script("tableau_clips_videosjs",plugins_url('admin_webtv_plugin/includes/GestionBDD/tableau_clips_videos/tableau_clips_videos.js', __FILE__), FALSE);
+    //wp_register_script("tableau_clips_videosjs",plugins_url('admin_webtv_plugin/includes/GestionBDD/tableau_clips_videos/tableau_clips_videos.js', __FILE__), FALSE);
     wp_register_script("ajouter_videojs",plugins_url('admin_webtv_plugin/includes/GestionBDD/ajouter_video/ajouter_video.js', __FILE__), FALSE);
 
     //wp_register_script("gestionbddjs",  plugins_url("js/gestionbdd.js", __FILE__), FALSE);
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
-    
+
     // enqueue exécute le script
     wp_enqueue_script('bootstrap_multiselectjs');
     wp_enqueue_style("bootstrap_multiselectcss",plugins_url('assets/css/bootstrap-multiselect.css',__FILE__) , FALSE);
