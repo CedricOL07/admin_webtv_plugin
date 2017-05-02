@@ -1123,10 +1123,12 @@ $(document).ready(function(){
                     }
                 }
 
+        
            
         }
         /*tableau_pourcentages= { poprock:'', rap:'', jazzblues:'',musiquemonde:'', hardrock:'', electro:'' };*/
-        
+        $('#input_nom_reglage').val();
+        location.reload();
     });
 
 /*
