@@ -58,40 +58,36 @@ function supprimer_clips(){
 
 function dynamic_update(){
   global $wpdb;
-  if(isset($_POST['data'])){
-    $data=$_POST['data'];
-    //echo json_encode($data);
-    foreach($data as $valeurs){
-      $champ=$valeurs["champ"];
-      $before=$valeurs["before"];
-      $after=$valeurs["after"];
-      switch($champ){
-        case "titre":
-          $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET titre='$after' WHERE titre='$before'");
-          echo "MISE A JOUR DU TITRE REUSSIE";
-          break;
-        case "album":
-          $wpdb->query("UPDATE " .$wpdb->prefix."album_webtv_plugin SET album='$after' WHERE album='$before'");
-          echo "MISE A JOUR DE L'ALBUM REUSSIE";
-          break;
-          // MEME type de cas que annee a gerer
-        case "annee":
-          // Gestion du cas ou c'est une nouvelle annee ou une annee existante => Changement des id à faire
-        case "nom":
-          $wpdb->query("UPDATE " .$wpdb->prefix."artiste_webtv_plugin SET nom='$after' WHERE nom='$before'");
-          echo "MISE A JOUR DE L'ARTISTE REUSSIE";
-          break;
-        case "Genre":
-          //Changement sur les id et correction syntaxique à faire PAS D'UPDATE STANDARD!!!
-        case "qualite":
-          // Récuperer ID correspondant au titre et changer la qualité dans la table relation
-        case "url":
-          $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET url='$after' WHERE url='$before'");
-          echo "MISE A JOUR DE L'URL REUSSIE";
-          break;
-      }
+    $champ=$_POST['data']["champ"];
+    $before=$_POST['data']["before"];
+    $after=$_POST['data']["after"];
+    //echo $champ;
+    switch($champ){
+      case "titre":
+      $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET titre='$after' WHERE titre='$before';");
+      //echo "MISE A JOUR DU TITRE REUSSIE";
+      break;
+      case "album":
+      $wpdb->query("UPDATE " .$wpdb->prefix."album_webtv_plugin SET album='$after' WHERE album='$before';");
+      //echo "MISE A JOUR DE L'ALBUM REUSSIE";
+      break;
+      // MEME type de cas que annee a gerer
+      case "annee":
+      // Gestion du cas ou c'est une nouvelle annee ou une annee existante => Changement des id à faire
+      case "nom":
+      $wpdb->query("UPDATE " .$wpdb->prefix."artiste_webtv_plugin SET nom='$after' WHERE nom='$before';");
+      //echo "MISE A JOUR DE L'ARTISTE REUSSIE";
+      break;
+      case "Genre":
+      //Changement sur les id et correction syntaxique à faire PAS D'UPDATE STANDARD!!!
+      case "qualite":
+      // Récuperer ID correspondant au titre et changer la qualité dans la table relation
+      case "url":
+      $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET url='$after' WHERE url='$before';");
+      //echo "MISE A JOUR DE L'URL REUSSIE";
+      break;
     }
-}};
+};
 
 
 

@@ -100,14 +100,13 @@ $(document).ready(function(){
     if (contenu_avant != contenu_apres) {
         let update_data={"champ" : champ_bdd,
                          "before" : contenu_avant,
-                          "after" : contenu_apres}
+                          "after" : contenu_apres};
+        console.log(update_data);
         $.post(
           ajaxurl,
           {
             'action' : 'dynamic_update',
             'data':update_data
-          },function(response){
-            console.log(response);
           });
           };
     });
