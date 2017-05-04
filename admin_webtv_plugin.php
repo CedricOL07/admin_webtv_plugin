@@ -339,11 +339,25 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
 ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 ";
 
+// Remplissage des tables genre et qualite
 
     $alter_table_videos="    ALTER TABLE `" . $wpdb->prefix . "videos_webtv_plugin`
 MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
 
 
+    $remplir_table_genre="INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES 
+    (33, ''),(12, 'Autre'),(8, 'Chanson française'),
+    (2, 'Hard-rock & Metal'),
+    (3, 'Hip-hop & Reggae'),
+    (7, 'Jazz & Blues'),
+    (9, 'Musique du monde'),
+    (4, 'Musique electronique'),
+    (5, 'Pop-rock'),
+    (11, 'Publicité Externe'),
+    (10, 'Publicité Interne');";
+
+    $remplir_table_qualite="
+    INSERT INTO `" . $wpdb->prefix . "qualite_webtv_plugin` (`valeur`) VALUES (1),(2),(3),(4),(5);";
 
 // Creation des tables
     $wpdb->query($creer_table_album);
@@ -357,8 +371,11 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($creer_table_videos);
 
 
+    $wpdb->query($remplir_table_genre);
+    $wpdb->query($remplir_table_genre);
+
 //Mise en place des clés
-$wpdb->query($alter_table_album);
+    $wpdb->query($alter_table_album);
     $wpdb->query($alter_table_annee);
     $wpdb->query($alter_table_artiste);
     $wpdb->query($alter_table_genre);

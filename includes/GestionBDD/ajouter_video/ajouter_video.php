@@ -150,6 +150,12 @@ function ajouter_video(){
     	// Genre
     	$recup_genre_id="SELECT id FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE Genre='$genre';";
     	$genre_id=$mysqli->query($recup_genre_id)->fetch_array()['id'];
+    	if ($genre_id == null)
+    	{
+    		$inserer_genre="INSERT INTO " . $wpdb->prefix . "genre_webtv_plugin(Genre) VALUES('$genre');";
+		    $mysqli->query($inserer_genre);
+		    $genre_id=$mysqli->query($recup_genre_id)->fetch_array()['id'];
+    	}
     	
         // Complétion de la table de relation
         $remplir_table_relation="INSERT INTO " . $wpdb->prefix . "relation_webtv_plugin(video_id,artiste_id,genre_id,album_id,annee_id,qualite_id) VALUES ('$video_id','$artiste_id','$genre_id','$album_id','$annee_id','$qualite')";
