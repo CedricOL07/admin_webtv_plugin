@@ -109,7 +109,7 @@ function scripts_nouveaux_reglages(){
     wp_enqueue_script('datetimepickerjs');
 }
 
-
+/*
 function eliminer_anciennes_playlists(){
     global $wpdb;
     $timezone = new DateTimeZone('Europe/Berlin');
@@ -139,7 +139,7 @@ function eliminer_anciennes_playlists(){
 add_action( 'pluginwebtv_eliminer_anciennes_playlists', 'eliminer_anciennes_playlists');
 do_action('pluginwebtv_eliminer_anciennes_playlists');
 
-
+*/
 
 function creer_page_webtv(){
     wp_enqueue_script("playerpagejs",  plugins_url("js/player_page.js", __FILE__), FALSE);
