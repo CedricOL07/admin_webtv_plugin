@@ -58,10 +58,11 @@ function ajouter_video(){
     $is_artiste="false";
     $is_annee="false";
 
+/*
 	$mysqli=new mysqli("localhost","root","","wordpress");
 	if ($mysqli->connect_errno) {
 	  echo "Echec lors de la connexion à MySQL : (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-	}
+	}*/
 
     // Regarde si le titre est existant
     $req_titre="SELECT id, titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='".$titre."' AND url='".$url."' LIMIT 1;"; 
@@ -78,11 +79,8 @@ function ajouter_video(){
     	$remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
     	$wpdb->query($remplir_table_videos);
 
-		$inserer_video="INSERT INTO ".$wpdb->prefix."videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
-		$mysqli->query($inserer_video);
-
 		$recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
-		$video_id=$mysqli->query($recup_video_id)->fetch_array()['id'];
+		$video_id=$wpdb->get_var($recup_video_id);
 
     	// On détermine les id des autres paramètres
 /*
@@ -106,11 +104,11 @@ function ajouter_video(){
     	if ($is_album=="false")
     	{
     		$inserer_album="INSERT INTO ".$wpdb->prefix."album_webtv_plugin(album) VALUES('$album');";
-		    $mysqli->query($inserer_album);
+		    $wpdb->query($inserer_album);
 		}
 	    
 	    $recup_album_id="SELECT id FROM ".$wpdb->prefix."album_webtv_plugin WHERE album='$album';";
-	    $album_id=$mysqli->query($recup_album_id)->fetch_array()['id'];
+	    $album_id=$wpdb->get_var($recup_album_id);
     	
 
     	// Artiste
@@ -123,11 +121,11 @@ function ajouter_video(){
     	if ($is_artiste=="false")
     	{
     		$inserer_artiste="INSERT INTO " . $wpdb->prefix . "artiste_webtv_plugin(nom) VALUES('$artiste');";
-    		$mysqli->query($inserer_artiste);
+    		$wpdb->query($inserer_artiste);
     	}
 
 		$recup_artiste_id="SELECT id FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE nom='$artiste';";
-	    $artiste_id=$mysqli->query($recup_artiste_id)->fetch_array()['id'];
+	    $artiste_id=$wpdb->get_var($recup_artiste_id);
 
 
     	// Année
@@ -140,27 +138,27 @@ function ajouter_video(){
     	if ($is_annee=="false")
     	{
     		$inserer_annee="INSERT INTO " . $wpdb->prefix . "annee_webtv_plugin(annee) VALUES('$annee_prod');";
-		    $mysqli->query($inserer_annee);
+		    $wpdb->query($inserer_annee);
 		}
 
 	    $recup_annee_id="SELECT id FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE annee='$annee_prod';";
-	    $annee_id=$mysqli->query($recup_annee_id)->fetch_array()['id'];
+	    $annee_id=$wpdb->get_var($recup_annee_id);
     	
 
     	// Genre
     	$recup_genre_id="SELECT id FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE Genre='$genre';";
-    	$genre_id=$mysqli->query($recup_genre_id)->fetch_array()['id'];
+    	$genre_id=$wpdb->get_var($recup_genre_id);
     	if ($genre_id == null)
     	{
     		$inserer_genre="INSERT INTO " . $wpdb->prefix . "genre_webtv_plugin(Genre) VALUES('$genre');";
-		    $mysqli->query($inserer_genre);
-		    $genre_id=$mysqli->query($recup_genre_id)->fetch_array()['id'];
+		    $wpdb->query($inserer_genre);
+		    $genre_id=$wpdb->get_var($recup_genre_id);
     	}
     	
         // Complétion de la table de relation
         $remplir_table_relation="INSERT INTO " . $wpdb->prefix . "relation_webtv_plugin(video_id,artiste_id,genre_id,album_id,annee_id,qualite_id) VALUES ('$video_id','$artiste_id','$genre_id','$album_id','$annee_id','$qualite')";
         $wpdb->query($remplir_table_relation);
-        $mysqli->close();
+        $wpdb->close();
 /* */    
     }
     
