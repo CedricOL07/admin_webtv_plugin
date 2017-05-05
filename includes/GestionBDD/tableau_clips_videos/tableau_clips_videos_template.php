@@ -21,7 +21,6 @@
         </div>
       </div>
       <div class="row" id="tableau" style="display:none">
-        <input type="text" class="form-control" id="rechercher" placeholder="Rechercher" />
         <table class="table table-bordered">
           <thead>
             <tr style="background-color:#9191FA;color:black;"  id="tr0">
@@ -40,11 +39,8 @@
         </table>
       </div>
       <div class="row" style="display:none" id="button_line">
-        <div class="col-md-offset-2 col-md-2">
-          <button type="button" class="btn btn-primary btn-lg" id="supprimer">Supprimer</button>
-        </div>
-        <div class="col-md-offset-4 col-md-2">
-          <button type="button" class="btn btn-primary btn-lg" id="modifier">Modifier</button>
+        <div class="col-md-offset-4 col-md-4">
+          <button type="button" class="btn btn-block btn-primary" id="supprimer">Supprimer</button>
         </div>
       </div>
     </div>

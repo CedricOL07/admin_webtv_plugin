@@ -21,7 +21,7 @@ $(document).ready(function(){
       // Création tableau de clips
       $.each(data,function(key,value){
 
-        ligne+='<tr><td><label><input type="checkbox" name="foo"></label></td>';
+        ligne+='<tr><td name="select"><label><input type="checkbox" name="foo"></label></td>';
         ligne+='<td name="titre">'+value.titre+'</td><td name="nom">'+value.artiste+'</td><td name="album">'+value.album+'</td><td name="Genre">'+value.genre+'</td><td name="annee">'+value.annee+'</td><td name="qualite">'+value.qualite+'</td><td name="url">'+value.url+'</td>';
         ligne+='</tr>';
         compteur++;
@@ -84,24 +84,28 @@ $(document).ready(function(){
   let contenu_apres;
   let champ_bdd;
   $('#tableau_corps').on('dblclick','td',function(){
-    $(this).prop('contenteditable', true);
-    if($(this).attr("contenteditable")=="true"){
-      contenu_avant = $(this).text();
-      champ_bdd = $(this).attr("name");
-      console.log(contenu_avant);
-      console.log(champ_bdd);
-    }});
+	if ($(this).attr("name")!="foo" && $(this).attr("name")!="select"){
+		$(this).prop('contenteditable', true);
+		if($(this).attr("contenteditable")=="true"){
+		  contenu_avant = $(this).text();
+		  champ_bdd = $(this).attr("name");
+		  console.log("TEST OK");
+		  //console.log(contenu_avant);
+		  //console.log(champ_bdd);
+		}
+	}
+	});
 
   //Remettre la case en non éditable a la désélection
   $('#tableau_corps').on('blur','td',function(){
     $(this).prop('contenteditable', false);
     contenu_apres = $(this).text();
-    console.log(contenu_apres);
+    //console.log(contenu_apres);
     if (contenu_avant != contenu_apres) {
         let update_data={"champ" : champ_bdd,
                          "before" : contenu_avant,
                           "after" : contenu_apres};
-        console.log(update_data);
+        //console.log(update_data);
         $.post(
           ajaxurl,
           {
