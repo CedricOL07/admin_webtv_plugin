@@ -28,7 +28,7 @@
               <th>Titre</th>
               <th>Artiste</th>
               <th>Album</th>
-              <th>Genre</th>
+              <th class="col-md-2">Genre</th>
               <th class="col-sm-1">Année</th>
               <th class="col-sm-1">Qualité</th>
               <th class="col-md-3">URL</th>
