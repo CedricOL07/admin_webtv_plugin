@@ -62,40 +62,45 @@ function dynamic_update(){
   //echo $champ;
   switch($champ){
     case "titre":
-    $before=$_POST['data']["before"];
-    $after=$_POST['data']["after"];
-    $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET titre='$after' WHERE titre='$before';");
+      $before=$_POST['data']["before"];
+      $after=$_POST['data']["after"];
+      $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET titre='$after' WHERE titre='$before';");
     //echo "MISE A JOUR DU TITRE REUSSIE";
-    break;
+      break;
     case "album":
-    $before=$_POST['data']["before"];
-    $after=$_POST['data']["after"];
-    $wpdb->query("UPDATE " .$wpdb->prefix."album_webtv_plugin SET album='$after' WHERE album='$before';");
+      $before=$_POST['data']["before"];
+      $after=$_POST['data']["after"];
+      $wpdb->query("UPDATE " .$wpdb->prefix."album_webtv_plugin SET album='$after' WHERE album='$before';");
     //echo "MISE A JOUR DE L'ALBUM REUSSIE";
-    break;
+      break;
     // MEME type de cas que annee a gerer
     case "annee":
     // Gestion du cas ou c'est une nouvelle annee ou une annee existante => Changement des id à faire
     case "nom":
-    $before=$_POST['data']["before"];
-    $after=$_POST['data']["after"];
-    $wpdb->query("UPDATE " .$wpdb->prefix."artiste_webtv_plugin SET nom='$after' WHERE nom='$before';");
+      $before=$_POST['data']["before"];
+      $after=$_POST['data']["after"];
+      $wpdb->query("UPDATE " .$wpdb->prefix."artiste_webtv_plugin SET nom='$after' WHERE nom='$before';");
     //echo "MISE A JOUR DE L'ARTISTE REUSSIE";
-    break;
+      break;
     case "Genre":
-    $titre=$_POST['data']["titre"];
-    $genre=$_POST['data']["genre"];
-    $titre_id=$wpdb->get_var("SELECT id FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre';");
-    $genre_id=$wpdb->get_var("SELECT id FROM " .$wpdb->prefix . "genre_webtv_plugin WHERE Genre='$genre';");
-    $wpdb->query("UPDATE ".$wpdb->prefix. "relation_webtv_plugin SET genre_id='$genre_id' WHERE video_id='$titre_id';");
+      $titre=$_POST['data']["titre"];
+      $genre=$_POST['data']["genre"];
+      $titre_id=$wpdb->get_var("SELECT id FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre';");
+      $genre_id=$wpdb->get_var("SELECT id FROM " .$wpdb->prefix . "genre_webtv_plugin WHERE Genre='$genre';");
+      $wpdb->query("UPDATE ".$wpdb->prefix. "relation_webtv_plugin SET genre_id='$genre_id' WHERE video_id='$titre_id';");
+      break;
     case "qualite":
-    // Récuperer ID correspondant au titre et changer la qualité dans la table relation
+      $titre=$_POST['data']["titre"];
+      $qualite=$_POST['data']["new_qualite"];
+      $titre_id=$wpdb->get_var("SELECT id FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre';");
+      $wpdb->query("UPDATE ".$wpdb->prefix. "relation_webtv_plugin SET qualite_id='$qualite' WHERE video_id='$titre_id';");
+      break;
     case "url":
-    $before=$_POST['data']["before"];
-    $after=$_POST['data']["after"];
-    $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET url='$after' WHERE url='$before';");
-    //echo "MISE A JOUR DE L'URL REUSSIE";
-    break;
+      $before=$_POST['data']["before"];
+      $after=$_POST['data']["after"];
+      $wpdb->query("UPDATE " .$wpdb->prefix."videos_webtv_plugin SET url='$after' WHERE url='$before';");
+      //echo "MISE A JOUR DE L'URL REUSSIE";
+      break;
   }
 };
 

@@ -78,65 +78,85 @@ $(document).ready(function(){
     });
 
 
-    // Scripts pour la modification du tableau -> Update BDD
-    //Rendre la case du tableau éditable quand on double clique dessus
-    let contenu_avant;
-    let contenu_apres;
-    let champ_bdd;
-    let titre_genre;
-    $('#tableau_corps').on('dblclick','td',function(){
-      if ($(this).attr("name")!="foo" && $(this).attr("name")!="select" && $(this).attr("name")!="Genre" && $(this).attr("name")!="qualite"){
-        $(this).prop('contenteditable', true);
-        if($(this).attr("contenteditable")=="true"){
-          contenu_avant = $(this).text();
-          champ_bdd = $(this).attr("name");
-          //console.log("TEST OK");
-          //console.log(contenu_avant);
-          //console.log(champ_bdd);
+  // Scripts pour la modification du tableau -> Update BDD
+  //Rendre la case du tableau éditable quand on double clique dessus
+  let contenu_avant;
+  let contenu_apres;
+  let champ_bdd;
+  let titre;
+  $('#tableau_corps').on('dblclick','td',function(){
+    if ($(this).attr("name")!="foo" && $(this).attr("name")!="select" && $(this).attr("name")!="Genre" && $(this).attr("name")!="qualite"){
+      $(this).prop('contenteditable', true);
+      if($(this).attr("contenteditable")=="true"){
+        contenu_avant = $(this).text();
+        champ_bdd = $(this).attr("name");
+        //console.log("TEST OK");
+        //console.log(contenu_avant);
+        //console.log(champ_bdd);
+      }
+    }
+    else if ($(this).attr("name")=="Genre"){
+      contenu_avant=$(this).text();
+      champ_bdd=$(this).attr("name");
+      titre=$(this).closest('tr').children('td:eq(1)').text();
+      $(this).replaceWith("<td name='Genre'><select><option value='Pop-Rock'>Pop-Rock</option><option value='Hip-hop & Reggae'>Hip-hop & Reggae</option><option value='Jazz & Blues'>Jazz & Blues</option><option value='Musique du monde'>Musique du Monde</option><option value='Hard-rock & Metal'>Hard-rock & Metal</option><option value='Musique electronique'>Musique electronique</option><option value='Chanson française'>Chanson Française</option><option value='Autre'>Autre</option></select></td>");
+      //console.log(titre);
+    }
+    else if($(this).attr("name")=="qualite"){
+      contenu_avant=$(this).text();
+      champ_bdd=$(this).attr("name");
+      titre=$(this).closest('tr').children('td:eq(1)').text();
+      $(this).replaceWith("<td name='qualite'><select><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></td>");
+
+    }
+  });
+
+  //Remettre la case en non éditable a la désélection
+  $('#tableau_corps').on('blur','td',function(){
+    if ($(this).attr("name")!="Genre" && $(this).attr("name")!="qualite"){
+      $(this).prop('contenteditable', false);
+      contenu_apres = $(this).text();
+      //console.log(contenu_apres);
+      if (contenu_avant != contenu_apres) {
+        let update_data={"champ" : champ_bdd,
+        "before" : contenu_avant,
+        "after" : contenu_apres};
+        //console.log(update_data);
+        $.post(
+          ajaxurl,
+          {
+            'action' : 'dynamic_update',
+            'data':update_data
+          });
         }
       }
-      else if ($(this).attr("name")=="Genre"){
-        contenu_avant=$(this).text();
-        champ_bdd=$(this).attr("name");
-        titre_genre=$(this).closest('tr').children('td:eq(1)').text();
-        $(this).replaceWith("<td name='Genre'><select><option value='Pop-Rock'>Pop-Rock</option><option value='Hip-hop & Reggae'>Hip-hop & Reggae</option><option value='Jazz & Blues'>Jazz et Blues</option><option value='Musique du monde'>Musique du Monde</option><option value='Hard-rock & Metal'>Métal et Hard-Rock</option><option value='Musique electronique'>Electro</option><option value='Chanson française'>Chanson Française</option><option value='Autre'>Autre...</option></select></td>");
-        //console.log(titre);
-      }
-    });
-
-    //Remettre la case en non éditable a la désélection
-    $('#tableau_corps').on('blur','td',function(){
-      if ($(this).attr("name")!="Genre"){
-        $(this).prop('contenteditable', false);
-        contenu_apres = $(this).text();
-        //console.log(contenu_apres);
+    if ($(this).attr("name")=="Genre"){
+        contenu_apres=$(this).find('select :selected').val();
+        $(this).replaceWith("<td name='Genre'>"+contenu_apres+"</td>");
         if (contenu_avant != contenu_apres) {
           let update_data={"champ" : champ_bdd,
-          "before" : contenu_avant,
-          "after" : contenu_apres};
-          //console.log(update_data);
+          "genre":contenu_apres,
+          "titre":titre};
           $.post(
-            ajaxurl,
-            {
-              'action' : 'dynamic_update',
+            ajaxurl,{
+              'action':'dynamic_update',
               'data':update_data
-            });
-          };
-        };
-        if ($(this).attr("name")=="Genre"){
+          });
+        }
+      }
+    if ($(this).attr("name")=="qualite"){
           contenu_apres=$(this).find('select :selected').val();
-          $(this).replaceWith("<td name='Genre'>"+contenu_apres+"</td>");
-          if (contenu_avant != contenu_apres) {
-            let update_data={"champ" : champ_bdd,
-            "genre":contenu_apres,
-            "titre":titre_genre};
+          $(this).replaceWith("<td name='qualite'>"+contenu_apres+"</td>");
+          if(contenu_avant!=contenu_apres){
+            let update_data={"champ":champ_bdd,
+                             "titre":titre,
+                             "new_qualite":contenu_apres};
             $.post(
               ajaxurl,{
                 'action':'dynamic_update',
                 'data':update_data
               });
-
-            };
-          };
-        });
-      });
+          }
+      }
+    });
+});
