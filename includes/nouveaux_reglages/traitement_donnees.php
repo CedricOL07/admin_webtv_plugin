@@ -1,15 +1,15 @@
-<?php 
+<?php
 
 
 /**************************************************************************************************************************
 **
 **
 **        Fichier contenant les fonctions exécutées par les différentes reqûetes ajax de la page NOUVEAUX REGLAGES
-**                                                                                                                
+**
 **
 *******************************************************************************************************************************/
 /*
-Appel des différentes fonctions du programme  
+Appel des différentes fonctions du programme
 */
 
 add_action( 'wp_ajax_traitement_infos_nouveaux_reglages', 'traitement_infos_nouveaux_reglages' );
@@ -26,8 +26,17 @@ add_action('wp_ajax_inserer_contenu_pluginwebtv','inserer_contenu_pluginwebtv');
 add_action( 'pluginwebtv_generer_la_playlist', 'generer_la_playlist');
 add_action('wp_ajax_recuperer_artiste_with_title','recuperer_artiste_with_title');
 
-add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetition_tous_les_n_morceaux'); 
+add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetition_tous_les_n_morceaux');
+add_action('wp_ajax_etat_live','etat_live');
 
+
+function etat_live(){
+    $etat_live;
+    if(isset($_POST['data'])){
+      $etat_live=$_POST['data'];
+      wp_send_json($etat_live);
+    }
+}
 
 
 
@@ -60,7 +69,7 @@ par les instructions données par le client lors de la demande POST.
     // = true si playlist définie comme par défaut
     // On passe un booléen pour vérifier que la playlist doit être passer directement à la suite ou non
     if(isset($_POST['passer_des_que_possible'])){
-        $passer_des_que_possible=$_POST['passer_des_que_possible'];  
+        $passer_des_que_possible=$_POST['passer_des_que_possible'];
     }
     if(isset($_POST['nom_reglage'])){
         $nom_reglage=$_POST['nom_reglage'];
@@ -105,15 +114,15 @@ par les instructions données par le client lors de la demande POST.
         for($k=0;$k<sizeof($tab_url);$k++){
             $url=$tab_url[$k];
             $query="SELECT id FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE url='$url';";
-            $result=$wpdb->get_results($query);  
+            $result=$wpdb->get_results($query);
             foreach($result as $id){
                 $idvideo=$id->id;
                 $query1="SELECT artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$idvideo';";
-                $result1=$wpdb->get_results($query1); 
+                $result1=$wpdb->get_results($query1);
                 foreach($result1 as $res){
                     $idartiste=$res->artiste_id;
                     $query2="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$idartiste';";
-                    $result2=$wpdb->get_results($query2);  
+                    $result2=$wpdb->get_results($query2);
                     foreach($result2 as $nomartiste){
                         $nom=$nomartiste->nom;
                         $tab_artistes[]=$nom;
@@ -168,7 +177,7 @@ par les instructions données par le client lors de la demande POST.
     }
 
 
-    
+
     function enregistrer_reglage_pardefaut($nom,$pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres){
         global $wpdb;
         $pardefaut=true;
@@ -203,7 +212,7 @@ par les instructions données par le client lors de la demande POST.
 
         $da = new DateTime("+ 1 hour",new DateTimeZone('Europe/Berlin'));
         $he=$da->format('m/d/Y H');
-        $heure_suivant=$he.':00'; 
+        $heure_suivant=$he.':00';
 
         $heure_suivante=DateTime::createFromFormat('m/d/Y H:i', $heure_suivant,new DateTimeZone('Europe/Berlin'));
 
@@ -259,7 +268,7 @@ par les instructions données par le client lors de la demande POST.
             // var_dump($tableau_dates_fin);
             $creneau_trouve=false;
 
-            //Placement de l'heure du début à l'heure de fin du crénau de la playlist 
+            //Placement de l'heure du début à l'heure de fin du crénau de la playlist
             for($i=0;$i<sizeof($tableau_dates_debut);$i++){
                 if($tableau_dates_fin[$i]!=$tableau_dates_debut[$i+1]){
 
@@ -300,7 +309,7 @@ par les instructions données par le client lors de la demande POST.
 
 
     if($par_defaut=='true'){
-    
+
     /* enregistrement de la playlist par défaut : elle réunit tous les styles différents*/
 
         enregistrer_reglage_pardefaut($nom_reglage,$_POST['pourcentage_poprock'],$_POST['pourcentage_hiphop'],$_POST['pourcentage_jazzblues'],$_POST['pourcentage_musiquemonde'],$_POST['pourcentage_hardrock'],$_POST['pourcentage_electro'],$_POST['pourcentage_chanson'],$_POST['pourcentage_autres']);
@@ -433,7 +442,7 @@ function trouver_creneau_dispo(){
 
 
     $query="SELECT Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
-    $result=$wpdb->get_results($query);  
+    $result=$wpdb->get_results($query);
     foreach($result as $res){
         if($res->Debut != ''){
             $debut=$res->Debut;
@@ -445,9 +454,9 @@ function trouver_creneau_dispo(){
             array_push($tableau_dates_fin,$fi);
 
             if($deb == $hsuiv){
-                $prochaine_heure_dispo=false;       
-            } 
-        }       
+                $prochaine_heure_dispo=false;
+            }
+        }
     }
     if($prochaine_heure_dispo==true){
         $tableau_don=array();
@@ -461,7 +470,7 @@ function trouver_creneau_dispo(){
 
         function comparis($a, $b)
         {
-            if ($a== $b) {     
+            if ($a== $b) {
                 return 0;
             }
             return ($a < $b) ? -1 : 1;
@@ -547,7 +556,7 @@ function supprimer_toutes_videos(){
 
 function inserer_contenu_pluginwebtv(){
     /*
-    A l'aide des infos données par le product owner provenant de la page de gestion de BDD, le programme insert directement les nouveaux paramètres enregistrées dans la base de donnée. 
+    A l'aide des infos données par le product owner provenant de la page de gestion de BDD, le programme insert directement les nouveaux paramètres enregistrées dans la base de donnée.
     */
     $titre;
     $artiste;
@@ -576,7 +585,7 @@ function inserer_contenu_pluginwebtv(){
     }else{
         $album=13;
     }
-    if(isset($_POST['annee'])){    
+    if(isset($_POST['annee'])){
         $annee=$_POST['annee'];}
     else{
         $annee=2016;
@@ -661,15 +670,15 @@ function recuperer_artiste_with_title(){
 
 
 function eviter_repetition_tous_les_n_morceaux($nb_limite){
-/* On compare deux tableaux indentique. Le premier tableau est comparé une cellule par une cellule. Chaque cellule sont comparées à toutes les autres cellules du second tableau et si il y a 2 meme morcreaux identique ont supprime un morceaux.*/    
-    
-    
+/* On compare deux tableaux indentique. Le premier tableau est comparé une cellule par une cellule. Chaque cellule sont comparées à toutes les autres cellules du second tableau et si il y a 2 meme morcreaux identique ont supprime un morceaux.*/
+
+
     $position=0;
     global $wpdb;
     $tab_20=array();
     $tab_20_id=array();
 
-    $query="SELECT titre,id FROM " . $wpdb->prefix . "playlist_webtv_plugin;";
+    $query="SELECT titre,id FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 10;";
     $result=$wpdb->get_results($query);
     foreach($result as $res){
 
@@ -686,13 +695,13 @@ function eviter_repetition_tous_les_n_morceaux($nb_limite){
                 for($k=1;$k<sizeof($tab_20bis);$k++){
                     if($tab_20[$i]==$tab_20bis[$k]){
                         //On a 2 meme morceaux dans les n
-                     
+
                         $id_del=$tab_20_id[$i];
                         $delete="DELETE FROM " . $wpdb->prefix . "playlist_webtv_plugin WHERE id='$id_del';";
                         $wpdb->query($delete);
-                        
+
                     }
-                    
+
                 }
             }
 
@@ -700,7 +709,7 @@ function eviter_repetition_tous_les_n_morceaux($nb_limite){
             $tab_20_id=array();
             $position=0;
         }
-     
+
         $position=$position+1;
     }
 
@@ -785,7 +794,7 @@ function generer_la_playlist(){
             for($i=0;$i<$nb_heures_a_completer2defaut;$i++){
                 do_action('pluginwebtv_generer_playlist',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut);
             }
-        } 
+        }
     }else{
 
         /*
@@ -830,7 +839,7 @@ function generer_la_playlist(){
 *
 ******************** Tant qu'on est pas à la fin du tableau on compare les dates de debut aux dates fin   *******************
 *
-*/         
+*/
 
             if($i<sizeof($tableau_dates_debut2)-1 ){
                 if(($tableau_dates_fin2[$i]==$tableau_dates_debut2[$i+1])){
@@ -969,7 +978,7 @@ function generer_la_playlist(){
 
                         if($tableau_dates_debut2[$i+1]<= $currentdate){
                             $fin_avant=$tableau_dates_fin2[$i];
-                            $debut_prochaine=$tableau_dates_debut2[$i+1]; 
+                            $debut_prochaine=$tableau_dates_debut2[$i+1];
                             $d1=$debut_prochaine->format('m/d/Y H:i');
                             //var_dump($debut_prochaine);
                             $interval=$fin_avant->diff($debut_prochaine);
@@ -1007,11 +1016,11 @@ function generer_la_playlist(){
                                     do_action('pluginwebtv_generer_playlist',$poprock,$hiphop,$jazzblues,$musiquemonde,$hardrock,$electro,$chanson,$autres,$pubsinternes,$pubsexternes,$artistehight);
                                 }
                             }
-                        }        
+                        }
                     }
 
 
-                } 
+                }
 
 
             }
@@ -1020,13 +1029,13 @@ function generer_la_playlist(){
 *
 ******************** On est à la fin du tableau, on compare la derniere date à la date actuelle +7 jours ==> si il reste du temps , on complete avec la playlist par defaut *******************
 *
-*/   
+*/
 
             if($i==(sizeof($tableau_dates_debut2)-1)){
 
 
 
-                $currentdate = new DateTime("+4 days",new DateTimeZone('Europe/Berlin'));            
+                $currentdate = new DateTime("+4 days",new DateTimeZone('Europe/Berlin'));
                 $derniere_date_table=$tableau_dates_fin2[$i];
 
 
@@ -1068,8 +1077,8 @@ function generer_la_playlist(){
                         for($i=0;$i<$nb_heures_a_completer1;$i++){
                             do_action('pluginwebtv_generer_playlist',$poprock,$hiphop,$jazzblues,$musiquemonde,$hardrock,$electro,$chanson,$autres,$pubsinternes,$pubsexternes,$artistehight);
                         }
-                    }       
-                }     
+                    }
+                }
             }
         }
 
@@ -1096,7 +1105,7 @@ function generer_la_playlist(){
     }
 
 //do_action('pluginwebtv_eviter_repetition_tous_les_n_morceaux');
-    
+
 }
 
 ?>

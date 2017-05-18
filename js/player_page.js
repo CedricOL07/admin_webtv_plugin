@@ -1,7 +1,6 @@
 
 $(document).ready(function(){
     var index_bdd_precedent;
- 
     var myPlaylist = new jPlayerPlaylist({
         jPlayer: "#player_video",
         cssSelectorAncestor: "#container_jplayer"
@@ -74,13 +73,12 @@ $(document).ready(function(){
 
     var tableau_donnees= new Array();
     $.ajax({
-        url: myAjax.ajaxurl, 
+        url: myAjax.ajaxurl,
         data:{
             'action':'recuperer_videos_player_page_principale',
         },
         dataType: 'JSON',
         success: function(data) {
-
             $.each(data.data, function(index, value) {
 
                 // tableau_donnees=value;
@@ -95,7 +93,6 @@ $(document).ready(function(){
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
-
             alert(thrownError);
         }
     });
@@ -104,10 +101,10 @@ $(document).ready(function(){
 
     /*--------------------------------------- Règles internes --------------------------------------------------*/
 
-    
+
     //Fonction pour effacer les morceaux au fur et à mesure
  jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
-                                 {   
+                                 {
         var current         = myPlaylist.current,
             playlist        = myPlaylist.playlist;
 
@@ -124,12 +121,12 @@ $(document).ready(function(){
             function(response){
                 console.log(response);
             }
-        ); 
+        );
 
     });
-    
-    
-    
+
+
+
     var bool2=false;
     var bool3=false;
     var videonepasrepasser;
@@ -137,7 +134,7 @@ $(document).ready(function(){
 
     //Fonction pour effacer les morceaux au fur et à mesure
     jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
-                                 {   
+                                 {
         var current         = myPlaylist.current,
             playlist        = myPlaylist.playlist;
 
@@ -154,13 +151,13 @@ $(document).ready(function(){
             function(response){
                 console.log(response);
             }
-        ); 
+        );
 
     });
 
     // Ne pas repasser le meme morceaux + meme artiste
 
-    jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){  
+    jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
 
 
         var current         = myPlaylist.current,
@@ -171,11 +168,11 @@ $(document).ready(function(){
 
             if (obj.title==event.jPlayer.status.media.title && index<current+19 && index!=current && bool2 ==false && index !=0 ){
                 bool2=true;
-                videonepasrepasser=index;          
-            } 
+                videonepasrepasser=index;
+            }
         });
         if(bool2==true ){
-            bool2=false; 
+            bool2=false;
             // var s=videonepasrepasser-current;
             //console.log('video a ne pas repasser en position '+videonepasrepasser+' soit dans  '+s+' vidéos');
             myPlaylist.remove(videonepasrepasser);
@@ -210,7 +207,7 @@ $(document).ready(function(){
                     });
 
                 }
-            } 
+            }
         }
 
 

@@ -16,7 +16,7 @@
                         </div>
                         <div class="jp-current-time" role="timer" aria-label="time" style="display:none">&nbsp;</div>
                         <div class="jp-duration" role="timer" aria-label="duration" style="display:none">&nbsp;</div>
-                        
+
                         <div class="jp-controls-holder" style="height:30px;">
                             <div class="jp-controls" style="display:none;">
                                 <button class="jp-previous" role="button" tabindex="0">previous</button>
@@ -57,5 +57,5 @@
 <style type="text/css">
     .jp-playlist{
         display:none;
-    } 
+    }
 </style>

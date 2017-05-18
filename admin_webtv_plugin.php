@@ -2,7 +2,7 @@
 /* Plugin Name: PluginWEBTVFIL
  * Plugin URI: http://prometheearchimonde.net
  * Description: Plugin de l'interface de gestion des playlists pour la webtv du Fil
- * Version: 1.0
+ * Version: 2.0
  * Author: Equipe Projet Ingénierie WEBTVFil
  * Author URI:
  * License:
@@ -26,11 +26,6 @@ php_includes();
 
 
  // Hook pour ajouter l'action dans la pile WP
-
-
-
-
-
 function plugin_webtvfil(){
 
 
@@ -57,12 +52,9 @@ function plugin_webtvfil(){
 
 add_action( 'admin_menu', 'plugin_webtvfil' );
 
-
-
 function scripts_page_principale(){
-
+  wp_enqueue_script("homepagejs",  plugins_url("js/homepage.js", __FILE__), FALSE);
 	wp_enqueue_script("playerhompagejs",  plugins_url("js/player_homepage.js", __FILE__), FALSE);
-    wp_enqueue_script("homepagejs",  plugins_url("js/homepage.js", __FILE__), FALSE);
 	wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
 	wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
     wp_enqueue_script("jplayerplaylistjs",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
@@ -345,7 +337,7 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
 MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
 
 
-    $remplir_table_genre="INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES 
+    $remplir_table_genre="INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES
     (33, ''),(12, 'Autre'),(8, 'Chanson française'),
     (2, 'Hard-rock & Metal'),
     (3, 'Hip-hop & Reggae'),
@@ -433,7 +425,7 @@ add_action( 'wp_ajax_effacer_video_jouee_player', 'effacer_video_jouee_player' )
 function recuperer_videos_player_page_principale() {
     do_action('pluginwebtv_generer_la_playlist');
     global $wpdb;
-    $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 150;";
+    $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 15;";
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
 
@@ -443,6 +435,7 @@ function recuperer_videos_player_page_principale() {
 
 add_action( 'wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
 add_action( 'wp_ajax_nopriv_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
+
 
 
 
