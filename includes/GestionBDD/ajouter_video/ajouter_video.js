@@ -38,6 +38,10 @@ $(document).ready(function(){
 			function(data)
 				{
 					console.log("existante :" + data);
+					var newpath = document.location.toString();
+					var ind1 = newpath.indexOf('&filepath');
+					ind1>0 ? newpath = newpath.substr(0,ind1) : newpath = newpath; 	// Si il y a déja un filepath, on l'efface
+					document.location.href = newpath.substr(0, ind1);				// On actualise la page
 				}
 			);
 					
