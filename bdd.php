@@ -3,9 +3,9 @@
 function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
   // Variables de connexion avec la base de données
   $user="root"; //Nom d'utilisateur
-  $passwd="";// Mot de passe de connexion à la base de données
+  $passwd="023Mugen";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="test"; // Nom de la base de données
+  $bddname="wpdatabase"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
