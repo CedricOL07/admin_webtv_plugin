@@ -139,49 +139,44 @@
 						</button>
 				  </div>
 				</div>
+
+				<script type="text/javascript"> 
+					document.getElementById('chemin1').disabled = 'disabled'; 
+					document.getElementById('url').disabled = 'disabled'; 
+				</script>
 			</form>
 		</div>
 			
 		<script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/includes/GestionBDD/ajouter_video/ajouter_video.js');?>">
 		</script>
     </body>
-<!--
-<script>
-String function adresse(){
 
-	//nom = $_FILES['chemin1']['name'] ;    //Le nom original du fichier, comme sur le disque du visiteur (exemple : mon_icone.png).
-	nom = chemin1['name'];
-	chem = chemin1['tmp_name'];
-	//chem = $_FILES['chemin1']['tmp_name'] ;//L'adresse vers le fichier uploadé dans le répertoire temporaire.
-	tot = nom; //+chem
-	document.getElementById("url").value=tot;
-	return nom;
-
-}-->	
-</script>
-		
 	
 	<script>
+
+		function commentUrl(){
+	        if(document.getElementById('path').value!=""){
+	            document.getElementById('chemin1').disabled = '';
+	            document.getElementById('url').disabled = '';
+	        }
+	        else{
+	            document.getElementById('chemin1').disabled = 'disabled';
+	        }
+	    }
 
 		function changePath(selectObj)
 		{
 			var newpath = document.location.toString();
 			var ind1 = newpath.indexOf('&filepath');
-			// if (ind1 > 0)	// si il y a déja un filepath (il faudra le supprimer)
-			// {
-			// 	var ind2 = newpath.indexOf('&filename'); // si il y a un filename, déterminer si il est avant ou après
-			//	
-			//	newpath = ind2 > ind1 ? newpath.substr(0, ind1)+newpath.substr(ind2) : newpath.substr(0, ind1);			
-			// }
-			// newpath = newpath + '&filepath='+selectObj.value;
 			ind1>0 ? newpath = newpath.substr(0,ind1) : newpath = newpath; // Si il y a déja un filepath, on l'efface
 			newpath = newpath + '&filepath='+selectObj.value;
 			console.log(newpath);
 			history.pushState({path:this.IRL}, '', newpath);	// n'actualise pas la page tout de suite
-			if (document.ajout.url.value != "")
+			if (document.ajout.url.value != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
 			{
 				document.location.href = newpath.substr(0, ind1);
 			}
+			commentUrl();
 		}
 
 		$(function() {
@@ -208,7 +203,7 @@ String function adresse(){
 			 	  	}
 				  	
 				  ?>`;
-				  var cheminArrive = "C:/wamp64/www/wordpress/wp-content/uploads/2017/05/";
+				  var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
 
 			 	  cheminArrive = cheminArrive + label;
 			 	  

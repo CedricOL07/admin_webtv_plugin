@@ -162,9 +162,6 @@ function ajouter_video(){
 /* */    
     }
     
- 
-    //echo "Video insérée avec succès";
-
     echo $titre." : ".$existante;
     wp_die();
 }
