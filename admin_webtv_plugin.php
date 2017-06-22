@@ -202,10 +202,10 @@ function gestion_bdd_callback(){
 }*/
 
 function callback_menu_webtv(){
-   include('includes/page_principale/index.php');
+   include('includes/WEBTV/page_principale/index.php');
 }
 function callback_menu_erreur(){
-    include('includes/page_principale/erreur.php');
+    include('includes/WEBTV/page_principale/erreur.php');
 
 }
 
