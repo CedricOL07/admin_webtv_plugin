@@ -26,17 +26,17 @@
                 <section class="content">
 
 
-                    <?php include("../../templates/WEBTV/webtv.template.php");?>
+                    <?php include("includes/WEBTV/templates/webtv.template.php");?>
 
                 </section>
                 <!-- /.content -->
             </div>
-        
 
 
-         
 
-          
+
+
+
         </div>
     </body>
 </html>

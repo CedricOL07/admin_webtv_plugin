@@ -13,6 +13,7 @@ define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 
 //do_action('pluginwebtv_maj_playlist_table');
+// ce sont des fichiers avec seulement des fonctions (pas de html)
 function php_includes(){
 
     include('includes/GenerationPlaylist.php');
@@ -21,6 +22,7 @@ function php_includes(){
     include('includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_ajax.php');
     include('includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos_ajax.php');
     include('includes/GestionBDD/ajouter_video/ajouter_video.php');
+
 }
 php_includes();
 
@@ -39,7 +41,7 @@ function plugin_webtvfil(){
         $page_nouveaux_reglages=add_submenu_page( 'sous-menu-webtv', 'Nouveaux Réglages', 'Nouvelle Playlist', 'manage_options', 'myplugin-submenu1', 'nouveaux_reglages_callback' );
       //  add_submenu_page( 'sous-menu-webtv', 'Réglages Enregistrés', 'Réglages de Playlist Enregistrés', 'manage_options', 'myplugin-submenu2', 'reglages_enregistres_callback' );
         $gestioncontenu=add_submenu_page( 'sous-menu-webtv', 'Réglages Enregistrés', 'Gestion du contenu', 'manage_options', 'myplugin-submenu2', 'gestion_bdd_callback' );
-        $pagevalidation=add_plugins_page('My Plugin Page', 'My Plugin', 'read', 'pagevalidation', 'include_pagevalidation');
+        //$pagevalidation=add_plugins_page('My Plugin Page', 'My Plugin', 'read', 'pagevalidation', 'include_pagevalidation');
 
 
 
@@ -53,8 +55,8 @@ function plugin_webtvfil(){
 add_action( 'admin_menu', 'plugin_webtvfil' );
 
 function scripts_page_principale(){
-  wp_enqueue_script("homepagejs",  plugins_url("js/homepage.js", __FILE__), FALSE);
-	wp_enqueue_script("playerhompagejs",  plugins_url("js/player_homepage.js", __FILE__), FALSE);
+  wp_enqueue_script("homepagejs",  plugins_url("includes/WEBTV/homepage.js", __FILE__), FALSE);
+	wp_enqueue_script("playerhompagejs",  plugins_url("includes/WEBTV/player_homepage.js", __FILE__), FALSE);
 	wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
 	wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
     wp_enqueue_script("jplayerplaylistjs",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
@@ -81,15 +83,15 @@ function scripts_gestion_contenu(){
 
 function scripts_nouveaux_reglages(){
 
-        wp_register_script( 'nouveaureglagejs', plugins_url('js/nouveaux_reglages.js',__FILE__), array(), null, false );
+        wp_register_script( 'nouveaureglagejs', plugins_url('includes/nouveaux_reglages/nouveaux_reglages.js',__FILE__), array(), null, false );
 
    //Utile pour passer une url vers un fichier javascript en utilisant plugins_url()
     //On accede à l'url passé dans le tableau avec   alert(jsnouveaureglage.jsnouveaureglagepath);
-    $translation_array = array(
+  /*  $translation_array = array(
         //Url à passer
         'jsnouveaureglagepath' => __( plugins_url("includes/page_validation/index.php", __FILE__), 'plugin-domain' ),
         'a_value' => '10'
-    );
+    );*/
     wp_localize_script( 'nouveaureglagejs', 'jsnouveaureglage', $translation_array );
     wp_enqueue_script('nouveaureglagejs');
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
@@ -134,7 +136,7 @@ do_action('pluginwebtv_eliminer_anciennes_playlists');
 */
 
 function creer_page_webtv(){
-    wp_enqueue_script("playerpagejs",  plugins_url("js/player_page.js", __FILE__), FALSE);
+    wp_enqueue_script("playerpagejs",  plugins_url("includes/WEBTV/player_page.js", __FILE__), FALSE);
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
    // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
@@ -143,13 +145,13 @@ function creer_page_webtv(){
     wp_enqueue_script("jplayerplaylistjs1",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
     wp_enqueue_script("jqueryjplayerjs1",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
     wp_enqueue_style("nouveaureglagecustomcss1",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
-    require_once('templates/WEBTV/webtv.template.php');
+    require_once('includes/WEBTV/templates/webtv.template.php');
 
 }
 add_shortcode('webtvlefil' , 'creer_page_webtv' );
 
 function shortcode_plugin_telecom(){
-    wp_enqueue_script("playerpagejs",  plugins_url("js/player_page.js", __FILE__), FALSE);
+    wp_enqueue_script("playerpagejs",  plugins_url("admin_webtv_plugin/includes/WEBTV/player_page.js", __FILE__), FALSE);
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
     // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
@@ -158,7 +160,7 @@ function shortcode_plugin_telecom(){
     wp_enqueue_script("jplayerplaylistjs1",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
     wp_enqueue_script("jqueryjplayerjs1",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
     wp_enqueue_style("nouveaureglagecustomcss1",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
-    require_once('templates/WEBTV/webtv-telecom.template.php');
+    require_once('includes/WEBTV/templates/webtv-telecom.template.php');
 }
 
 add_shortcode('webtvtelecom' , 'shortcode_plugin_telecom' );
@@ -192,12 +194,12 @@ function gestion_bdd_callback(){
 }
 
 
-function include_pagevalidation(){
+/*function include_pagevalidation(){
 
     require_once('includes/page_validation/index.php');
     //wp_register_script( 'pagerecapitulatifjs', plugins_url('js/page_recapitulatif_reglage.js',__FILE__), array(), null, false );
     //wp_enqueue_script('pagerecapitulatifjs');
-}
+}*/
 
 function callback_menu_webtv(){
    include('includes/page_principale/index.php');
