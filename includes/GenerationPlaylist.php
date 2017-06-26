@@ -412,7 +412,13 @@ function ajouter_pubs_internes($pubsinternes){
 
 
 }
-//Récupere un nombre $limt de vidéos du genre $genre en ajoutant l'url et le titre au tableau tab_url et tab_titres
+/*
+*  Fonction : Récupere un nombre $limt de vidéos du genre $genre en ajoutant l'url et le titre au tableau tab_url et tab_titres
+*  Deplus la fonction trie les artistes et les genres en fonction des titres et des url des clips à fin de remplir correctement
+*  les tableaux, $tab_artistes_id, $tab_url, $tab_artistes, $tab_titres, $tab_genres. Ces tableaux servent particulièrement au remplissage de la fonctions
+*  generer_la_playlist dans le fichier traitement_donnees.php qui rempli la table playlist_par_defaut_webtv_plugin.
+*/
+
 function recup_videos($genre,$limit){
     global $tab_artistes_id;
     global $tab_url;
@@ -421,28 +427,35 @@ function recup_videos($genre,$limit){
     global $wpdb;
     global $tab_genres;
     $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
-//ORDER BY RAND()
+
     $tabvideos=$wpdb->get_results($sql_query1);
 
     foreach($tabvideos as $id){
 
         $id_video = $id->video_id;
         $id_art1 = $id->artiste_id;
-        $tab_genres[] = $id->genre_id;
+        $id_genres = $id->genre_id;
+
+        $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
+        $tab_donnees_genre = $wpdb->get_results($query_genre);
+        foreach($tab_donnees_genre as $results)
+        {
+          $tab_genres[] = $results->Genre;
+        }
 
         $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
-        $tab_donnees = $wpdb->get_results($query_artistes);
+        $tab_donnees_artistes = $wpdb->get_results($query_artistes);
 
-        foreach($tab_donnees as $results){
+        foreach($tab_donnees_artistes as $results){
 
         $tab_artistes[] = $results->nom;
 
         }
 
         $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
-        $tab_donnees = $wpdb->get_results($query_url_titre);
+        $tab_donnees_url_titre = $wpdb->get_results($query_url_titre);
 
-        foreach($tab_donnees as $s){
+        foreach($tab_donnees_url_titre as $s){
 
             $tab_url[]=$s->url;
 
