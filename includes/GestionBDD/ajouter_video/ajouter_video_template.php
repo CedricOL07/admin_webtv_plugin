@@ -185,18 +185,22 @@
 	
 	<script>
 
+/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+			// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
+
+		var finalfolder = localStorage.getItem("finalfolder");
+		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
+		{
+			finalfolder="C:/wamp64/www/wordpress/wp-content/uploads/2017/06";
+			localStorage.setItem("finalfolder", finalfolder);
+		}
+/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 		var newpath=" ";
 		var filename=" ";
 		var filepath=" ";
-
-		/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-			 	  	// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
-
-		var finalfolder = "C:/wamp64/www/wordpress/wp-content/uploads/2017/06";
-
-		/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
+		
 		document.getElementById('url').placeholder = finalfolder+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
 
@@ -206,7 +210,10 @@
 		}
 
 		function changeFinalFolder(selectObj){
-			if(selectObj.value!=""){ finalfolder = selectObj.value; }
+			if(selectObj.value!=""){ 
+				finalfolder = selectObj.value; 
+				localStorage.setItem("finalfolder", finalfolder);
+			}
 			document.getElementById('url').placeholder = finalfolder+"/...";
 			document.getElementById('url').value = "";
 			document.getElementById('url').disabled = 'disabled';
