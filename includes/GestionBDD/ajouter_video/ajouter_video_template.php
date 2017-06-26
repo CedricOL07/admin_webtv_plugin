@@ -43,6 +43,14 @@
 			<!-- Création d'un formulaire: appelera le fichier ajouter_video.php -->
 			<form method="post" name="ajout" enctype="multipart/form-data">
 			<div class="col-md-12" id="warning-insertion"></div>
+
+			<!-- Variables utilisées à la fois dans le script js et php par la suite
+			FILEPATH et FILENALE : chemin et fichier origine à copier
+			CHEMINARRIVE : Chemin de copie: à adapter si nécessaire en ligne 173 -->
+
+				<input type="hidden" id="CHEMINARRIVE" name="CHEMINARRIVE" value=" ">
+				<input type="hidden" id="FILEPATH" name="FILEPATH" value=" ">
+				<input type="hidden" id="FILENAME" name="FILENAME" value=" ">
 			
 				<!-- Ligne 1 -->
 				<div class="row">
@@ -145,6 +153,7 @@
 					document.getElementById('url').disabled = 'disabled'; 
 				</script>
 			</form>
+
 		</div>
 			
 		<script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/includes/GestionBDD/ajouter_video/ajouter_video.js');?>">
@@ -154,7 +163,22 @@
 	
 	<script>
 
+		var newpath=" ";
+		var filename=" ";
+		var filepath=" ";
+
+		/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+			 	  	// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
+
+		var finalfolder = "C:/wamp64/www/wordpress/wp-content/uploads/2017/06";
+
+		/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+		document.getElementById("CHEMINARRIVE").value=finalfolder;
+
 		function commentUrl(){
+
 	        if(document.getElementById('path').value!=""){
 	            document.getElementById('chemin1').disabled = '';
 	            document.getElementById('url').disabled = '';
@@ -166,17 +190,36 @@
 
 		function changePath(selectObj)
 		{
-			var newpath = document.location.toString();
+			newpath = document.location.toString();
+		/*
 			var ind1 = newpath.indexOf('&filepath');
 			ind1>0 ? newpath = newpath.substr(0,ind1) : newpath = newpath; // Si il y a déja un filepath, on l'efface
 			newpath = newpath + '&filepath='+selectObj.value;
 			console.log(newpath);
 			history.pushState({path:this.IRL}, '', newpath);	// n'actualise pas la page tout de suite
+			*/
+			filepath = selectObj.value;
 			if (document.ajout.url.value != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
 			{
-				document.location.href = newpath.substr(0, ind1);
+				document.location.href = newpath;
 			}
+			
 			commentUrl();
+		}
+
+		function copier()
+		{
+			finalfolder = finalfolder.replace(/\//g, '\\');
+			document.getElementById("CHEMINARRIVE").value = finalfolder;
+			document.getElementById("FILEPATH").value = filepath;
+			document.getElementById("FILENAME").value = filename;
+
+			console.log(finalfolder);
+			console.log(filepath);
+			console.log(filename);
+			
+			finalfolder = finalfolder.replace(/\\/g, '/');
+			
 		}
 
 		$(function() {
@@ -186,32 +229,25 @@
 				  numFiles = input.get(0).file ? input.get(0).file.length : 1,
 				  label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 
- 				  history.pushState({path:this.path}, '', document.location.href+'&filename='+label);	// n'actualise pas la page tout de suite
+				  filename = label;
+ 				  // history.pushState({path:this.path}, '', document.location.href+'&filename='+label);	// n'actualise pas la page tout de suite
  				  //document.location.href = document.location.href+'&filename='+label;	// sert à passer la variable au php
 
-			 	  `<?php
-			 	  ////////////////////////////////////////////////////////////////////////////////
-			 	  	// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS
-			 	    $cheminArrive = "C:\wamp64\www\wordpress\wp-content\uploads\\2017\\05\\";
-			 	  ////////////////////////////////////////////////////////////////////////////////
+ 				  if (filename!="" && filepath!="")
+ 				  {
+ 				  	copier();
+ 				  }
 
-			 	  	$fich = $_GET[filename];
-			 	  	$path = $_GET[filepath];
-			 	  	if($path && $fich)
-			 	  	{
-			 	  		copy($path."\\".$fich, $cheminArrive.$fich);
-			 	  	}
-				  	
-				  ?>`;
-				  var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
-
-			 	  cheminArrive = cheminArrive + label;
 			 	  
+				  // var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
+
+			 	  var cheminArrive = filepath + '\\' + filename;
+				/*		 	  
 				  //console.log(cheminArrive);
 				  var tempad = document.location.toString()
 				  tempad = tempad.substr(0, tempad.indexOf('&filename'))
 				  //history.pushState({path:this.path}, '', tempad);	// n'actualise pas la page tout de suite
-
+				*/
 				  input.trigger('fileselect', [numFiles, cheminArrive]);
  				  
 			});
@@ -224,7 +260,6 @@
 					//var input = $(this),
 						//label = input.val().replace(/\\/g, '/').replace(/.*\//, ''),
 						log = numFiles > 1 ? numFiles + ' files selected' : label;
-					console.log(label);	
 
 					if( input.length ) {
 						input.val(log);

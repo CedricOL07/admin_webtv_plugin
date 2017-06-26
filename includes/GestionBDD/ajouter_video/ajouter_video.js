@@ -9,13 +9,18 @@ $(document).ready(function(){
 		console.log('Entrée dans le js');
 		
 		var titre=$('#titre').val();
-		var url_video=$('#url').val()
-		var artiste_video=$('#artiste').val()
+		var url_video=$('#url').val();
+		var artiste_video=$('#artiste').val();
 		var genre=$('#genre').val();
-		var album=$('#album').val()
-		var annee=$('#annne_prod').val()
-		var qualite=$('#qualite').val()
+		var album=$('#album').val();
+		var annee=$('#annne_prod').val();
+		var qualite=$('#qualite').val();
+		var finalfolder=$('#CHEMINARRIVE').val();
+		var filepath=$('#FILEPATH').val();
+		var filename=$('#FILENAME').val();
 		console.log(genre);
+		console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
+		
 			
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
@@ -32,7 +37,10 @@ $(document).ready(function(){
 						'genre':genre,
 						'album':album,
 						'annee':annee,
-						'qualite':qualite
+						'qualite':qualite,
+						'finalfolder':finalfolder,
+						'filepath':filepath,
+						'filename':filename
 					}
 				},
 			function(data)

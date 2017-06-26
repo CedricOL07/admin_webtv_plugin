@@ -42,6 +42,21 @@ function ajouter_video(){
     $annee_prod = $_POST['myParams']['annee'];
     $qualite = $_POST['myParams']['qualite'];   
 
+
+    // Copie de la video 
+    $cheminArrive = $_POST['myParams']['finalfolder'];
+  	$path = $_POST['myParams']['filepath'];
+  	$fich = $_POST['myParams']['filename'];
+  	$cheminArrive = str_replace("\\\\", "\\", $cheminArrive);
+  	$path = str_replace("\\\\", "\\", $path);
+
+  	if($path && $fich)
+  	{
+  		copy($path."\\".$fich, $cheminArrive."\\".$fich);
+  	}
+				  	
+
+
     $annee_prod = (int)($annee_prod);
 
     //echo "Fonction ajouter_video";
@@ -162,7 +177,7 @@ function ajouter_video(){
 /* */    
     }
     
-    echo $titre." : ".$existante;
+    echo $titre." : ".$existante." -- ".$path."\\".$fich." : ".$cheminArrive;
     wp_die();
 }
 
