@@ -185,6 +185,7 @@
 	        }
 	        else{
 	            document.getElementById('chemin1').disabled = 'disabled';
+	            document.getElementById('url').disabled = 'disabled';
 	        }
 	    }
 
@@ -214,10 +215,6 @@
 			document.getElementById("FILEPATH").value = filepath;
 			document.getElementById("FILENAME").value = filename;
 
-			console.log(finalfolder);
-			console.log(filepath);
-			console.log(filename);
-			
 			finalfolder = finalfolder.replace(/\\/g, '/');
 			
 		}
@@ -241,7 +238,7 @@
 			 	  
 				  // var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
 
-			 	  var cheminArrive = filepath + '\\' + filename;
+			 	  var cheminArrive = finalfolder + '/' + filename;
 				/*		 	  
 				  //console.log(cheminArrive);
 				  var tempad = document.location.toString()
