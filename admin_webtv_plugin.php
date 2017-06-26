@@ -87,11 +87,11 @@ function scripts_nouveaux_reglages(){
 
    //Utile pour passer une url vers un fichier javascript en utilisant plugins_url()
     //On accede à l'url passé dans le tableau avec   alert(jsnouveaureglage.jsnouveaureglagepath);
-  /*  $translation_array = array(
+    $translation_array = array(
         //Url à passer
         'jsnouveaureglagepath' => __( plugins_url("includes/page_validation/index.php", __FILE__), 'plugin-domain' ),
         'a_value' => '10'
-    );*/
+    );
     wp_localize_script( 'nouveaureglagejs', 'jsnouveaureglage', $translation_array );
     wp_enqueue_script('nouveaureglagejs');
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
@@ -271,10 +271,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;";
 
 
-    $creer_table_playlist="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlist_webtv_plugin` (
+    $creer_table_playlist="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin` (
     `titre` varchar(255) NOT NULL,
     `url` varchar(255) NOT NULL,
-    `artiste` varchar(255) NOT NULL
+    `artiste` varchar(255) NOT NULL,
+    `genre` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
     $creer_table_playlists_enregistrees="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlistenregistrees_webtv_plugin` (
@@ -390,7 +391,7 @@ function pluginwebtv_supprimer_tables(){
     $effacer_table_album="DROP TABLE " . $wpdb->prefix . "album_webtv_plugin;";
     $effacer_table_annee="DROP TABLE " . $wpdb->prefix . "annee_webtv_plugin;";
     $effacer_table_artiste="DROP TABLE " . $wpdb->prefix . "artiste_webtv_plugin;";
-    $effacer_table_playlist="DROP TABLE " . $wpdb->prefix . "playlist_webtv_plugin;";
+    $effacer_table_playlist="DROP TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";
     $effacer_table_videos="DROP TABLE " . $wpdb->prefix . "videos_webtv_plugin;";
     $effacer_table_qualite="DROP TABLE " . $wpdb->prefix . "qualite_webtv_plugin;";
     $effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
@@ -414,20 +415,86 @@ register_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
 
 
 function effacer_video_jouee_player(){
- global $wpdb;
-   $video_courante= $_POST['videocourante'];
-    $query="DELETE FROM " . $wpdb->prefix . "playlist_webtv_plugin WHERE titre='$video_courante';";
+    global $wpdb;
+    $video_courante= $_POST['videocourante'];
+    echo $_POST['videocourante'];
+    $query="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
     $wpdb->query($query);
 }
 
+
 add_action( 'wp_ajax_effacer_video_jouee_player', 'effacer_video_jouee_player' );
+
+/*
+Nom : ajouter_video_dans_table_playlist_par_defaut_webtv_plugin()
+Fonction : Cette fonction permet de rajouter un clip video dans la table wp_playlist_par_defaut_webtv_plugin de la base de données.
+Ceci permet de faire une boucle des vidéos pour la playlist par défaut.
+ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des cotes  et non des guillemets sinon impossible d'obtenir la page!!
+*/
+
+function ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
+    global $wpdb;
+    $tab_titre_playlist_par_defaut = array();
+    $video_courante= $_POST['videocourante'];
+    $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
+
+              //------- Séléction de id_genre de la video courante------
+
+    //recupération du titre de la vidéo courante
+    $query_titre_video_courante = "SELECT titre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
+    $reponse_titre_video_courante = $wpdb->get_var($query_titre_video_courante);//requête
+
+    //récupération de l'id de la video courante.
+    $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$reponse_titre_video_courante' LIMIT 1;";
+    $reponse_id_video_courante = $wpdb -> get_var($query_titre_video_courante);
+
+    //Récupération de l'id du genre de la vidéo courante
+    $query_id_genre_video_courante = "SELECT genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_courante' LIMIT 1;";
+    $reponse_id_genre_video_courante = $wpdb -> get_var($query_titre_video_courante);
+
+                //-------Tableau des titres de la playlist par defaut chargé ------
+
+    //fabrication du tableau des 15 clips vidéos de la playlist par défaut
+    $query_titre_video_courante="SELECT titre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin LIMIT 0, 15;";
+    $reponse_titre_video_courante = $wpdb -> get_results($query_titre_video_courante);//requête
+    foreach ( $reponse_titre_video_courante as $result){
+    $tab_titre_playlist_par_defaut -> get_var($query_titre_video_courante);
+    }
+                //-------Video à ajouter ------
+     //Récupération de la vidéo à ajouter avec le même genre que la vidéo courante. La vidéo à ajouter est différente de la vidéo_courante.
+     //List tous les titres de la playlist afin de pouvoir les comparer dans la boucle while
+
+    $query_id_video_a_ajouter_meme_genre = "SELECT video_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$reponse_id_genre_video_courante' AND id<>'$reponse_id_video_courante' LIMIT 1;";
+    $reponse_id_video_a_ajouter = $wpdb -> get_var($query_id_video_a_ajouter_meme_genre);
+
+    //Récupération du titre de la viéo à ajouter
+    $query_titre_url_video_a_ajouter_meme_genre = "SELECT titre,url FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE id='$reponse_id_video_a_ajouter' LIMIT 1;";
+    $reponse_titre_video_a_ajouter = $wpdb -> get_var($query_titre_url_video_a_ajouter_meme_genre, 0); // index 0 pour la colonne titre
+    $reponse_url_video_a_ajouter = $wpdb -> get_var($query_titre_url_video_a_ajouter_meme_genre, 1);// index 1 pour la colone url
+
+
+    foreach ($tab_titre_playlist_par_defaut as $result) {
+
+      if ($reponse_titre_video_a_ajouter != $video_courante && $reponse_titre_video_a_ajouter != $result){
+
+          //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
+          $query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "UPDATE titre,url FROM ". $wpdb->prefix . "playlist_par_defaut_webtv_plugin SET titre='$reponse_titre_video_a_ajouter', url=''$reponse_url_video_a_ajouter' ;";
+          $reponse_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> get_var($query_titre_url_video_a_ajouter_meme_genre);
+
+        }
+      }
+
+}
+
+
+add_action('wp_ajax_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin','ajouter_video_dans_table_playlist_par_defaut_webtv_plugin' );
 
 // A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
 
 function recuperer_videos_player_page_principale() {
     do_action('pluginwebtv_generer_la_playlist');
     global $wpdb;
-    $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 15;";
+    $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
 

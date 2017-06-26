@@ -28,6 +28,7 @@ add_action('wp_ajax_recuperer_artiste_with_title','recuperer_artiste_with_title'
 
 add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetition_tous_les_n_morceaux');
 add_action('wp_ajax_etat_live','etat_live');
+add_action('wp_recupérer_id_par_defaut','recupérer_id_par_defaut');
 
 
 function etat_live(){
@@ -38,7 +39,11 @@ function etat_live(){
     }
 }
 
+function recuperer_id_playlist_par_defaut(){
+      $query = "SELECT ParDefaut FROM" . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
+      $result=$wpdb->get_results($query);
 
+}
 
 function traitement_infos_nouveaux_reglages(){
 
@@ -678,7 +683,7 @@ function eviter_repetition_tous_les_n_morceaux($nb_limite){
     $tab_20=array();
     $tab_20_id=array();
 
-    $query="SELECT titre,id FROM " . $wpdb->prefix . "playlist_webtv_plugin LIMIT 10;";
+    $query="SELECT titre,id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin LIMIT 10;";
     $result=$wpdb->get_results($query);
     foreach($result as $res){
 
@@ -697,7 +702,7 @@ function eviter_repetition_tous_les_n_morceaux($nb_limite){
                         //On a 2 meme morceaux dans les n
 
                         $id_del=$tab_20_id[$i];
-                        $delete="DELETE FROM " . $wpdb->prefix . "playlist_webtv_plugin WHERE id='$id_del';";
+                        $delete="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$id_del';";
                         $wpdb->query($delete);
 
                     }
@@ -723,6 +728,7 @@ function generer_la_playlist(){
     global $wpdb;
     global $tab_url;
     global $tab_titres;
+    global $tab_genres;
     global $tab_artistes;
     $tableau_dates_debut=array();
     $tableau_dates_fin=array();
@@ -1087,22 +1093,20 @@ function generer_la_playlist(){
     }
 
 
-    $effacer_existant ="TRUNCATE TABLE " . $wpdb->prefix . "playlist_webtv_plugin;";
+    $effacer_existant ="TRUNCATE TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";
     $wpdb->query($effacer_existant);
 
 
     //$tab_glob1=array();
     //On met tout ca dans la table Playlist
     $titre=str_replace("'","''",$tab_titres);
-
-
-    for($k=0;$k<sizeof($tab_titres);$k++){
-
-        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_webtv_plugin(titre,url) VALUES('$titre[$k]','$tab_url[$k]')";
+    $artistes=str_replace("'","''",$tab_artistes);
+// permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
+    for($k=0;$k<15;$k++){ // remettre sizeof($titre) une fois pb résolu.
+        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$tab_genres[$k]')";
         $wpdb->query($inserer);
-
-
     }
+
 
 //do_action('pluginwebtv_eviter_repetition_tous_les_n_morceaux');
 

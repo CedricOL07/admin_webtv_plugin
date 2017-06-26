@@ -126,23 +126,32 @@ var artisteanepasrepasser;
 //Fonction pour effacer les morceaux au fur et à mesure
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-  var current         = myPlaylist.current,
+  var current     = myPlaylist.current,
   playlist        = myPlaylist.playlist;
 
   myPlaylist.remove(current-1);
 
   //On efface le morceau de la base de donnée également
-  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
+  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de
   $.post(
     ajaxurl,
     {
       'action': 'effacer_video_jouee_player',
-      'videocourante':titre_current_track-1
+      'videocourante':titre_previous_current_track
     },
     function(response){
-      //console.log(response);
+      console.log("video à ete effacé : " + response);
     }
   );
+/*  $.post(
+    ajaxurl,
+    {
+      'action': 'ajouter_video_dans_table_playlist_par_defaut_webtv_plugin'
+    },
+    function(response){
+      console.log("video à ete ajouté : " + response);
+    }
+  );*/
 
 });
 
@@ -195,7 +204,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
         myPlaylist.add({
           title:titr,
           artist:art,
-          m4v:lien
+          m4v:lien,
+          loop:true
 
         });
 
@@ -203,54 +213,51 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
     }
   }
 
-
-});
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
-var on_live=false;
-$("#player_video").bind(jQuery.jPlayer.event.ended , function (event){
-  //console.log(on_live);
-  if(on_live==true ){
-    myPlaylist.remove();
-    myPlaylist.setPlaylist([{
-      title:"LIVE",
-      artist:"LE FIL",
-      m4v:"http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/liveTest.mp4"
-    }]);
-    myPlaylist.option("autoPlay",true);
-    myPlaylist.play();
-  }
-});
+  var on_live=false;
+  $("#player_video").bind(jQuery.jPlayer.event.ended , function (event){
+    //console.log(on_live);
+    if(on_live==true ){
+      myPlaylist.remove();
+      myPlaylist.setPlaylist([{
+        title:"LIVE",
+        artist:"LE FIL",
+        m4v:"http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/liveTest.mp4"
+      }]);
+      myPlaylist.option("autoPlay",true);
+      myPlaylist.play();
+    }
+  });
 
 
-$('#live_btn').click(function(){
-  if(on_live==false){
-    on_live=true;
-    $(this).html("Arreter le LIVE");
-    //$('#player_video').prop('title', 'live_on');
-    $.post(ajaxurl,{
-      'action' : 'etat_live',
-      'data' : on_live
-    },function(response){
-      console.log(response);
-    })
-  }
-  else if(on_live=true){
-    on_live=false;
-    myPlaylist.pause();
-    myPlaylist.remove();
-    generer_la_playlist();
-    $(this).html("Lancer le LIVE");
-    //$('#player_video').prop('title', 'live_off');
-    $.post(ajaxurl,{
-      'action' : 'etat_live',
-      'data' : on_live
-    },function(response){
-      console.log(response);
-    })
-  }
-})
+  $('#live_btn').click(function(){
+    if(on_live==false){
+      on_live=true;
+      $(this).html("Arreter le LIVE");
+      //$('#player_video').prop('title', 'live_on');
+      $.post(ajaxurl,{
+        'action' : 'etat_live',
+        'data' : on_live
+      },function(response){
+        console.log(response);
+      })
+    }
+    else if(on_live=true){
+      on_live=false;
+      myPlaylist.pause();
+      myPlaylist.remove();
+      generer_la_playlist();
+      $(this).html("Lancer le LIVE");
+      //$('#player_video').prop('title', 'live_off');
+      $.post(ajaxurl,{
+        'action' : 'etat_live',
+        'data' : on_live
+      },function(response){
+        console.log(response);
+      })
+    }
+  });
 
-
-
+  });
 });

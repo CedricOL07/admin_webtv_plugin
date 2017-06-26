@@ -5,7 +5,7 @@
 **
 **
 **                                 Fonctions php utilisées pour générer une playlist
-**                                                                                                                
+**
 **
 *******************************************************************************************************************************/
 
@@ -13,8 +13,8 @@
 
 
 
-add_action( 'pluginwebtv_generer_playlist', 'generer_playlist',10,11);        
-add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,2);          
+add_action( 'pluginwebtv_generer_playlist', 'generer_playlist',10,11);
+add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,2);
 add_action( 'pluginwebtv_verifier_restant', 'verifier_restant',15,1);
 add_action( 'pluginwebtv_ajouter_hightlight', 'ajouter_hightlight',16,1);
 add_action( 'pluginwebtv_ajouter_pubs_internes', 'ajouter_pubs_internes',17,2);
@@ -102,29 +102,29 @@ function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejaz
 
         if($valeur_camembert<20){
 
-            do_action('pluginwebtv_recup_videos',$genre_id,1);
+          do_action('pluginwebtv_recup_videos',$genre_id,1);
         }else{
             if($valeur_camembert<30){
 
-                do_action('pluginwebtv_recup_videos',$genre_id,2);
+               do_action('pluginwebtv_recup_videos',$genre_id,2);
             }else{
                 if($valeur_camembert<40){
-                    do_action('pluginwebtv_recup_videos',$genre_id,3);
+                   do_action('pluginwebtv_recup_videos',$genre_id,3);
                 }else{
                     if($valeur_camembert<50){
-                        do_action('pluginwebtv_recup_videos',$genre_id,4);
+                       do_action('pluginwebtv_recup_videos',$genre_id,4);
 
                     }else{
                         if($valeur_camembert<60){
-                            do_action('pluginwebtv_recup_videos',$genre_id,5);
+                           do_action('pluginwebtv_recup_videos',$genre_id,5);
 
                         }else{
                             if($valeur_camembert<70){
-                                do_action('pluginwebtv_recup_videos',$genre_id,6);
+                              do_action('pluginwebtv_recup_videos',$genre_id,6);
 
                             }else{
                                 if($valeur_camembert<80){
-                                    do_action('pluginwebtv_recup_videos',$genre_id,7);
+                                  do_action('pluginwebtv_recup_videos',$genre_id,7);
 
                                 }else{
                                     if($valeur_camembert<90){
@@ -136,14 +136,14 @@ function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejaz
                                         }
                                         if($valeur_camembert==100){
 
-                                            do_action('pluginwebtv_recup_videos',$genre_id,12);
+                                           do_action('pluginwebtv_recup_videos',$genre_id,12);
 
                                         }
                                     }
                                 }
                             }
-                        }   
-                    }   
+                        }
+                    }
                 }
             }
         }// -----\ Fin du else /----
@@ -153,9 +153,9 @@ function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejaz
     //var_dump($tab_url);
 
     $nb_track=$compteur;
-   
 
-    do_action('pluginwebtv_verifier_restant',$tableaupourcentages);
+
+    //do_action('pluginwebtv_verifier_restant',$tableaupourcentages);
 
     if($artistehighlight!= NULL){
         do_action('pluginwebtv_ajouter_hightlight',$artistehighlight);
@@ -180,55 +180,56 @@ function verifier_restant($tableaupourcentages){
     global $tab_titres;
     global $tab_artistes_id;
     global $tab_artistes;
+    global $tab_genres;
     global $nb_track;
     global $wpdb;
+    //$tab_donnees = array();
 
     // Compléter le remplissage (gestion des tracks restantes)
     // Teste l'égalité entre les pourcentages
-
+    /*
+    count : compte les éléments d'un tableau
+    array_unique : élime tous les doublons
+    */
     if (count(array_unique($tableaupourcentages))==1)// Si tous les pourcentages sont égaux
     {
 
-        //
+        /*unset($tab_url);
+        unset($tab_titres);*/
 
         //echo 'tous les pourcentages sont égaux';
         //Tableau avec tous les ids video d'un genre
         $tableaugenres = array(2,3,4,5,7,8,9,12);
-        shuffle($tableaugenres);
+        //shuffle($tableaugenres); mettez la playlist en mode aléatoire
 
-        for($k=0;$k<4;$k++)
+        foreach($tableaugenres as $results)
         {
-            $id=$tableaugenres[$k];
 
-            $sql_query="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$id' ORDER BY RAND() LIMIT 1;";	
-            $tabvideos_id=$wpdb->get_results($sql_query); 
+            $id_genre= $results;
+//ORDER BY RAND()
+            $sql_query="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$id_genre' LIMIT 1;";// limit à 1 car tous les pourcentage sont égaux à 12.5<20 donc 1 clips par genre.
+            $tabvideos_id=$wpdb->get_results($sql_query);
 
             foreach($tabvideos_id as $id){
                 $id1=$id->video_id;
-               // $tab_artistes_id[]=$id->artiste_id;
-                $id_art1=$id->artiste_id;
-                
-              /*  $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1';";
-                $rms=$wpdb->get_results($query3);
-                foreach($rms as $re){
-                    $art=$re->nom;
-                    $tab_artistes[]=$art;
-                }*/
-                
-  
+                //$id_art1=$id->artiste_id;
                 $sql_query2 = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id1' ;";
-                $tab_donnees=$wpdb->get_results($sql_query2);
-
-                foreach($tab_donnees as $t){
-                    $tab_url[]= $t->url;
-                    $tab_titres[]=$t->titre;
-                }
-
+                $tab_url[] = $wpdb->get_var($sql_query2, 0);
+                $tab_titres[]= $wpdb->get_var($sql_query2,1);
+                $tab_genres[] = $id->genre_id;
+                /*$tab_donnees->append(array($url, $titres));
+                var_dump($tab_donnees);*/
+              /*  foreach($tab_donnees as $t){
+                    $tab_url[]= $t[0];
+                    $tab_titres[]=$t[1];
+                }*/
             }
         }
 
     }else // Si les pourcentages sont différents entre eux
     {
+    /*  unset($tab_url);
+      unset($tab_titres);*/
         //   echo 'pourcentages pas égaux';
 
         $track_restante=12-$nb_track;
@@ -246,8 +247,8 @@ function verifier_restant($tableaupourcentages){
                     $u=$i+1;
                 }
                 else
-                {	
-                    $u=$i;			
+                {
+                    $u=$i;
                 }
                 if ($u==0)
                 {
@@ -283,7 +284,7 @@ function verifier_restant($tableaupourcentages){
                 }
 
             }
-            $sql_query1 = "SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_id' ORDER BY RAND() LIMIT 1;"; 
+            $sql_query1 = "SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_id' ORDER BY RAND() LIMIT 1;";
             $tabvideos_id=$wpdb->get_results($sql_query1);
 
             foreach($tabvideos_id as $id){
@@ -297,8 +298,8 @@ function verifier_restant($tableaupourcentages){
                     $art=$re->nom;
                     $tab_artistes[]=$art;
                 }*/
-                
-                
+
+
                 $sql_query2 = "SELECT url, titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id2';";
                 $tab_donnees=$wpdb->get_results($sql_query2);
                 foreach($tab_donnees as $tab){
@@ -306,6 +307,7 @@ function verifier_restant($tableaupourcentages){
                     $tab_titres[]=$tab->titre;
                 }
             }
+            echo $tab_url[1];
             $tab_pourcentages[$u] = 0;
         }
     }
@@ -319,6 +321,7 @@ function ajouter_hightlight($artiste){
     global $tab_titres;
     global $tab_artistes_id;
     global $tab_artistes;
+
    // $tab_artistes[]=$artiste;
 
     $art;
@@ -328,19 +331,19 @@ function ajouter_hightlight($artiste){
         $art=$r->id;
     }
     //On récupère une seule vidéo de l'artiste
-    $sql_query1="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE artiste_id='$art' ORDER BY RAND() LIMIT 1;"; 
+    $sql_query1="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE artiste_id='$art' ORDER BY RAND() LIMIT 1;";
     $resultat=$wpdb->get_results($sql_query1);
     foreach($resultat as $result){
         $v=$result->video_id;
-        
 
-        
+
+
         $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$v';";
         $re=$wpdb->get_results($query);
         foreach($re as $vid){
             $tab_url[]=$vid->url;
             $tab_titres[]=$vid->titre;
-        }   
+        }
     }
 
 }
@@ -365,7 +368,7 @@ function ajouter_pubs_externes($pubsexternes){
             $art=$re->nom;
             $tab_artistes[]=$art;
         }*/
-        
+
         $s="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id1';";
         $result=$wpdb->get_results($s);
         foreach($result as $tt){
@@ -397,7 +400,7 @@ function ajouter_pubs_internes($pubsinternes){
             $art=$re->nom;
             $tab_artistes[]=$art;
         }*/
-        
+
         $s="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id';";
         $result=$wpdb->get_results($s);
         foreach($result as $tt){
@@ -416,47 +419,48 @@ function recup_videos($genre,$limit){
     global $tab_artistes;
     global $tab_titres;
     global $wpdb;
-    $sql_query1="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre' ORDER BY RAND() LIMIT $limit;"; 
-
+    global $tab_genres;
+    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
+//ORDER BY RAND()
     $tabvideos=$wpdb->get_results($sql_query1);
+
     foreach($tabvideos as $id){
         $id_video=$id->video_id;
-        //$tab_artistes_id[]=$id->artiste_id;
         $id_art1=$id->artiste_id;
-
-      /*  $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1';";
+        $tab_genres[] = $id->genre_id;
+        $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
         $rms=$wpdb->get_results($query3);
         foreach($rms as $re){
             $art=$re->nom;
             $tab_artistes[]=$art;
-        }*/
-        
-        $sql_query2 = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video';";
-        $tab_donnees=$wpdb->get_results($sql_query2);
-
-        foreach($tab_donnees as $s){
-
-            $tab_url[]=$s->url;  
-
-            $tab_titres[]=$s->titre; 
-
         }
+    }
+
+    $sql_query2 = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video';";
+    $tab_donnees=$wpdb->get_results($sql_query2);
+
+    foreach($tab_donnees as $s){
+
+        $tab_url[]=$s->url;
+
+        $tab_titres[]=$s->titre;
 
     }
 
 }
 
+
 //
 function recuperer_artistes_nouvelle_playlist(){
     global $wpdb;
     global $tab_url;
-    global $tab_artistes;    
+    global $tab_artistes;
     global $tab_artistes_id;
    //
 
     for($i=0;$i<sizeof($tab_artistes_id);$i++){
         $id=$tab_artistes_id[$i];
-        $query="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id';"; 
+        $query="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id';";
         $result=$wpdb->get_results($query);
         foreach($result as $r){
             $tab_artistes[]=$r->nom;
