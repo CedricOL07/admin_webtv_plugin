@@ -6,7 +6,6 @@ $(document).ready(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
 		/* */
-		console.log('Entrée dans le js');
 		
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
@@ -18,8 +17,8 @@ $(document).ready(function(){
 		var finalfolder=$('#CHEMINARRIVE').val();
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
-		console.log(genre);
-		console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
+		//console.log(genre);
+		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		
 			
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')

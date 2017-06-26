@@ -177,7 +177,7 @@ function ajouter_video(){
 /* */    
     }
     
-    echo $titre." : ".$existante." -- ".$path."\\".$fich." : ".$cheminArrive;
+    echo $titre." : ".$existante;
     wp_die();
 }
 

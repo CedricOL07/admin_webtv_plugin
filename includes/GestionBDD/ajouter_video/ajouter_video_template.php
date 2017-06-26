@@ -35,9 +35,9 @@
 		<div class="container formulaire">
 			<!-- Titre -->
 			<div class="row">
-			  <div class="col">
-				<h1 style="text-align:center"><B><U>Gestion du contenu</U></B></h1>
-			  </div>
+				<div class="col">
+					<h1 style="text-align:center"><B><U>Gestion du contenu</U></B></h1>
+				</div>
 			</div>
 			
 			<!-- Création d'un formulaire: appelera le fichier ajouter_video.php -->
@@ -51,7 +51,12 @@
 				<input type="hidden" id="CHEMINARRIVE" name="CHEMINARRIVE" value=" ">
 				<input type="hidden" id="FILEPATH" name="FILEPATH" value=" ">
 				<input type="hidden" id="FILENAME" name="FILENAME" value=" ">
-			
+
+				<!-- Ligne 0 -->
+				<div class="form-group">
+				    &nbsp;
+				</div>
+				
 				<!-- Ligne 1 -->
 				<div class="row">
 					<div class="col-md-2">
@@ -71,29 +76,6 @@
 				<!-- Ligne 2 -->
 				<div class="row">
 					<div class="col-md-2">
-						<label for="path">Chemin complet :</label>
-					</div>
-					<div class="col-md-2">
-						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
-					</div>
-					<div class="col-md-offset-3 col-md-2">
-						<label for="url">URL Vidéo :</label>
-					</div>
-					<div class="col-md-3">
-						<div class="input-group">
-							<input type="text" class="form-control" name="url" id="url" placeholder="URL">
-							<label class="input-group-btn">
-								<span class="btn btn-primary">
-									Parcourir <!-- &hellip; --> <input type="file" id="chemin1" style="display: none;" multiple> 
-									
-								</span>
-							</label>
-						</div>
-					</div>
-				</div>
-				<!-- Ligne 3 -->
-				<div class="row">
-					<div class="col-md-2">
 						<label for="artiste"> Artiste :</label>
 					</div>
 					<div class="col-md-2">
@@ -109,7 +91,7 @@
 						<input type="text" class="form-control" name="annne_prod" id="annne_prod"  placeholder="Année production">
 					</div>
 				</div>
-				<!-- Ligne 4 -->
+				<!-- Ligne 3 -->
 				<div class="row">
 					<div class="col-md-2">
 						<label for="genre"> Genre :</label>
@@ -139,8 +121,44 @@
 						   <option value="5">5</option>
 					   </select>
 					</div>
-					
 				</div>
+
+				<!-- Ligne 4 -->
+				<div class="row">
+					<div class="col-md-2">
+						<label for="path">Chemin complet :</label>
+					</div>
+					<div class="col-md-2">
+						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
+					</div>
+
+					<div class="col-md-offset-5 col-md-2">
+						<button class="btn btn-block btn-sm btn-secondary" id="bouton_modifier_url_par_defaut" type="button" onclick="unlockPath()"> Modifier URL par défaut
+						</button>
+					</div>
+				</div>
+
+				<!-- Ligne 5 -->
+				<div class="row">
+					<div class="col-md-2">
+						<label for="url">URL Vidéo :</label>
+					</div>
+					<div class="col-md-9">
+						<div class="input-group">
+							<label class="input-group-btn">
+								<span class="btn btn-sm btn-primary">
+									Parcourir <!-- &hellip; --> <input type="file" id="chemin1" style="display: none;" multiple> 
+								</span>
+							</label>
+							<input type="text" class="form-control input-sm" name="url" id="url" placeholder="..." onchange="changeFinalFolder(this)">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+				    &nbsp;
+				</div>
+
 				<div class="row">
 				  <div class="col-md-offset-4 col-md-4">
 						<button class="btn btn-block btn-primary" id="bouton_inserer_contenu" type="input">Insérer
@@ -154,8 +172,12 @@
 				</script>
 			</form>
 
+
 		</div>
-			
+		
+		
+	
+
 		<script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/includes/GestionBDD/ajouter_video/ajouter_video.js');?>">
 		</script>
     </body>
@@ -175,17 +197,28 @@
 		/////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
+		document.getElementById('url').placeholder = finalfolder+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
+
+		function unlockPath(){ 
+			document.getElementById('url').disabled = ''; 
+			document.getElementById('url').value = finalfolder;
+		}
+
+		function changeFinalFolder(selectObj){
+			if(selectObj.value!=""){ finalfolder = selectObj.value; }
+			document.getElementById('url').placeholder = finalfolder+"/...";
+			document.getElementById('url').value = "";
+			document.getElementById('url').disabled = 'disabled';
+		}
 
 		function commentUrl(){
 
 	        if(document.getElementById('path').value!=""){
 	            document.getElementById('chemin1').disabled = '';
-	            document.getElementById('url').disabled = '';
 	        }
 	        else{
 	            document.getElementById('chemin1').disabled = 'disabled';
-	            document.getElementById('url').disabled = 'disabled';
 	        }
 	    }
 
@@ -239,6 +272,7 @@
 				  // var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
 
 			 	  var cheminArrive = finalfolder + '/' + filename;
+			 	  document.getElementById('url').value = cheminArrive;
 				/*		 	  
 				  //console.log(cheminArrive);
 				  var tempad = document.location.toString()
