@@ -1101,10 +1101,13 @@ function generer_la_playlist(){
     //On met tout ca dans la table Playlist
     $titre=str_replace("'","''",$tab_titres);
     $artistes=str_replace("'","''",$tab_artistes);
+
 // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
     for($k=0;$k<15;$k++){ // remettre sizeof($titre) une fois pb résolu.
+
         $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$tab_genres[$k]')";
         $wpdb->query($inserer);
+        
     }
 
 

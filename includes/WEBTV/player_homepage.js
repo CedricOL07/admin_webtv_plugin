@@ -132,26 +132,18 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
   myPlaylist.remove(current-1);
 
   //On efface le morceau de la base de donnée également
-  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de
+  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
   $.post(
     ajaxurl,
     {
-      'action': 'effacer_video_jouee_player',
-      'videocourante':titre_previous_current_track
+      'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
+      'videocourante': titre_previous_current_track
     },
     function(response){
       console.log("video à ete effacé : " + response);
     }
   );
-/*  $.post(
-    ajaxurl,
-    {
-      'action': 'ajouter_video_dans_table_playlist_par_defaut_webtv_plugin'
-    },
-    function(response){
-      console.log("video à ete ajouté : " + response);
-    }
-  );*/
+
 
 });
 

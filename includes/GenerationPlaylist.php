@@ -425,33 +425,41 @@ function recup_videos($genre,$limit){
     $tabvideos=$wpdb->get_results($sql_query1);
 
     foreach($tabvideos as $id){
-        $id_video=$id->video_id;
-        $id_art1=$id->artiste_id;
+
+        $id_video = $id->video_id;
+        $id_art1 = $id->artiste_id;
         $tab_genres[] = $id->genre_id;
-        $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
-        $rms=$wpdb->get_results($query3);
-        foreach($rms as $re){
-            $art=$re->nom;
-            $tab_artistes[]=$art;
+
+        $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
+        $tab_donnees = $wpdb->get_results($query_artistes);
+
+        foreach($tab_donnees as $results){
+
+        $tab_artistes[] = $results->nom;
+
+        }
+
+        $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
+        $tab_donnees = $wpdb->get_results($query_url_titre);
+
+        foreach($tab_donnees as $s){
+
+            $tab_url[]=$s->url;
+
+            $tab_titres[]=$s->titre;
+
         }
     }
 
-    $sql_query2 = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video';";
-    $tab_donnees=$wpdb->get_results($sql_query2);
 
-    foreach($tab_donnees as $s){
 
-        $tab_url[]=$s->url;
 
-        $tab_titres[]=$s->titre;
-
-    }
 
 }
 
 
 //
-function recuperer_artistes_nouvelle_playlist(){
+/*function recuperer_artistes_nouvelle_playlist(){
     global $wpdb;
     global $tab_url;
     global $tab_artistes;
@@ -468,7 +476,7 @@ function recuperer_artistes_nouvelle_playlist(){
     }
     //$query="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='';";
     //var_dump($tab_artistes);
-}
+}*/
 
 
 
