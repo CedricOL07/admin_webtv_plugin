@@ -37,6 +37,7 @@ function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejaz
     global $tab_url;
     global $tab_titres;
     global $tab_artistes;
+    global $tab_genres;
     $poprock=$pourcentagepoprock;
     $hiphop=$pourcentagehiphop;
     $jazzblues=$pourcentagejazzblues;

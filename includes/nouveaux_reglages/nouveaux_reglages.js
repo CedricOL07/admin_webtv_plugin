@@ -957,7 +957,7 @@ $(document).ready(function(){
 
     /*
 *
-*--------------------------------------------------------   Boutons   ----------------------------------------------------------
+*-------------generer_la_playlist_par_defaut-------------------------------------------   Boutons   ----------------------------------------------------------
 *
 */
     /*
@@ -988,13 +988,13 @@ $(document).ready(function(){
         /*
             * --------------------------  VERIFICATION DES NOMS   -----------------------------------
             */
-
+console.log("PAR DEFAUT : "+pardefaut);
 
 
 
        for(var i = 0; i < tableau_noms_reglages_enregistres.length ; i++){
             if(tableau_noms_reglages_enregistres[i] == nom_reglage){
-                nom_disponible = false;
+                //nom_disponible = false;
             }
         }
         //à l'insertion du champ
@@ -1007,12 +1007,12 @@ $(document).ready(function(){
             alert('Le nom de réglage que vous avez entré  est déjà utilisé, veuillez en choisir un nouveau');
            return false;
         }else{
+console.log("PAR DEFAUT : "+pardefaut);
 
-
-            if( $('input[name=checkbox_par_defaut]').is(':checked') ){
+            if(1){ //$('input[name=checkbox_par_defaut]').is(':checked') ){
                 //Si il a choisi de mettre la playlist comme par défaut
                 pardefaut = true;
-              //  console.log("PAR DEFAUT ");
+                console.log("PAR DEFAUT : "+pardefaut);
 
 
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
@@ -1020,7 +1020,7 @@ $(document).ready(function(){
                     $.post(
                         ajaxurl,
                         {
-                            'action': 'traitement_infos_nouveaux_reglages',
+                            'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
@@ -1031,22 +1031,12 @@ $(document).ready(function(){
                             'pourcentage_chanson':tableau_pourcentages.chanson,
                             'pourcentage_autres':tableau_pourcentages.autres,
                             'nom_reglage':nom_reglage,
-                            'camembert_poprock':montantsliders.montant_poprock,
-                            'camembert_hiphop':montantsliders.montant_hiphop,
-                            'camembert_jazzblues':montantsliders.montant_jazz,
-                            'camembert_musiquemonde':montantsliders.montant_musiquemonde,
-                            'camembert_electro':montantsliders.montant_electro,
-                            'camembert_chanson':montantsliders.montant_chanson,
-                            'camembert_autres':montantsliders.montant_autres,
-                            'camembert_hardrock':montantsliders.montant_hardrock
-
                         },
                         function(response){
-                         //   console.log(response);
+                           console.log("azertyuio");
                         }
                     );
 
-                $('.wrapper').load(jsnouveaureglage.jsnouveaureglagepath);
 
 
                // return false;
