@@ -71,6 +71,9 @@ function enregistrer_reglage_par_defaut()
         if(isset($_POST['pourcentage_musiquemonde'])){
             $pourcentage_musique_monde=$_POST['pourcentage_musiquemonde'];
         }
+        if(isset($_POST['pourcentage_hardrock'])){
+            $pourcentage_hardrock=$_POST['pourcentage_hardrock'];
+        }
         if(isset($_POST['pourcentage_electro'])){
             $pourcentage_electro=$_POST['pourcentage_electro'];
         }
@@ -81,18 +84,20 @@ function enregistrer_reglage_par_defaut()
             $pourcentage_autres=$_POST['pourcentage_autres'];
         }
 
+
         if ($par_defaut == true){
           $effacer_ancienne_playlist_par_defaut="DELETE FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut='$pardefaut';";
           $select1=$wpdb->query($effacer_ancienne_playlist_par_defaut);
 
-          $inserer_nouvelle_playlist_par_defaut="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde,pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,ParDefaut) VALUES('$nom','$pourcentagepoprock','$pourcentagehiphop','$pourcentagejazzblues','$pourcentagemusiquemonde','$pourcentagehardrock','$pourcentageelectro','$pourcentagechanson','$pourcentageautres','$pardefaut');";
+          $inserer_nouvelle_playlist_par_defaut="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde,pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$par_defaut');";
 
           $select=$wpdb->query($inserer_nouvelle_playlist_par_defaut);
           wp_die();
 
         }
-        echo('reussi : ' . $par_defaut);
+        echo("reussi : " . $par_defaut);
         do_action('pluginwebtv_generer_la_playlist_par_defaut');
+
 
     }
 

@@ -988,13 +988,10 @@ $(document).ready(function(){
         /*
             * --------------------------  VERIFICATION DES NOMS   -----------------------------------
             */
-console.log("PAR DEFAUT : "+pardefaut);
-
-
 
        for(var i = 0; i < tableau_noms_reglages_enregistres.length ; i++){
             if(tableau_noms_reglages_enregistres[i] == nom_reglage){
-                //nom_disponible = false;
+                nom_disponible = false;
             }
         }
         //à l'insertion du champ
@@ -1007,14 +1004,14 @@ console.log("PAR DEFAUT : "+pardefaut);
             alert('Le nom de réglage que vous avez entré  est déjà utilisé, veuillez en choisir un nouveau');
            return false;
         }else{
-console.log("PAR DEFAUT : "+pardefaut);
 
-            if(1){ //$('input[name=checkbox_par_defaut]').is(':checked') ){
+			if($('input[name=checkbox_par_defaut]').is(':checked') ){
                 //Si il a choisi de mettre la playlist comme par défaut
                 pardefaut = true;
+
                 console.log("PAR DEFAUT : "+pardefaut);
-
-
+				
+					
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
 
                     $.post(
@@ -1033,7 +1030,7 @@ console.log("PAR DEFAUT : "+pardefaut);
                             'nom_reglage':nom_reglage,
                         },
                         function(response){
-                           console.log("azertyuio");
+                           console.log(response);
                         }
                     );
 
@@ -1164,6 +1161,7 @@ console.log("PAR DEFAUT : "+pardefaut);
         tableau_pourcentages.electro=pourcentageelectro;
         tableau_pourcentages.chanson=pourcentagechanson;
         tableau_pourcentages.autres=pourcentageautres;
+		
 
         return tableau_pourcentages;
     }
