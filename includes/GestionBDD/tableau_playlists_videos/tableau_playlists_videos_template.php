@@ -21,11 +21,10 @@
         </div>
       </div>
       <div class="row" id="tableau2" style="display:none">
-        <input type="text" class="form-control" id="rechercher" placeholder="Rechercher" />
         <table class="table table-bordered">
           <thead>
             <tr style="background-color:#F95D5D;color:black;"  id="tr0">
-              <th><label><input type="checkbox" onClick="toggles(this)" />Tout selectionner</label></th>
+              <th><label><input type="checkbox" onClick="toggles(this)" /> Tout selectionner</label></th>
 			  <th>Nom</th>
               <th>Poprock</th>
               <th>rap</th>
@@ -42,11 +41,8 @@
         </table>
       </div>
       <div class="row" style="display:none" id="button_line2">
-        <div class="col-md-offset-2 col-md-2">
-          <button type="button" class="btn btn-primary btn-lg" id="supprimer2">Supprimer</button>
-        </div>
-        <div class="col-md-offset-4 col-md-2">
-          <button type="button" class="btn btn-primary btn-lg" id="modifier2">Modifier</button>
+        <div class="col-md-offset-4 col-md-4">
+          <button type="button" class="btn btn-block btn-primary" " id="supprimer2">Supprimer</button>
         </div>
       </div>
     </div>

@@ -85,10 +85,10 @@
 					</div>
 
 					<div class="col-md-offset-3 col-md-2">
-					<label for="annee_prod">Année de production :</label>
+					<label for="annee_prod">Date de prestation :</label>
 					</div>
 					<div class="col-md-2">
-						<input type="text" class="form-control" name="annne_prod" id="annne_prod"  placeholder="Année production">
+						<input type="text" class="form-control" name="annne_prod" id="annne_prod"  placeholder="Date prestation">
 					</div>
 				</div>
 				<!-- Ligne 3 -->
@@ -126,7 +126,7 @@
 				<!-- Ligne 4 -->
 				<div class="row">
 					<div class="col-md-2">
-						<label for="path">Chemin complet :</label>
+						<label for="path">Chemin initial :</label>
 					</div>
 					<div class="col-md-2">
 						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
@@ -150,7 +150,7 @@
 									Parcourir <!-- &hellip; --> <input type="file" id="chemin1" style="display: none;" multiple> 
 								</span>
 							</label>
-							<input type="text" class="form-control input-sm" name="url" id="url" placeholder="..." onchange="changeFinalFolder(this)">
+							<input type="text" class="form-control input-sm" name="url" id="url" placeholder="..." onblur="changeFinalFolder(this)">
 						</div>
 					</div>
 				</div>
@@ -191,9 +191,12 @@
 		var finalfolder = localStorage.getItem("finalfolder");
 		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
 		{
-			finalfolder="C:/wamp64/www/wordpress/wp-content/uploads/2017/06";
+			finalfolder="http://localhost/wordpress/wp-content/uploads/2017/06";
 			localStorage.setItem("finalfolder", finalfolder);
 		}
+
+		// Si chemin en local : utiliser des anti-slash \
+		// Si chemin html (localhost...): utiliser des slash /
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -204,11 +207,14 @@
 		document.getElementById('url').placeholder = finalfolder+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
 
+		// Dévérouille le textfield du chemin par défaut lors de l'appui sur le bouton
 		function unlockPath(){ 
 			document.getElementById('url').disabled = ''; 
 			document.getElementById('url').value = finalfolder;
+			document.getElementById('url').focus();	// Met le focus sur le textField
 		}
 
+		// Met à jour le chemin par défaut au moment où on enlève le focus du textfield
 		function changeFinalFolder(selectObj){
 			if(selectObj.value!=""){ 
 				finalfolder = selectObj.value; 
@@ -219,8 +225,8 @@
 			document.getElementById('url').disabled = 'disabled';
 		}
 
+		// Active le bouton parcourir si on entre un chemin valide dans "chemin initial"
 		function commentUrl(){
-
 	        if(document.getElementById('path').value!=""){
 	            document.getElementById('chemin1').disabled = '';
 	        }
@@ -229,16 +235,11 @@
 	        }
 	    }
 
+	    // Met à jour le "chemin initial" 
 		function changePath(selectObj)
 		{
 			newpath = document.location.toString();
-		/*
-			var ind1 = newpath.indexOf('&filepath');
-			ind1>0 ? newpath = newpath.substr(0,ind1) : newpath = newpath; // Si il y a déja un filepath, on l'efface
-			newpath = newpath + '&filepath='+selectObj.value;
-			console.log(newpath);
-			history.pushState({path:this.IRL}, '', newpath);	// n'actualise pas la page tout de suite
-			*/
+
 			filepath = selectObj.value;
 			if (document.ajout.url.value != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
 			{
@@ -248,15 +249,15 @@
 			commentUrl();
 		}
 
+		// Met à jour les élément du POST pour la copie
 		function copier()
 		{
-			finalfolder = finalfolder.replace(/\//g, '\\');
+			//finalfolder = finalfolder.replace(/\//g, '\\');
 			document.getElementById("CHEMINARRIVE").value = finalfolder;
 			document.getElementById("FILEPATH").value = filepath;
 			document.getElementById("FILENAME").value = filename;
 
 			finalfolder = finalfolder.replace(/\\/g, '/');
-			
 		}
 
 		$(function() {

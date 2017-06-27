@@ -24,12 +24,12 @@
         <table class="table table-bordered">
           <thead>
             <tr style="background-color:#9191FA;color:black;"  id="tr0">
-              <th><label><input type="checkbox" onClick="toggle(this)" />Tout sélectionner</label></th>
+              <th><label><input type="checkbox" onClick="toggle(this)" /> Tout sélectionner</label></th>
               <th>Titre</th>
               <th>Artiste</th>
               <th>Album</th>
               <th class="col-md-2">Genre</th>
-              <th class="col-sm-1">Année</th>
+              <th class="col-sm-1">Date</th>
               <th class="col-sm-1">Qualité</th>
               <th class="col-md-3">URL</th>
             </tr>
