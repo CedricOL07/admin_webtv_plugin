@@ -7,7 +7,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+	    
+      
 	</head>
     <body>
 		<style type="text/css">
@@ -80,7 +81,7 @@
 					</div>
 					<div class="col-md-2">
 						<div class="input-group">
-							<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste">
+							<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste" />
 						</div>
 					</div>
 
@@ -88,7 +89,12 @@
 					<label for="annee_prod">Date de prestation :</label>
 					</div>
 					<div class="col-md-2">
-						<input type="text" class="form-control" name="annne_prod" id="annne_prod"  placeholder="Date prestation">
+					    <div class='input-group date' id='datetimepicker'>
+	                 		<input type='text' class="form-control" name="annne_prod" id='annne_prod' placeholder="Date prestation" />
+						    <span class="input-group-addon">
+	                        	<span class="glyphicon glyphicon-calendar"></span>
+                   		 	</span>
+                   		 </div>
 					</div>
 				</div>
 				<!-- Ligne 3 -->
@@ -200,9 +206,9 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
-		var newpath=" ";
-		var filename=" ";
-		var filepath=" ";
+		var newpath="";
+		var filename="";
+		var filepath="";
 		
 		document.getElementById('url').placeholder = finalfolder+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
@@ -257,10 +263,15 @@
 			document.getElementById("FILEPATH").value = filepath;
 			document.getElementById("FILENAME").value = filename;
 
-			finalfolder = finalfolder.replace(/\\/g, '/');
+			//finalfolder = finalfolder.replace(/\\/g, '/');
 		}
 
 		$(function() {
+
+			// Ouvre le calendrier lors de l'appui sur date
+			
+			
+
 			// Permet d'ouvrir la fenetre "parcourir" de l'explorateur
 			$(document).on('change', ':file', function() {
 			  var input = $(this),

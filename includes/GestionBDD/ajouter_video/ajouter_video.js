@@ -1,11 +1,18 @@
 
 $(document).ready(function(){
+	
+	
+	$( "#datetimepicker" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        timeFormat: 'dd/mm/yyyy'
+    });
 
-
+	
     $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
-		/* */
+		 
 		
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
@@ -20,7 +27,7 @@ $(document).ready(function(){
 		//console.log(genre);
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		
-			
+		
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
 
