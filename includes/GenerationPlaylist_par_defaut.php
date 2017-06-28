@@ -57,10 +57,10 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
     $tableaupourcentages[7] = $pourcentageautres;
 
 
-    foreach ($tableaupourcentages as $key_tableaupourcentages) {
+    for ($i=0; $i <sizeof($tableaupourcentages) ; $i++) {
 
-        $valeur_camembert=$key_tableaupourcentages;
-
+        $valeur_camembert=$tableaupourcentages[$i];
+        echo ($valeur_camembert);
         if ($i==0)
         {
             $genre_id=5; //correspond au Pop-rock
@@ -98,7 +98,6 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
         if($valeur_camembert<20){
 
           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1);
-          echo("test: " . $key_tableaupourcentages);
         }else{
             if($valeur_camembert<30){
 
@@ -155,13 +154,14 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
 */
 
 function recup_videos_playlist_par_defaut($genre,$limit){
-
     global $tab_artistes_id;
     global $wpdb;
     global $tab_url;
     global $tab_artistes;
     global $tab_titres;
     global $tab_genres;
+
+
 
     $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
     $tabvideos=$wpdb->get_results($sql_query1);
