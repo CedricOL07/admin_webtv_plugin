@@ -77,7 +77,7 @@ function scripts_gestion_contenu(){
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
     wp_enqueue_script('bootstrap_multiselectjs');
     wp_enqueue_style("bootstrap_multiselectcss",plugins_url('assets/css/bootstrap-multiselect.css',__FILE__) , FALSE);
-    
+
     //wp_register_script("gestionbddjs",  plugins_url("js/gestionbdd.js", __FILE__), FALSE);
     wp_enqueue_style("timepickercss",plugins_url('assets/css/timepicker.css',__FILE__) , FALSE);
     wp_register_script( 'datetimepickerjs',plugins_url('assets/js/dist/datetimepicker.js',__FILE__),FALSE);
@@ -446,8 +446,21 @@ function recuperer_videos_player_page_principale() {
     $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
+}
 
-
+function recuperer_nouvelle_video_player_page_principal(){
+    global $wpdb;
+    $max = 0;
+    $query_recup_id_nouvelle_video = "SELECT id FROM" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY ASC(); ";
+    $reponse_recup_id_nouvelle_video = $wpdb->$query_recup_id_nouvelle_video;
+    foreach ($reponse_recup_id_nouvelle_video as $key ) {
+      if ($max_id <= $key->id){
+        $max_id = $key->id;
+      }else{
+        $max_id = $max_id ;
+      }
+    }
+    echo ($max_id);
 }
 
 

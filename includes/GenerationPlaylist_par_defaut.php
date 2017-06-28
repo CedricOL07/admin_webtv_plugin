@@ -306,8 +306,8 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
         $reponse_artiste_video_a_ajouter_meme_genre = $wpdb -> get_var($query_artiste_video_a_ajouter_meme_genre);
       }
       //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
-      $query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
-      $reponse_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
+      $query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
+      $reponse_titre_url_genres_artistesvideo_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
 
 
       echo($reponse_id_videocourante_dans_playlist_par_defaut);

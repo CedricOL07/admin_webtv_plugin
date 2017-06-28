@@ -148,9 +148,16 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 });
 
 
+/*
+* Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+* Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+*/
+/*jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
+{*/
+
 
 // Ne pas repasser le meme morceaux + meme artiste
-
+/*
 jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
 
 
@@ -204,7 +211,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
       }
     }
   }
-
+*/
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
   var on_live=false;
@@ -251,5 +258,4 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
     }
   });
 
-  });
 });
