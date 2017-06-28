@@ -780,6 +780,7 @@ function generer_la_playlist(){
 
         $ldefaut=true;
         $queryydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut='$ldefaut';";
+        echo $ldefaut;
         $result13defaut=$wpdb->get_results($queryydefaut);
         foreach($result13defaut as $resdefaut){
 

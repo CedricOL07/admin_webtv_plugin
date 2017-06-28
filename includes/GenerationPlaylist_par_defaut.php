@@ -14,7 +14,7 @@
 
 
 add_action( 'pluginwebtv_generer_playlist_par_defaut', 'generer_playlist_par_defaut',10,11);
-add_action( 'pluginwebtv_recup_videos_playlist_par_defaut', 'recup_videos_playlist_par_defaut_playlist_par_defaut',15,2);
+add_action( 'pluginwebtv_recup_videos_playlist_par_defaut', 'recup_videos_playlist_par_defaut',15,2);
 add_action('wp_ajax_effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin','effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin' );
 add_action('wp_ajax_nouvelle_video_comparaison','nouvelle_video_comparaison' );
 
@@ -28,9 +28,7 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist_par_defaut_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight){
-
-
+function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight){
     global $tab_url;
     global $tab_titres;
     global $tab_artistes;
@@ -43,7 +41,6 @@ function generer_playlist_par_defaut_par_defaut($pourcentagepoprock,$pourcentage
     $electro=$pourcentageelectro;
     $chanson=$pourcentagechanson;
     $autres=$pourcentageautres;
-
     // Variables utiles
     $compteur=0;
     $genre_id;
@@ -60,9 +57,9 @@ function generer_playlist_par_defaut_par_defaut($pourcentagepoprock,$pourcentage
     $tableaupourcentages[7] = $pourcentageautres;
 
 
-    for($i=0;$i<sizeof($tableaupourcentages);$i++){
+    foreach ($tableaupourcentages as $key_tableaupourcentages) {
 
-        $valeur_camembert=$tableaupourcentages[$i];
+        $valeur_camembert=$key_tableaupourcentages;
 
         if ($i==0)
         {
@@ -101,6 +98,7 @@ function generer_playlist_par_defaut_par_defaut($pourcentagepoprock,$pourcentage
         if($valeur_camembert<20){
 
           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1);
+          echo("test: " . $key_tableaupourcentages);
         }else{
             if($valeur_camembert<30){
 
@@ -157,14 +155,15 @@ function generer_playlist_par_defaut_par_defaut($pourcentagepoprock,$pourcentage
 */
 
 function recup_videos_playlist_par_defaut($genre,$limit){
+
     global $tab_artistes_id;
+    global $wpdb;
     global $tab_url;
     global $tab_artistes;
     global $tab_titres;
-    global $wpdb;
     global $tab_genres;
-    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
 
+    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
     $tabvideos=$wpdb->get_results($sql_query1);
 
     foreach($tabvideos as $id){
@@ -172,7 +171,6 @@ function recup_videos_playlist_par_defaut($genre,$limit){
         $id_video = $id->video_id;
         $id_art1 = $id->artiste_id;
         $id_genres = $id->genre_id;
-
         $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
         $tab_donnees_genre = $wpdb->get_results($query_genre);
         foreach($tab_donnees_genre as $results)
@@ -191,6 +189,8 @@ function recup_videos_playlist_par_defaut($genre,$limit){
 
         $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
         $tab_donnees_url_titre = $wpdb->get_results($query_url_titre);
+
+
 
         foreach($tab_donnees_url_titre as $s){
 
@@ -221,6 +221,7 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
 
       }
     }
+
       //-------Tableau des titres de la playlist par defaut chargé ------
 
     //fabrication du tableau des 15 clips vidéos de la playlist par défaut
@@ -243,7 +244,7 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
     if ($titre_nouvelle_video == NULL){
       $titre_nouvelle_video = $titre_video_courante;
     }
-    echo($titre_nouvelle_video);
+
     unset($tab_titre_video_meme_genre_video_courante);// supprime le tableau des videos ayant le meme genre afin de le réinitialiser à chaque fois.
     unset($tab_titre_playlist_par_defaut);// supprime le tableau des 15 clips de la playlist par defaut afin de le réinitialiser à chaque fois.
 
@@ -270,6 +271,10 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     //récupération de l'id de la video courante.
     $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
     $reponse_id_video_courante = $wpdb -> get_var($query_id_video_courante);
+
+    // recupération de l'id de la video dans la table playlist par defaut.
+    $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
+    $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
 
 
     //Récupération de l'id du genre de la vidéo courante
@@ -304,7 +309,9 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       $query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','ajouté')";
       $reponse_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
 
-      $query="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
+
+      echo($reponse_id_videocourante_dans_playlist_par_defaut);
+      $query="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_id_videocourante_dans_playlist_par_defaut';";
       $wpdb->query($query);
 }
 

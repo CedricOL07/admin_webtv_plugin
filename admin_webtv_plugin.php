@@ -264,7 +264,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;";
 
 
-    $creer_table_playlist="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin` (
+    $creer_table_defaut_playlist="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin` (
     `id` int(255) NOT NULL,
     `titre` varchar(255) NOT NULL,
     `url` varchar(255) NOT NULL,
@@ -272,10 +272,9 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `genre` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-    $alter_table_genre=" ALTER TABLE `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin`
+    $alter_table_defaut_playlist=" ALTER TABLE `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin`
         ADD UNIQUE (id),
     MODIFY `id` int(255) NOT NULL AUTO_INCREMENT";
-
 
     $creer_table_playlist_clip="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlistclip_webtv_plugin` (
         `nom` varchar(255) NOT NULL,
@@ -381,7 +380,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($creer_table_annee);
     $wpdb->query($creer_table_artiste);
     $wpdb->query($creer_table_genre);
-    $wpdb->query($creer_table_playlist);
+    $wpdb->query($creer_table_defaut_playlist);
     $wpdb->query($creer_table_playlists_enregistrees);
     $wpdb->query($creer_table_qualite);
     $wpdb->query($creer_table_relation);
@@ -389,7 +388,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($creer_table_playlist_clip);
 
     $wpdb->query($remplir_table_genre);
-    $wpdb->query($remplir_table_genre);
+    $wpdb->query($remplir_table_qualite);
 
 
 //Mise en place des clés
@@ -400,7 +399,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($alter_table_qualite);
     $wpdb->query($alter_table_videos);
     $wpdb->query($alter_table_relation);
-
+    $wpdb->query($alter_table_defaut_playlist);
 }
 register_activation_hook(__FILE__, 'creation_tables_plugin');
 

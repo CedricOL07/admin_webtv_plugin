@@ -973,7 +973,7 @@ $(document).ready(function(){
     $("#bouton_enregistrer_reglage").click(function(){
 
 
-        var pardefaut = false;
+        var pardefaut = 0;
         var artiste_mis_en_avant = artiste_choisi;
         var pubsinternes = pubs_internes;
         var pubsexternes = pubs_externes;
@@ -1003,15 +1003,12 @@ $(document).ready(function(){
 
             alert('Le nom de réglage que vous avez entré  est déjà utilisé, veuillez en choisir un nouveau');
            return false;
-        }else{
+        }
+        else{
+      			if($('input[name=checkbox_par_defaut]').is(':checked') ){
+                      //Si il a choisi de mettre la playlist comme par défaut
+                    pardefaut = 1;
 
-			if($('input[name=checkbox_par_defaut]').is(':checked') ){
-                //Si il a choisi de mettre la playlist comme par défaut
-                pardefaut = true;
-
-                console.log("PAR DEFAUT : "+pardefaut);
-				
-					
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
 
                     $.post(
@@ -1033,12 +1030,9 @@ $(document).ready(function(){
                            console.log(response);
                         }
                     );
-
-
-
                // return false;
             } else {
-
+                    pardefaut = 0;
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date
                     if( $('#bouton_voir_premiere_date_disponible').is(':disabled')){
@@ -1161,7 +1155,7 @@ $(document).ready(function(){
         tableau_pourcentages.electro=pourcentageelectro;
         tableau_pourcentages.chanson=pourcentagechanson;
         tableau_pourcentages.autres=pourcentageautres;
-		
+
 
         return tableau_pourcentages;
     }
