@@ -71,6 +71,7 @@ poster: "http://www.jplayer.org/video/poster/Incredibles_Teaser_640x272.png"
 
 function generer_la_playlist(){
   var tableau_donnees= new Array();
+  var artiste;
   $.ajax({
     url: ajaxurl,
     data:{
@@ -81,9 +82,9 @@ function generer_la_playlist(){
       //console.log(data);
       $.each(data.data, function(index, value) {
         //On va récupérer le nom de l'artiste pour chaque titre
-        var artiste;
+
         var title=value.titre;
-        $.post(
+        /*$.post(
           ajaxurl,
           {
             'action': 'recuperer_artiste_with_title',
@@ -94,13 +95,13 @@ function generer_la_playlist(){
 
             artiste=response.data;
             console.log(artiste);
-            myPlaylist.add({
-              title:value.titre,
-              artist:artiste,
-              m4v:value.url
-            });
+
           }
-        );
+        );*/
+        myPlaylist.add({
+          title:value.titre,
+          m4v:value.url
+        });
         //console.log(value.url);
         myPlaylist.play();
       });
@@ -140,7 +141,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       'videocourante': titre_previous_current_track
     },
     function(response){
-      console.log("video à ete effacé : " + response);
+      //console.log("video à ete effacé : " + response);
     }
   );
 
@@ -152,8 +153,30 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
 * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
 */
-/*jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
-{*/
+jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
+{
+
+  $.ajax({
+    url: ajaxurl,
+    data:{
+      'action' : 'recuperer_nouvelle_video_player_page_principal'
+    },
+    dataType: 'JSON',
+    success: function(data) {
+      //console.log("data : "+ data);
+        $.each(data.data, function(index, value) {
+            titre= value.titre;
+            //Permet de générer la nouvelle video.
+            myPlaylist.add({
+            title:value.titre,
+            m4v:value.url
+          });
+      });
+      console.log(titre);
+    }
+  });
+
+});
 
 
 // Ne pas repasser le meme morceaux + meme artiste

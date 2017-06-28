@@ -10,7 +10,10 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
-
+// les add_action ('wp_ajax....', '...') permettes de déclarer les fonction PHP dans touts wordpress afin que les fonction ajax dans les fichiers javascript puissent les réutiliser
+add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
+add_action( 'wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
+add_action( 'wp_ajax_nopriv_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
 
 //do_action('pluginwebtv_maj_playlist_table');
 // ce sont des fichiers avec seulement des fonctions (pas de html)
@@ -448,11 +451,13 @@ function recuperer_videos_player_page_principale() {
     wp_send_json_success($result);
 }
 
-function recuperer_nouvelle_video_player_page_principal(){
+ function recuperer_nouvelle_video_player_page_principal(){
     global $wpdb;
-    $max = 0;
-    $query_recup_id_nouvelle_video = "SELECT id FROM" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY ASC(); ";
-    $reponse_recup_id_nouvelle_video = $wpdb->$query_recup_id_nouvelle_video;
+    $max_id = 0;
+
+    //Phase obligatoire pour connaitre l'id de la nouvelle video car celui ci est générer automatiquement lors de l'insertion
+    $query_recup_id_nouvelle_video = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin; ";
+    $reponse_recup_id_nouvelle_video = $wpdb->get_results($query_recup_id_nouvelle_video);
     foreach ($reponse_recup_id_nouvelle_video as $key ) {
       if ($max_id <= $key->id){
         $max_id = $key->id;
@@ -460,12 +465,16 @@ function recuperer_nouvelle_video_player_page_principal(){
         $max_id = $max_id ;
       }
     }
-    echo ($max_id);
+    //echo ("max-id : ". $max_id);
+
+    $query_recup_titre_url_nouvelle_video = "SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+    $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
+
+    wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
+
 }
 
 
-add_action( 'wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
-add_action( 'wp_ajax_nopriv_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
 
 
 
