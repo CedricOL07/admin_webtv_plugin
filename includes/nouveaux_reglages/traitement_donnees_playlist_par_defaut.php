@@ -120,7 +120,7 @@ function generer_la_playlist_par_defaut(){
     global $tab_artistes;
     $tableau_dates_debut=array();
     $tableau_dates_fin=array();
-    
+
     //On chope les playlists enregistrés, on tri par date et quand creneau libre on met playlist defaut
     $ldefaut=1;
     //$querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut='$ldefaut';";
@@ -157,7 +157,7 @@ function generer_la_playlist_par_defaut(){
     $genres=str_replace("'","''",$tab_genres);
 
     // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
-    for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+    for($k=0;$k<15;$k++){ // remettre sizeof($titre) une fois pb résolu.
 
         $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]')";
         $wpdb->query($inserer);

@@ -56,83 +56,86 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
     $tableaupourcentages[6] = $pourcentagechanson;
     $tableaupourcentages[7] = $pourcentageautres;
 
+  while (sizeof($tab_titres)<15){
+      for ($i=0; $i <sizeof($tableaupourcentages) ; $i++) {
 
-    for ($i=0; $i <sizeof($tableaupourcentages) ; $i++) {
+          $valeur_camembert=$tableaupourcentages[$i];
 
-        $valeur_camembert=$tableaupourcentages[$i];
-        echo ($valeur_camembert);
-        if ($i==0)
-        {
-            $genre_id=5; //correspond au Pop-rock
-        }
-        if ($i==1)
-        {
-            $genre_id=3; //correspond au Hip-hop & Reggae
-        }
-        if ($i==2)
-        {
-            $genre_id=7; //correspond au Jazz & Blues
-        }
-        if ($i==3)
-        {
-            $genre_id=9; //correspond au Musique du monde
-        }
-        if ($i==4)
-        {
-            $genre_id=2; //correspond au Hard-rock & metal
-        }
-        if ($i==5)
-        {
-            $genre_id=4; //correspond au Musique électronique
-        }
-        if ($i==6)
-        {
-            $genre_id=8; //correspond à Chanson Française
-        }
-        if ($i==7)
-        {
-            $genre_id=12; //correspond à Autre
-        }
+          if ($i==0)
+          {
+              $genre_id=5; //correspond au Pop-rock
+          }
+          if ($i==1)
+          {
+              $genre_id=3; //correspond au Hip-hop & Reggae
+          }
+          if ($i==2)
+          {
+              $genre_id=7; //correspond au Jazz & Blues
+          }
+          if ($i==3)
+          {
+              $genre_id=9; //correspond au Musique du monde
+          }
+          if ($i==4)
+          {
+              $genre_id=2; //correspond au Hard-rock & metal
+          }
+          if ($i==5)
+          {
+              $genre_id=4; //correspond au Musique électronique
+          }
+          if ($i==6)
+          {
+              $genre_id=8; //correspond à Chanson Française
+          }
+          if ($i==7)
+          {
+              $genre_id=12; //correspond à Autre
+          }
 
+          if ( $valeur_camembert > 0){
 
-        if($valeur_camembert<20){
+            if($valeur_camembert<20){
 
-          do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1);
-        }else{
-            if($valeur_camembert<30){
+              do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1);
 
-               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,2);
             }else{
-                if($valeur_camembert<40){
-                   do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,3);
-                }else{
-                    if($valeur_camembert<50){
-                       do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,4);
+                if($valeur_camembert<30){
 
+                   do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,2);
+                }else{
+                    if($valeur_camembert<40){
+                       do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,3);
                     }else{
-                        if($valeur_camembert<60){
-                           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,5);
+                        if($valeur_camembert<50){
+                           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,4);
 
                         }else{
-                            if($valeur_camembert<70){
-                              do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,6);
+                            if($valeur_camembert<60){
+                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,5);
 
                             }else{
-                                if($valeur_camembert<80){
-                                  do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,7);
+                                if($valeur_camembert<70){
+                                  do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,6);
 
                                 }else{
-                                    if($valeur_camembert<90){
-                                        do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,8);
+                                    if($valeur_camembert<80){
+                                      do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,7);
 
                                     }else{
-                                        if($valeur_camembert<100){
-                                            do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,9);
-                                        }
-                                        if($valeur_camembert==100){
+                                        if($valeur_camembert<90){
+                                            do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,8);
 
-                                           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,12);
+                                        }else{
+                                            if($valeur_camembert<100){
+                                                do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,9);
+                                            }
+                                            if($valeur_camembert==100){
 
+                                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,12);
+
+                                            }
                                         }
                                     }
                                 }
@@ -140,12 +143,12 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
                         }
                     }
                 }
-            }
-        }// -----\ Fin du else /----
-    }//----\ Fin du for($i=0;$i<sizeof($tableaupourcentages);$i++) /--------
+            }// -----\ Fin du else /----
+        }
+      }//----\ Fin du for($i=0;$i<sizeof($tableaupourcentages);$i++) /--------
 
+  }
 }
-
 /*
 *  Fonction : Récupere un nombre $limt de vidéos du genre $genre en ajoutant l'url et le titre au tableau tab_url et tab_titres
 *  Deplus la fonction trie les artistes et les genres en fonction des titres et des url des clips à fin de remplir correctement
@@ -162,8 +165,7 @@ function recup_videos_playlist_par_defaut($genre,$limit){
     global $tab_genres;
 
 
-
-    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'  LIMIT $limit;";
+    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre' ORDER BY RAND()  LIMIT $limit;";
     $tabvideos=$wpdb->get_results($sql_query1);
 
     foreach($tabvideos as $id){
@@ -189,8 +191,6 @@ function recup_videos_playlist_par_defaut($genre,$limit){
 
         $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
         $tab_donnees_url_titre = $wpdb->get_results($query_url_titre);
-
-
 
         foreach($tab_donnees_url_titre as $s){
 
@@ -306,7 +306,7 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
         $reponse_artiste_video_a_ajouter_meme_genre = $wpdb -> get_var($query_artiste_video_a_ajouter_meme_genre);
       }
       //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
-      $query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','ajouté')";
+      $query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
       $reponse_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
 
 
