@@ -5,10 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/assets/js/dist/bootstrap-multiselect.js');?>"></script>
         <link rel="stylesheet" href="<?php echo plugins_url('admin_webtv_plugin/assets/css/bootstrap-multiselect.css');?>" type="text/css"/>
 

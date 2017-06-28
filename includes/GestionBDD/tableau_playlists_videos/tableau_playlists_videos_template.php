@@ -46,7 +46,6 @@
         </div>
       </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos.js');?>"></script>
     <script type='text/javascript'>

@@ -98,7 +98,6 @@ function enregistrer_reglage_par_defaut()
         echo("reussi : " . $par_defaut);
         do_action('pluginwebtv_generer_la_playlist_par_defaut');
 
-
     }
 
 function recuperer_programmation(){
