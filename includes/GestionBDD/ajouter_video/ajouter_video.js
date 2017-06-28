@@ -33,6 +33,8 @@ $(document).ready(function(){
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
 		 
 		
+		//console.log("Entrée dans le js");
+		
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
 		var artiste_video=$('#artiste').val();
@@ -43,13 +45,13 @@ $(document).ready(function(){
 		var finalfolder=$('#CHEMINARRIVE').val();
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
-		console.log(genre);
+		//console.log(genre);
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		
 		
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
-
+			console.log("sous-menu 1");
 			$.post(
 				ajaxurl,
 				{
@@ -70,6 +72,9 @@ $(document).ready(function(){
 				},
 			function(data)
 				{
+					
+			console.log("sous-menu 2");
+					console.log(finalfolder);
 					console.log("existante :" + data);
 					var newpath = document.location.toString();
 					var ind1 = newpath.indexOf('&filepath');
@@ -80,6 +85,8 @@ $(document).ready(function(){
 					
 			
 		}else{
+			
+			console.log("sous-menu 3");
 			if(titre == ''){
 				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
 					console.log('PAS DE TITRE');

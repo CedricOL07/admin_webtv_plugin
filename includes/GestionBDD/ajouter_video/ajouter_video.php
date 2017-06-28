@@ -41,23 +41,64 @@ function ajouter_video(){
     $album = $_POST['myParams']['album'];
     $annee_prod = $_POST['myParams']['annee'];
     $qualite = $_POST['myParams']['qualite'];   
+    list($aaaa,$mm,$jj)=explode('/',$annee_prod);
+    $annee_prod = $jj.'-'.$mm.'-'.$aaaa;       // Met la date au format aaaa-mm-jj
 
 
     // Copie de la video 
     $cheminArrive = $_POST['myParams']['finalfolder'];
   	$path = $_POST['myParams']['filepath'];
   	$fich = $_POST['myParams']['filename'];
-  	$cheminArrive = str_replace("\\\\", "\\", $cheminArrive);
-  	$path = str_replace("\\\\", "\\", $path);
+  	$cheminArrive = str_replace("/", "\\", $cheminArrive);
+    //$domaine = substr($cheminArrive, 0, strrpos($cheminArrive, '/'));
+  	//$path = str_replace("\\\\", "\\", $path);
+    $path = str_replace("\\", "/", $path);
+    $fich2 = str_replace(" ", "_", $fich);
+/*
+    $srcFile = $path;
+    $dstFile = str_replace($domaine, "", $cheminArrive);
+
+    // Create connection the the remote host
+    $conn = ssh2_connect($domaine, 22);
+
+    // Create SFTP session
+    $sftp = ssh2_sftp($conn);
+    $sftpStream = @fopen('ssh2.sftp://'.$sftp.$dstFile, 'w');
+
+    try {
+
+        if (!$sftpStream) {
+            throw new Exception("Could not open remote file: $dstFile");
+        }
+        
+        $data_to_send = @file_get_contents($srcFile);
+        
+        if ($data_to_send === false) {
+            throw new Exception("Could not open local file: $srcFile.");
+        }
+        
+        if (@fwrite($sftpStream, $data_to_send) === false) {
+            throw new Exception("Could not send data from file: $srcFile.");
+        }
+        
+        fclose($sftpStream);
+                        
+    } catch (Exception $e) {
+        error_log('Exception: ' . $e->getMessage());
+        fclose($sftpStream);
+    }
+*/
+
 
   	if($path && $fich)
   	{
-  		copy($path."\\".$fich, $cheminArrive."\\".$fich);
+        if (!file_exists($cheminArrive)) {
+            mkdir($cheminArrive, 0777, true);
+        }
+        copy(realpath($path)."\\".$fich, realpath($cheminArrive)."\\".$fich);
   	}
-				  	
 
-
-    $annee_prod = (int)($annee_prod);
+/* */				  	
 
     //echo "Fonction ajouter_video";
     /*$titre = $_POST['myParams']['titre'];
@@ -87,7 +128,7 @@ function ajouter_video(){
     }
 
 
-    if ($existante=="false" && is_int($annee_prod))
+    if ($existante=="false")
     {
     	//Remplissage tableau videos_webtv_plugin
  
@@ -144,12 +185,12 @@ function ajouter_video(){
 
 
     	// Année
-    	$req_annee="SELECT id FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE annee =".$annee_prod." LIMIT 1;"; 
+    	$req_annee="SELECT id FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE annee = '".$annee_prod."' LIMIT 1;"; 
     	$resultat=$wpdb->get_results($req_annee);
     	foreach($resultat as $result){
         	$annee_id = $wpdb->get_var($req_annee);
         	$is_annee="true";
-    	}
+    	} 
     	if ($is_annee=="false")
     	{
     		$inserer_annee="INSERT INTO " . $wpdb->prefix . "annee_webtv_plugin(annee) VALUES('$annee_prod');";
@@ -177,7 +218,9 @@ function ajouter_video(){
 /* */    
     }
     
-    echo $titre." : ".$existante;
+    //echo $titre." : ".$existante;
+
+    echo ("copie de : " .realpath($path)."\\".$fich . " - Dans - ". realpath($cheminArrive)."\\".$fich. " :: ". $cheminArrive);
     wp_die();
 }
 

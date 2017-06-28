@@ -193,10 +193,29 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
 
+		localStorage.removeItem("finalfolder");
 		var finalfolder = localStorage.getItem("finalfolder");
 		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
 		{
-			finalfolder="http://localhost/wordpress/wp-content/uploads/2017/06";
+			/*
+			var domaine = document.location.toString();
+
+			if (domaine.indexOf("//")>=0)
+			{
+				var deb = domaine.indexOf("//")+2; 	// Premier indice
+				domaine = domaine.substr(deb);		// Supprime le 'http://' ou 'https://'
+			}
+			var fin = domaine.indexOf('/')>0? domaine.indexOf('/') : 0	// Prend tout ce qui est avant le premier '/' si existant, rien sinon
+			domaine = domaine.substr(0,fin); 
+			console.log(domaine);
+			finalfolder=domaine+"/wordpress/wp-content/uploads/2017/06";
+*/
+			var domaine = `<?php echo addslashes(__DIR__ )?>`;
+			var deb = domaine.indexOf("wordpress"); 
+			domaine = domaine.substring(0,deb);		// Récupère le chemin local
+			console.log(domaine);
+			finalfolder=domaine+"wordpress\\wp-content\\uploads\\2017\\07";
+
 			localStorage.setItem("finalfolder", finalfolder);
 		}
 
@@ -209,7 +228,7 @@
 		var filename="";
 		var filepath="";
 		
-		document.getElementById('url').placeholder = finalfolder+"/...";
+		document.getElementById('url').placeholder = finalfolder+"\\...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
 
 		// Dévérouille le textfield du chemin par défaut lors de l'appui sur le bouton
@@ -225,7 +244,11 @@
 				finalfolder = selectObj.value; 
 				localStorage.setItem("finalfolder", finalfolder);
 			}
-			document.getElementById('url').placeholder = finalfolder+"/...";
+			if (filename != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
+			{
+				document.location.href = document.location.toString();;
+			}
+			document.getElementById('url').placeholder = finalfolder+"\\...";
 			document.getElementById('url').value = "";
 			document.getElementById('url').disabled = 'disabled';
 		}
@@ -246,7 +269,7 @@
 			newpath = document.location.toString();
 
 			filepath = selectObj.value;
-			if (document.ajout.url.value != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
+			if (filename != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
 			{
 				document.location.href = newpath;
 			}
@@ -288,7 +311,7 @@
 				  // var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
 
 			 	  var cheminArrive = finalfolder + '/' + filename;
-			 	  document.getElementById('url').value = cheminArrive;
+			 	  document.getElementById('url').placeholder = cheminArrive;
 				/*		 	  
 				  //console.log(cheminArrive);
 				  var tempad = document.location.toString()
