@@ -157,7 +157,7 @@
                                  		<input type="button" name="select_pubs_externes" id="select_pubs_externes" value="select"> 
                                 		</input>
 
-                                		<input type="button" name="supprimer_pubs_externes" id="supprimer_pubs_externes" value="supprimer avec le même nom de la pub avec la liste">
+                                		<input type="button" name="supprimer_pubs_externes" id="supprimer_pubs_externes" value="supprimer">
                                 		</input>
                                 	</div>
 
@@ -183,7 +183,7 @@
                                  	<input type="button" name="select_pubs_internes" id="select_pubs_internes" value="select"> 
                                 	</input>
 
-                                	<input type="button" name="supprimer_pubs_internes" id="supprimer_pubs_internes" value="supprimer avec le même nom de la pub avec la liste">
+                                	<input type="button" name="supprimer_pubs_internes" id="supprimer_pubs_internes" value="supprimer">
                                 	</input>
                                 </div>
                              </div>
@@ -215,7 +215,7 @@
                                 	 <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select"> 
                                 	 </input>
 
-                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer avec le même nom de l'artiste avec la liste">
+                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer">
 
                                 	 <!--<input type="button" name="supprimer_artistes_higlight_le_dernier_selectionne" id="supprimer_artistes_higlight_le_dernier_selectionne" value="supprimer le dernier selectionné">-->
 

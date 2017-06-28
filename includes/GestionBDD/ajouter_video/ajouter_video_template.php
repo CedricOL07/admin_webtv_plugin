@@ -3,11 +3,13 @@
     <head>
         <title>Gestion du contenu</title>
         <meta charset="utf-8">
+        <meta http-equiv="Cache-control" content="no-cache">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+	    
+      
 	</head>
     <body>
 		<style type="text/css">
@@ -80,7 +82,7 @@
 					</div>
 					<div class="col-md-2">
 						<div class="input-group">
-							<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste">
+							<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste" />
 						</div>
 					</div>
 
@@ -88,7 +90,7 @@
 					<label for="annee_prod">Date de prestation :</label>
 					</div>
 					<div class="col-md-2">
-						<input type="text" class="form-control" name="annne_prod" id="annne_prod"  placeholder="Date prestation">
+	                 	<input type='text' class="form-control" name="annne_prod" id='annne_prod' placeholder="Date prestation" />
 					</div>
 				</div>
 				<!-- Ligne 3 -->
@@ -132,10 +134,7 @@
 						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
 					</div>
 
-					<div class="col-md-offset-5 col-md-2">
-						<button class="btn btn-block btn-sm btn-secondary" id="bouton_modifier_url_par_defaut" type="button" onclick="unlockPath()"> Modifier URL par défaut
-						</button>
-					</div>
+					
 				</div>
 
 				<!-- Ligne 5 -->
@@ -143,7 +142,7 @@
 					<div class="col-md-2">
 						<label for="url">URL Vidéo :</label>
 					</div>
-					<div class="col-md-9">
+					<div class="col-md-7">
 						<div class="input-group">
 							<label class="input-group-btn">
 								<span class="btn btn-sm btn-primary">
@@ -152,6 +151,10 @@
 							</label>
 							<input type="text" class="form-control input-sm" name="url" id="url" placeholder="..." onblur="changeFinalFolder(this)">
 						</div>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-block btn-sm btn-secondary" id="bouton_modifier_url_par_defaut" type="button" onclick="unlockPath()"> Modifier URL par défaut
+						</button>
 					</div>
 				</div>
 
@@ -165,6 +168,8 @@
 						</button>
 				  </div>
 				</div>
+
+		        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 				<script type="text/javascript"> 
 					document.getElementById('chemin1').disabled = 'disabled'; 
@@ -200,9 +205,9 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
-		var newpath=" ";
-		var filename=" ";
-		var filepath=" ";
+		var newpath="";
+		var filename="";
+		var filepath="";
 		
 		document.getElementById('url').placeholder = finalfolder+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
@@ -257,10 +262,13 @@
 			document.getElementById("FILEPATH").value = filepath;
 			document.getElementById("FILENAME").value = filename;
 
-			finalfolder = finalfolder.replace(/\\/g, '/');
+			//finalfolder = finalfolder.replace(/\\/g, '/');
 		}
 
 		$(function() {
+
+			
+
 			// Permet d'ouvrir la fenetre "parcourir" de l'explorateur
 			$(document).on('change', ':file', function() {
 			  var input = $(this),

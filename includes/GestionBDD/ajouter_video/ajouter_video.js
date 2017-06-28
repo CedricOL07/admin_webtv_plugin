@@ -1,11 +1,37 @@
 
 $(document).ready(function(){
-
-
+	
+	
+	// Ouvre le calendrier lors de l'appui sur date
+	$.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
+		closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
+		prevText: '<Préc', prevStatus: 'Voir le mois précédent',
+		nextText: 'Suiv>', nextStatus: 'Voir le mois suivant',
+		currentText: 'Courant', currentStatus: 'Voir le mois courant',
+		monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
+		'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+		monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
+		'Jul','Aoû','Sep','Oct','Nov','Déc'],
+		monthStatus: 'Voir un autre mois', yearStatus: 'Voir un autre année',
+		weekHeader: 'Sm', weekStatus: '',
+		dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+		dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+		dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
+		dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
+		dateFormat: 'dd/mm/yy', firstDay: 0, 
+		initStatus: 'Choisir la date', isRTL: false};
+	$.datepicker.setDefaults($.datepicker.regional['fr'])
+	$( '#annne_prod' ).datepicker({
+		defaultDate: "+1w",
+		changeMonth: true,
+		format: 'dd/mm/yyyy',
+		language: 'fr'
+	});
+			
     $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
-		/* */
+		 
 		
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
@@ -17,10 +43,10 @@ $(document).ready(function(){
 		var finalfolder=$('#CHEMINARRIVE').val();
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
-		//console.log(genre);
+		console.log(genre);
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		
-			
+		
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
 
