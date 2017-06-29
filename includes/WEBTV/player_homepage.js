@@ -128,7 +128,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			//console.log("video à ete effacé : " + response);
+			console.log( response);
 		}
 	);
 
@@ -150,16 +150,17 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     },
     dataType: 'JSON',
     success: function(data) {
-      //console.log("data : "+ data);
+      //console.log("data : "+ data.titre);
         $.each(data.data, function(index, value) {
             titre= value.titre;
             //Permet de générer la nouvelle video.
+            console.log(value.id);
             myPlaylist.add({
-				title:value.titre,
-				m4v:value.url
-			});
-		});
-        console.log(titre);
+      				title:value.titre,
+      				m4v:value.url
+			      });
+		    });
+
     }
   });
 
@@ -175,7 +176,9 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
   playlist        = myPlaylist.playlist;
 
 
-  jQuery.each(playlist, function (index, obj){
+  jQuery.e
+      });
+      if(ach(playlist, function (index, obj){
 
     if (obj.title==event.jPlayer.status.media.title && index<current+19 && index!=current && bool2 ==false && index !=0 ){
       bool2=true;
@@ -220,8 +223,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
 
       }
     }
-  }
-*/
+      });
+      if(
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
   var on_live=false;

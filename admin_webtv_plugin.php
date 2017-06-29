@@ -13,7 +13,7 @@ define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 // les add_action ('wp_ajax....', '...') permettes de déclarer les fonction PHP dans touts wordpress afin que les fonction ajax dans les fichiers javascript puissent les réutiliser
 add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 add_action( 'wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
-add_action( 'wp_ajax_nopriv_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
+add_action( 'pluginwebtv_tri_playlist_par_defaut_webtv_plugin','tri_playlist_par_defaut_webtv_plugin');
 
 //do_action('pluginwebtv_maj_playlist_table');
 // ce sont des fichiers avec seulement des fonctions (pas de html)
@@ -148,7 +148,7 @@ function creer_page_webtv(){
 
 }
 add_shortcode('webtvlefil' , 'creer_page_webtv' );
-
+/*
 function shortcode_plugin_telecom(){
     wp_enqueue_script("playerpagejs",  plugins_url("admin_webtv_plugin/includes/WEBTV/player_page.js", __FILE__), FALSE);
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
@@ -163,7 +163,7 @@ function shortcode_plugin_telecom(){
 }
 
 add_shortcode('webtvtelecom' , 'shortcode_plugin_telecom' );
-
+*/
 function chargement_jquery_cdn()
 {
     wp_deregister_script('jquery');
@@ -442,15 +442,29 @@ register_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
 
 
 // A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
+/*function tri_playlist_par_defaut_webtv_plugin(){
+  global $wpdb;
+
+  $query_tri_asc="SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
+  $wpdb->query($query_tri_asc);
+
+}
+*/
 
 function recuperer_videos_player_page_principale() {
-    do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
-    $query="SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
+    $query="SELECT id,titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
+
 }
 
+
+/*
+*Fonction : Permet de trouver le max id d'une video dans la table playlist par defaut.
+*Très utile pour la fonction situé dans le player_homepage.js permettant d'ajouter
+*lA dernier video ajouté dans la playlist.
+*/
  function recuperer_nouvelle_video_player_page_principal(){
     global $wpdb;
     $max_id = 0;
@@ -473,16 +487,5 @@ function recuperer_videos_player_page_principale() {
     wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 ?>

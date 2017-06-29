@@ -272,7 +272,7 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
     $reponse_id_video_courante = $wpdb -> get_var($query_id_video_courante);
 
-    // recupération de l'id de la video dans la table playlist par defaut.
+    // recupération de l'id de la video courante dans la table playlist par defaut car les id sont différents.
     $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
     $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
 
@@ -309,10 +309,15 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       $query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
       $reponse_titre_url_genres_artistesvideo_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
 
+      //Très utile afin d'éviter la sélection d'un doublon entre la video courante et les videos avec un titre similaire
+      $query_select_min_id_de_video_courante = "SELECT MIN(id) FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' ";
+      $reponse_select_min_id_de_video_courante = $wpdb->get_var($query_select_min_id_de_video_courante);
 
-      $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_id_videocourante_dans_playlist_par_defaut';";
+      //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
+      $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
       $wpdb->query($query_del_titre_video_courante);
 
+      echo("id video courante ". $reponse_select_min_id_de_video_courante);
       $query_tri_asc="SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY ASC();";
       $wpdb->query($query_tri_asc);
 }
