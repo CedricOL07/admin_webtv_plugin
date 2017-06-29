@@ -193,7 +193,6 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
 
-		localStorage.removeItem("finalfolder");
 		var finalfolder = localStorage.getItem("finalfolder");
 		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
 		{

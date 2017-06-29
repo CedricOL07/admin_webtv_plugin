@@ -452,11 +452,11 @@ register_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
 */
 
 function recuperer_videos_player_page_principale() {
+    //do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
-    $query="SELECT id,titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";// plus de limite la playlist par default tournera indéfiniment
+    $query="SELECT titre, artiste, url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
-
 }
 
 

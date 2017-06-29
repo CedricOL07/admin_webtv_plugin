@@ -86,8 +86,9 @@ function generer_la_playlist(){
         console.log(title);
 
         myPlaylist.add({
-          title:value.titre,
-          m4v:value.url
+			title:value.titre,
+			m4v:value.url,
+			artist:value.artiste
         });
         //console.log(value.url);
         myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
@@ -128,7 +129,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			console.log( response);
+			//console.log("video à ete effacé : " + response);
 		}
 	);
 
@@ -150,21 +151,51 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     },
     dataType: 'JSON',
     success: function(data) {
-      //console.log("data : "+ data.titre);
+      //console.log("data : "+ data);
         $.each(data.data, function(index, value) {
             titre= value.titre;
             //Permet de générer la nouvelle video.
-            console.log(value.id);
             myPlaylist.add({
-      				title:value.titre,
-      				m4v:value.url
-			      });
-		    });
-
+				title:value.titre,
+				m4v:value.url,
+				artist:value.artiste
+			});
+		});
+        console.log(titre);
     }
   });
 
 });
+
+
+/*
+* Fonction : Permet d'afficher la durée du clip en cours de lecture
+*/
+jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
+{
+
+	var current     = myPlaylist.current,
+	playlist        = myPlaylist.playlist;
+
+	var nom_clip_courant = playlist[current].title,
+	artiste_clip_courant = playlist[current].artist,
+	url_clip_courant = playlist[current].m4v;
+	
+	$.post(
+		ajaxurl,
+		{
+			'action': 'recuperer_duree_clip',
+			'nom_clip': nom_clip_courant,
+			'url_clip': url_clip_courant
+		},
+		function(response){
+			console.log("Vidéo : " + artiste_clip_courant + " - " + nom_clip_courant + "\nDurée : " + response);
+		}
+	);
+
+
+});
+
 
 
 // Ne pas repasser le meme morceaux + meme artiste
@@ -176,9 +207,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
   playlist        = myPlaylist.playlist;
 
 
-  jQuery.e
-      });
-      if(ach(playlist, function (index, obj){
+  jQuery.each(playlist, function (index, obj){
 
     if (obj.title==event.jPlayer.status.media.title && index<current+19 && index!=current && bool2 ==false && index !=0 ){
       bool2=true;
@@ -223,8 +252,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
 
       }
     }
-      });
-      if(
+  }
+*/
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
   var on_live=false;
@@ -252,7 +281,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
         'action' : 'etat_live',
         'data' : on_live
       },function(response){
-        console.log(response);
+        //console.log(response);
       })
     }
     else if(on_live=true){
@@ -266,7 +295,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
         'action' : 'etat_live',
         'data' : on_live
       },function(response){
-        console.log(response);
+       // console.log(response);
       })
     }
   });
