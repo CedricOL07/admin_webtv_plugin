@@ -1,4 +1,4 @@
-<?php do_action('pluginwebtv_generer_la_playlist_par_defaut'); ?>
+
 <div id="corps_webtv">
 <div class="col-md-3" >
         <img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />
