@@ -11,9 +11,9 @@ $(document).ready(function(){
 
     ],  {
         playlistOptions: {
-            enableRemoveControls: true,
+            enableRemoveControls: false,
             autoPlay: true,
-            keyEnabled: true,
+            //keyEnabled: true,
         },
         //swfPath: "../../dist/jplayer",
         supplied: "webmv, ogv, m4v, oga, mp3",
@@ -24,7 +24,9 @@ $(document).ready(function(){
         audioFullScreen: true,
 
     });
-    /*   myPlaylist.setPlaylist([
+    myPlaylist.option("displayTime", 0);
+
+  /*    myPlaylist.setPlaylist([
         {
             title:"Big Buck Bunny Trailer",
             artist:"artiste",
@@ -56,7 +58,7 @@ $(document).ready(function(){
 */
 
     /*
-    *       Generer des playlists
+    *       Generer des playli      myPlaylist.displayPlaylist();sts
     */
     /*myAjax.ajaxurl
 *  Requête Ajax pour générer des playlists à volonté.
@@ -70,8 +72,8 @@ $(document).ready(function(){
 *   le terme url: ajaxurl  est le chemin vers le fichier qui recupere les requete ajax
 *
 *
+*
 */
-
 
   function generer_la_playlist(){
     var tableau_donnees= new Array();
@@ -103,6 +105,8 @@ $(document).ready(function(){
         console.log(xhr.status);
         console.log(thrownError);
       }
+
+
     });
   }
   generer_la_playlist();

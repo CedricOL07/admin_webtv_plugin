@@ -1,16 +1,16 @@
 
 <div id="corps_webtv">
 <div class="col-md-3" >
-        <img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />
+        <!--<img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />-->
     </div>
     <div class="col-md-6" id="titre_background">
 <!--<img id="logo2" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png"  alt="LeFil" />-->
-        <span id="titre_webtv">Web tv</span>
+
 
 
     </div>
         <div class="col-md-4" id="lecteur_video" >
-            <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
+            <div id="container_jplayer" class="jp-video jp-video-280p" role="application" aria-label="media player">
                 <div class="jp-type-playlist">
                     <div id="player_video" class="jp-jplayer"></div>
                     <div class="jp-gui">
@@ -42,16 +42,16 @@
                                 </div>
                      <div class="jp-toggles">
 
-<button class="jp-full-screen" role="button" tabindex="0">full screen</button>
-</div>
+                      <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
+                      </div>
                             </div>
                             <div class="jp-details">
                                 <div class="jp-title" aria-label="title">&nbsp;</div>
-                            </div>
+                      http://www.le-fil.com/wp-content/uploads/2016/03/photo_accueil_desktop_ara-02.jpg      </div>
                         </div>
                     </div>
                     <div class="jp-playlist" >
-                        <ul>
+                        <ul style="jp-playlist-current">
                             <!-- The method Playlist.displayPlaylist() uses this unordered list -->
                             <li>&nbsp;</li>
                         </ul>
@@ -65,7 +65,7 @@
         </div>
 </div>
 <style type="text/css">
-    .site-inner{
+  /*  .site-inner{
         background-image:url("http://www.le-fil.com/wp-content/uploads/2016/03/photo_accueil_desktop_ara-02.jpg");
         background-repeat:no-repeat;
         background-position: 50% 50%;
@@ -87,9 +87,9 @@
         z-index:-1;
 
     /*border-radius: 80px 15px;
-        //background-color:white;*/
+        //background-color:white;
         font-family: "Fjalla One";
-        font-size: 60px; 	/* original: 50px*/
+        font-size: 60px; 	/* original: 50px
         text-shadow: gray;
        margin-left: 25%;
 
@@ -100,5 +100,5 @@
         margin-top: -30px;
     }
 
-
+*/
 </style>

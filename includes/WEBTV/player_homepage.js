@@ -180,7 +180,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 	var nom_clip_courant = playlist[current].title,
 	artiste_clip_courant = playlist[current].artist,
 	url_clip_courant = playlist[current].m4v;
-	
+
 	$.post(
 		ajaxurl,
 		{
@@ -205,9 +205,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
 
   var current         = myPlaylist.current,
   playlist        = myPlaylist.playlist;
-
-
-  jQuery.each(playlist, function (index, obj){
+titre_webtvunction (index, obj){
 
     if (obj.title==event.jPlayer.status.media.title && index<current+19 && index!=current && bool2 ==false && index !=0 ){
       bool2=true;
