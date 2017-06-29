@@ -114,23 +114,23 @@ var artisteanepasrepasser;
 //Fonction pour effacer les morceaux au fur et à mesure
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-  var current     = myPlaylist.current,
-  playlist        = myPlaylist.playlist;
+	var current     = myPlaylist.current,
+	playlist        = myPlaylist.playlist;
 
-  myPlaylist.remove(current-1);
+	myPlaylist.remove(current-1);
 
-  //On efface le morceau de la base de donnée également
-  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
-  $.post(
-    ajaxurl,
-    {
-      'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
-      'videocourante': titre_previous_current_track
-    },
-    function(response){
-      //console.log("video à ete effacé : " + response);
-    }
-  );
+	//On efface le morceau de la base de donnée également
+	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+	$.post(
+		ajaxurl,
+		{
+			'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
+			'videocourante': titre_previous_current_track
+		},
+		function(response){
+			//console.log("video à ete effacé : " + response);
+		}
+	);
 
 
 });
@@ -155,11 +155,11 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             titre= value.titre;
             //Permet de générer la nouvelle video.
             myPlaylist.add({
-            title:value.titre,
-            m4v:value.url
-          });
-      });
-      console.log(titre);
+				title:value.titre,
+				m4v:value.url
+			});
+		});
+        console.log(titre);
     }
   });
 
