@@ -1,4 +1,4 @@
-<?php do_action('pluginwebtv_generer_la_playlist'); ?>
+<?php do_action('pluginwebtv_generer_la_playlist_par_defaut'); ?>
 <div id="corps_webtv">
 <div class="col-md-3" >
         <img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />
@@ -9,12 +9,6 @@
 
 
     </div>
-
-
-
-    
-
-            
         <div class="col-md-4" id="lecteur_video" >
             <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
                 <div class="jp-type-playlist">
@@ -31,7 +25,7 @@
                             </div>
                             <div class="jp-current-time" role="timer" aria-label="time" style="display:none">&nbsp;</div>
                             <div class="jp-duration" role="timer" aria-label="duration" style="display:none" >&nbsp;</div>
-                            
+
                             <div class="jp-controls-holder" style="height:30px;">
                                 <div class="jp-controls" style="display:none;">
                                     <button class="jp-previous" role="button" tabindex="0">previous</button>
@@ -78,7 +72,7 @@
     }
     .jp-playlist{
         display:none;
-    } 
+    }
     #lecteur_video{
         margin-left:-15px;
     }
@@ -89,9 +83,9 @@
         margin-bottom:1%;
     }
     #titre_webtv{
-        
+
         z-index:-1;
-    
+
     /*border-radius: 80px 15px;
         //background-color:white;*/
         font-family: "Fjalla One";
@@ -100,11 +94,11 @@
        margin-left: 25%;
 
         text-transform: uppercase;
-        color: #e20019;	
+        color: #e20019;
     }
     #logo1{
         margin-top: -30px;
     }
-    
+
 
 </style>

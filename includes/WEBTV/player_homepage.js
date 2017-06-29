@@ -53,8 +53,7 @@ poster: "http://www.jplayer.org/video/poster/Incredibles_Teaser_640x272.png"
 
 /*
 *       Generer des playlists
-*/
-/*
+*
 *  Requête Ajax pour générer des playlists à volonté.
 */
 
@@ -84,26 +83,14 @@ function generer_la_playlist(){
         //On va récupérer le nom de l'artiste pour chaque titre
 
         var title=value.titre;
-        /*$.post(
-          ajaxurl,
-          {
-            'action': 'recuperer_artiste_with_title',
-            'title': title,
-          },
-          function(response){
-            // console.log(response);
+        console.log(title);
 
-            artiste=response.data;
-            console.log(artiste);
-
-          }
-        );*/
         myPlaylist.add({
           title:value.titre,
           m4v:value.url
         });
         //console.log(value.url);
-        myPlaylist.play();
+        myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
       });
 
     },

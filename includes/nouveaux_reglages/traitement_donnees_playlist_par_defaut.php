@@ -23,7 +23,7 @@ add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_def
 //add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetition_tous_les_n_morceaux');
 add_action('wp_ajax_etat_live','etat_live');
 //add_action('wp_recupérer_id_par_defaut','recupérer_id_par_defaut');
-
+add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
 
 function etat_live(){
     $etat_live;
@@ -108,7 +108,7 @@ function recuperer_noms_reglages(){
     $recuperer_noms="SELECT nom FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
     $resut=$wpdb->get_results($recuperer_noms);
     wp_send_json_success($resut);
-    wp_die();
+    //wp_die();
 }
 
 function generer_la_playlist_par_defaut(){
@@ -164,6 +164,13 @@ function generer_la_playlist_par_defaut(){
     }
     //do_action('pluginwebtv_eviter_repetition_tous_les_n_morceaux');
 
+    function recup_val_par_defaut(){
+      global $wpdb;
+      $query_val_par_def="SELECT ParDefaut FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
+      $result_val_par_def=$wpdb->get_var($query_val_par_def);
+      wp_send_json_success($result);
+    }
+
 
     function recuperer_programmation(){
     // permet de récupérer le nom, le début et la fin d'une playlist enregistrée dans la base de donnée
@@ -172,11 +179,7 @@ function generer_la_playlist_par_defaut(){
         $query="SELECT nom,Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
         $result=$wpdb->get_results($query);
         wp_send_json_success($result);
-        wp_die();
-
-    }
-
-
+}
     // On genere une nouvelle playlist pour la semaine
     function recuperer_derniers_pourcentages_enregistrees(){
 

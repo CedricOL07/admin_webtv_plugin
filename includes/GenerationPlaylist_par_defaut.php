@@ -310,9 +310,11 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       $reponse_titre_url_genres_artistesvideo_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
 
 
-      echo($reponse_id_videocourante_dans_playlist_par_defaut);
-      $query="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_id_videocourante_dans_playlist_par_defaut';";
-      $wpdb->query($query);
+      $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_id_videocourante_dans_playlist_par_defaut';";
+      $wpdb->query($query_del_titre_video_courante);
+
+      $query_tri_asc="SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY ASC();";
+      $wpdb->query($query_tri_asc);
 }
 
 
