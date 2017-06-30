@@ -336,11 +336,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
 
 
     $creer_table_qualite="   CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "qualite_webtv_plugin` (
-    `valeur` int(255) NOT NULL,
+    `valeur` int(11) NOT NULL,
     PRIMARY KEY (`valeur`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;";
     $alter_table_qualite="   ALTER TABLE `" . $wpdb->prefix . "qualite_webtv_plugin`
-    MODIFY `valeur` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;";
+    MODIFY `valeur` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;";
 
 
     $creer_table_relation="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "relation_webtv_plugin` (
@@ -484,7 +484,7 @@ function recuperer_videos_player_page_principale() {
     }
     //echo ("max-id : ". $max_id);
 
-    $query_recup_titre_url_nouvelle_video = "SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+    $query_recup_titre_url_nouvelle_video = "SELECT titre,url,artiste FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
     $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
 
     wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
