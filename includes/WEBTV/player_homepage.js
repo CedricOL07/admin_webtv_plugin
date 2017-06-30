@@ -7,7 +7,7 @@ $(document).ready(function(){
 
   ],  {
     playlistOptions: {
-      enableRemoveControls: true,
+      enableRemoveControls: false,
       autoPlay: true,
       keyEnabled: true,
     },
@@ -19,6 +19,10 @@ $(document).ready(function(){
     keyEnabled: true,
     audioFullScreen: true,
 
+  });
+
+  $('#affichage_playlist_homepage').click(function(){
+  $('#jp-playlits-id-homepage').toggle('fast');
   });
   /*   myPlaylist.setPlaylist([
   {
@@ -129,7 +133,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			//console.log("video à ete effacé : " + response);
+			console.log("video à ete effacé : " + response);
 		}
 	);
 

@@ -162,7 +162,7 @@ function generer_la_playlist_par_defaut(){
         $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]')";
         $wpdb->query($inserer);
     }
-    //do_action('pluginwebtv_eviter_repetition_tous_les_n_morceaux');
+
 
     function recup_val_par_defaut(){
       global $wpdb;

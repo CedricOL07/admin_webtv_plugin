@@ -23,34 +23,34 @@
                                     <div class="jp-play-bar"></div>
                                 </div>
                             </div>
-                            <div class="jp-current-time" role="timer" aria-label="time" style="display:none">&nbsp;</div>
-                            <div class="jp-duration" role="timer" aria-label="duration" style="display:none" >&nbsp;</div>
+                            <div class="jp-current-time" role="timer" aria-label="time" style="display">&nbsp;</div>
+                            <div class="jp-duration" role="timer" aria-label="duration" style="display" >&nbsp;</div>
 
-                            <div class="jp-controls-holder" style="height:30px;">
+                            <div class="jp-controls-holder" style="height:35px;">
                                 <div class="jp-controls" style="display:none;">
                                     <button class="jp-previous" role="button" tabindex="0">previous</button>
                                     <button class="jp-play" role="button" tabindex="0">play</button>
                                     <button class="jp-next" role="button" tabindex="0">next</button>
                                     <button class="jp-stop" role="button" tabindex="0">stop</button>
                                 </div>
-                                <div class="jp-volume-controls">
-                                    <button class="jp-mute" role="button" tabindex="0">mute</button>
+                                <div class="jp-volume-controls" style="display;">
+                                    <button class="jp-mute" role="button" tabindex="50">mute</button>
                                     <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
                                     <div class="jp-volume-bar">
                                         <div class="jp-volume-bar-value"></div>
                                     </div>
                                 </div>
+
                      <div class="jp-toggles">
 
                       <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
                       </div>
                             </div>
                             <div class="jp-details">
-                                <div class="jp-title" aria-label="title">&nbsp;</div>
-                      http://www.le-fil.com/wp-content/uploads/2016/03/photo_accueil_desktop_ara-02.jpg      </div>
-                        </div>
+
                     </div>
-                    <div class="jp-playlist" >
+                    <input id="affichage_playlist-page-client" type="button"  data-toggle="toggle" value="Afficher/effacer la liste clips" >
+                    <div id="jp-playlits-id-page-client" class="jp-playlist" >
                         <ul style="jp-playlist-current">
                             <!-- The method Playlist.displayPlaylist() uses this unordered list -->
                             <li>&nbsp;</li>
@@ -65,13 +65,10 @@
         </div>
 </div>
 <style type="text/css">
-  /*  .site-inner{
+    .site-inner{
         background-image:url("http://www.le-fil.com/wp-content/uploads/2016/03/photo_accueil_desktop_ara-02.jpg");
         background-repeat:no-repeat;
         background-position: 50% 50%;
-    }
-    .jp-playlist{
-        display:none;
     }
     #lecteur_video{
         margin-left:-15px;
@@ -83,16 +80,13 @@
         margin-bottom:1%;
     }
     #titre_webtv{
-
         z-index:-1;
-
-    /*border-radius: 80px 15px;
-        //background-color:white;
+        border-radius: 80px 15px;
+        /*background-color:white;*/
         font-family: "Fjalla One";
-        font-size: 60px; 	/* original: 50px
+        font-size: 60px; 	/* original: 50px*/
         text-shadow: gray;
-       margin-left: 25%;
-
+        margin-left: 25%;
         text-transform: uppercase;
         color: #e20019;
     }
@@ -100,5 +94,5 @@
         margin-top: -30px;
     }
 
-*/
+
 </style>

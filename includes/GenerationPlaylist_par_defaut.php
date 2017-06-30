@@ -295,6 +295,7 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
      //Récupération des informations liées à la nouvelle video avec le même genre que la vidéo courante.
       $query_ids_video_a_ajouter_meme_genre = "SELECT artiste_id,genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_a_ajouter_meme_genre'   LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
       $reponse_ids_video_a_ajouter_meme_genre = $wpdb -> get_results($query_ids_video_a_ajouter_meme_genre);
+
       foreach ( $reponse_ids_video_a_ajouter_meme_genre  as $result){
         $id_genre_video_a_ajouter_meme_genre = $result->genre_id;
         $id_artiste_video_a_ajouter_meme_genre = $result->artiste_id;
@@ -305,9 +306,15 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
         $query_artiste_video_a_ajouter_meme_genre = "SELECT nom FROM ". $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artiste_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
         $reponse_artiste_video_a_ajouter_meme_genre = $wpdb -> get_var($query_artiste_video_a_ajouter_meme_genre);
       }
+
       //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
       $query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
       $reponse_titre_url_genres_artistesvideo_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
+
+      //Permet de trier la table par odre croissant !! Utile pour démarer toujours au clip en cours. SELECT n'actualise pas la BDD comme on pourrait le croire si on effectue
+      // la requête dans phpmyadmin.
+      $query_tri_asc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
+      $wpdb->query($query_tri_asc);
 
       //Très utile afin d'éviter la sélection d'un doublon entre la video courante et les videos avec un titre similaire
       $query_select_min_id_de_video_courante = "SELECT MIN(id) FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' ";
@@ -316,10 +323,6 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
       $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
       $wpdb->query($query_del_titre_video_courante);
-
-      echo("id video courante ". $reponse_select_min_id_de_video_courante);
-      $query_tri_asc="SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY ASC();";
-      $wpdb->query($query_tri_asc);
 }
 
 

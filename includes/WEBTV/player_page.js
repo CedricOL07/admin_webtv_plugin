@@ -24,7 +24,15 @@ $(document).ready(function(){
         audioFullScreen: true,
 
     });
-    myPlaylist.option("displayTime", 0);
+
+    $('#affichage_playlist-page-client').click(function(){
+    $('#jp-playlits-id-page-client').toggle('fast');
+    });
+
+
+
+
+
 
   /*    myPlaylist.setPlaylist([
         {
@@ -47,7 +55,8 @@ $(document).ready(function(){
             title:"Incredibles Teaser",
             artist:"Pixar",
             m4v: "http://www.jplayer.org/video/m4v/Incredibles_Teaser.m4v",
-            ogv: "http://www.jplayer.org/video/ogv/Incredibles_Teaser.ogv",
+            ogv: "h$query_tri_asc="SELECT * FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
+      $wpdb->query($query_tri_asc);ttp://www.jplayer.org/video/ogv/Incredibles_Teaser.ogv",
             webmv: "http://www.jplayer.org/video/webm/Incredibles_Teaser.webm",
             poster: "http://www.jplayer.org/video/poster/Incredibles_Teaser_640x272.png"
         }

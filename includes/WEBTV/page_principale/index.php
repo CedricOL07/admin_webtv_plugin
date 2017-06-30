@@ -130,6 +130,8 @@ desired effect
                             </div>
                             <!-- <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
                             <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>-->
+                            <div class="jp-current-time" role="timer" aria-label="time" style="display">&nbsp;</div>
+                            <div class="jp-duration" role="timer" aria-label="duration" style="display" >&nbsp;</div>
                             <div class="jp-controls-holder"style="height:35px;">
                               <div class="jp-controls" >
                                 <button class="jp-previous" role="button" tabindex="0" style="display:none;">previous</button>
@@ -155,9 +157,9 @@ desired effect
                             </div>
                           </div>
                         </div>
-                        <div class="jp-playlist" style="display:none;">
+                        <input id="affichage_playlist_homepage" type="button"  data-toggle="toggle" value="Afficher/effacer la liste clips" >
+                        <div id="jp-playlits-id-homepage" class="jp-playlist" style="display;">
                           <ul>
-
                             <li>&nbsp;</li>
                           </ul>
                         </div>
@@ -169,17 +171,9 @@ desired effect
                       </div>
                     </div>
                   </div>
-
-
-
                 </div>
-
               </div>
-
-
-
             </div>
-
           </div>
         </div>
         <style type="text/css">

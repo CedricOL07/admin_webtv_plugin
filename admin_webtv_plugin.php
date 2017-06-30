@@ -453,9 +453,7 @@ function tri_playlist_par_defaut_webtv_plugin(){
 function recuperer_videos_player_page_principale() {
     //do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
-    $query_tri_asc="SELECT * FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
-    $wpdb->query($query_tri_asc);
-    
+  
     $query="SELECT titre, artiste, url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
