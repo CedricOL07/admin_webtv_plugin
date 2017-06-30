@@ -29,51 +29,6 @@ $(document).ready(function(){
     $('#jp-playlits-id-page-client').toggle('fast');
     });
 
-
-
-
-
-
-  /*    myPlaylist.setPlaylist([
-        {
-            title:"Big Buck Bunny Trailer",
-            artist:"artiste",
-            m4v:"http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
-            ogv:"http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-            webmv: "http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
-            poster:"http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-        },
-        {
-            title:"Finding Nemo Teaser",
-            artist:"Pixar",
-            m4v: "http://www.jplayer.org/video/m4v/Finding_Nemo_Teaser.m4v",
-            ogv: "http://www.jplayer.org/video/ogv/Finding_Nemo_Teaser.ogv",
-            webmv: "http://www.jplayer.org/video/webm/Finding_Nemo_Teaser.webm",
-            poster: "http://www.jplayer.org/video/poster/Finding_Nemo_Teaser_640x352.png"
-        },
-        {
-            title:"Incredibles Teaser",
-            artist:"Pixar",
-            m4v: "http://www.jplayer.org/video/m4v/Incredibles_Teaser.m4v",
-            ogv: "h$query_tri_asc="SELECT * FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
-      $wpdb->query($query_tri_asc);ttp://www.jplayer.org/video/ogv/Incredibles_Teaser.ogv",
-            webmv: "http://www.jplayer.org/video/webm/Incredibles_Teaser.webm",
-            poster: "http://www.jplayer.org/video/poster/Incredibles_Teaser_640x272.png"
-        }
-    ]);
-
-
-/*
-*/
-
-    /*
-    *       Generer des playli      myPlaylist.displayPlaylist();sts
-    */
-    /*myAjax.ajaxurl
-*  Requête Ajax pour générer des playlists à volonté.
-*/
-
-
     /** REQUETE AJAX WORDPRESS
 *
 *   le terme action:'mon_action' refere à la fonction qui est effectué quand la requete ajax se fait (ici on recupere les url,titre,artiste de la playlist)
@@ -96,29 +51,55 @@ $(document).ready(function(){
       success: function(data) {
         //console.log(data);
         $.each(data.data, function(index, value) {
-          //On va récupérer le nom de l'artiste pour chaque titre
-
           var title=value.titre;
           console.log(title);
-
           myPlaylist.add({
             title:value.titre,
             m4v:value.url
           });
-          //console.log(value.url);
           myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
         });
-
       },
+
       error: function (xhr, ajaxOptions, thrownError) {
         console.log(xhr.status);
         console.log(thrownError);
       }
 
-
     });
   }
   generer_la_playlist();
 
+  /*
+  * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+  * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+  */
+  jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
+  {
+      var playlist = myPlaylist.playlist;
+    $.ajax({
+      url:  myAjax.ajaxurl,
+      data:{
+        'action' : 'recuperer_nouvelle_video_player_page_principal'
+      },
+      dataType: 'JSON',
+      success: function(data) {
+        //console.log("data : "+ data);
+          $.each(data.data, function(index, value) {
+              titre= value.titre;
+              //Permet de générer la nouvelle video.
+              myPlaylist.add({
+  				title:value.titre,
+  				m4v:value.url,
+  				artist:value.artiste
+  			});
+          myPlaylist.remove(0);// supprime le premier clip de la playlist.
+  		});
+
+          console.log(titre);
+      }
+    });
+
+  });
 
 });

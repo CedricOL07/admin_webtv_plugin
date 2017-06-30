@@ -18,7 +18,7 @@
                             <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
                         </div>
                         <div class="jp-interface">
-                            <div class="jp-progress" style="display:none">
+                            <div class="jp-progress" style="display">
                                 <div class="jp-seek-bar">
                                     <div class="jp-play-bar"></div>
                                 </div>
@@ -49,7 +49,7 @@
                             <div class="jp-details">
 
                     </div>
-                    <input id="affichage_playlist-page-client" type="button"  data-toggle="toggle" value="Afficher/effacer la liste clips" >
+                    <input id="affichage_playlist-page-client" type="button"  data-toggle="toggle" value="Afficher/cacher la playlist" >
                     <div id="jp-playlits-id-page-client" class="jp-playlist" >
                         <ul style="jp-playlist-current">
                             <!-- The method Playlist.displayPlaylist() uses this unordered list -->
@@ -65,14 +65,10 @@
         </div>
 </div>
 <style type="text/css">
-    .site-inner{
-        background-image:url("http://www.le-fil.com/wp-content/uploads/2016/03/photo_accueil_desktop_ara-02.jpg");
-        background-repeat:no-repeat;
-        background-position: 50% 50%;
-    }
-    #lecteur_video{
+    .site-inner{/
         margin-left:-15px;
     }
+    /*
     #titre_background{
         background-color:white;
         border-radius: 80px 15px;
@@ -82,9 +78,9 @@
     #titre_webtv{
         z-index:-1;
         border-radius: 80px 15px;
-        /*background-color:white;*/
+        /*background-color:white;
         font-family: "Fjalla One";
-        font-size: 60px; 	/* original: 50px*/
+        font-size: 60px; 	/* original: 50px
         text-shadow: gray;
         margin-left: 25%;
         text-transform: uppercase;
@@ -94,5 +90,5 @@
         margin-top: -30px;
     }
 
-
+*/
 </style>

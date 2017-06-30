@@ -139,7 +139,7 @@ function creer_page_webtv(){
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
    // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
-    wp_enqueue_style("playrebluemondaycss1", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
+    wp_enqueue_style("playerbluemondaycss1", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);// gère le css des boutons du player
     wp_enqueue_style("allskincss1", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
     wp_enqueue_script("jplayerplaylistjs1",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
     wp_enqueue_script("jqueryjplayerjs1",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
@@ -294,7 +294,17 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
         `id_clip8` int(11) NOT NULL,
         `id_clip9` int(11) NOT NULL,
         `id_clip10` int(11) NOT NULL,
-        `id_clip11` int(11) NOT NULL,
+        `id_clip1ister_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
+  $.post(
+    myAjax.ajaxurl,
+    {
+      'action':'recuperer_videos_player_page_principale'
+    },
+    function (reponse){
+
+    }
+  );
+1` int(11) NOT NULL,
         `id_clip12` int(11) NOT NULL,
         `id_clip13` int(11) NOT NULL,
         `id_clip14` int(11) NOT NULL,
@@ -437,23 +447,16 @@ function pluginwebtv_supprimer_tables(){
 
 }
 
-register_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
-
 
 
 // A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
-function tri_playlist_par_defaut_webtv_plugin(){
-  global $wpdb;
 
-
-
-}
 
 
 function recuperer_videos_player_page_principale() {
     //do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
-  
+
     $query="SELECT titre, artiste, url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);

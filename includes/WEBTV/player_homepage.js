@@ -1,3 +1,9 @@
+/* Fonction de ce fichier :
+*Il permet de gérer les interéaction avec le player coté product owner.
+*Tous les contrôles du player de jplayer et l'implémentation des clips dans la  playlist du Player se font ici.
+* Tous les affichages et l'aspect visuel se font dans le fichier index.php dans le dossier page_principal
+*/
+
 $(document).ready(function(){
   var index_bdd_precedent;
   var myPlaylist = new jPlayerPlaylist({
@@ -24,36 +30,6 @@ $(document).ready(function(){
   $('#affichage_playlist_homepage').click(function(){
   $('#jp-playlits-id-homepage').toggle('fast');
   });
-  /*   myPlaylist.setPlaylist([
-  {
-  title:"Big Buck Bunny Trailer",
-  artist:"artiste",
-  m4v:"http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
-  ogv:"http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-  webmv: "http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
-  poster:"http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-},
-{
-title:"Finding Nemo Teaser",
-artist:"Pixar",
-m4v: "http://www.jplayer.org/video/m4v/Finding_Nemo_Teaser.m4v",
-ogv: "http://www.jplayer.org/video/ogv/Finding_Nemo_Teaser.ogv",
-webmv: "http://www.jplayer.org/video/webm/Finding_Nemo_Teaser.webm",
-poster: "http://www.jplayer.org/video/poster/Finding_Nemo_Teaser_640x352.png"
-},
-{
-title:"Incredibles Teaser",
-artist:"Pixar",
-m4v: "http://www.jplayer.org/video/m4v/Incredibles_Teaser.m4v",
-ogv: "http://www.jplayer.org/video/ogv/Incredibles_Teaser.ogv",
-webmv: "http://www.jplayer.org/video/webm/Incredibles_Teaser.webm",
-poster: "http://www.jplayer.org/video/poster/Incredibles_Teaser_640x272.png"
-}
-]);
-
-
-/*
-*/
 
 /*
 *       Generer des playlists
@@ -119,21 +95,19 @@ var artisteanepasrepasser;
 //Fonction pour effacer les morceaux au fur et à mesure
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-	var current     = myPlaylist.current,
-	playlist        = myPlaylist.playlist;
-
-	myPlaylist.remove(current-1);
+	var current = myPlaylist.current;
+	var playlist = myPlaylist.playlist;
 
 	//On efface le morceau de la base de donnée également
 	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
-	$.post(
+  $.post(
 		ajaxurl,
 		{
 			'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			console.log("video à ete effacé : " + response);
+			//console.log("video à ete effacé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 		}
 	);
 
@@ -165,6 +139,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 				artist:value.artiste
 			});
 		});
+
         console.log(titre);
     }
   });
@@ -193,7 +168,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 			'url_clip': url_clip_courant
 		},
 		function(response){
-			console.log("Vidéo : " + artiste_clip_courant + " - " + nom_clip_courant + "\nDurée : " + response);
+			//console.log("Vidéo : " + artiste_clip_courant + " - " + nom_clip_courant + "\nDurée : " + response);
 		}
 	);
 
