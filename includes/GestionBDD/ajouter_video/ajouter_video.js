@@ -51,7 +51,6 @@ $(document).ready(function(){
 		
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
 		{	
-			console.log("sous-menu 1");
 			$.post(
 				ajaxurl,
 				{
@@ -72,8 +71,6 @@ $(document).ready(function(){
 				},
 			function(data)
 				{
-					
-			console.log("sous-menu 2");
 					console.log(finalfolder);
 					console.log("existante :" + data);
 					var newpath = document.location.toString();
@@ -86,7 +83,6 @@ $(document).ready(function(){
 			
 		}else{
 			
-			console.log("sous-menu 3");
 			if(titre == ''){
 				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
 					console.log('PAS DE TITRE');

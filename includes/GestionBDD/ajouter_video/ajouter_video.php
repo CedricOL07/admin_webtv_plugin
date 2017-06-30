@@ -220,7 +220,7 @@ function ajouter_video(){
     
     //echo $titre." : ".$existante;
 
-    echo ("copie de : " .realpath($path)."\\".$fich . " - Dans - ". realpath($cheminArrive)."\\".$fich. " :: ". $cheminArrive);
+    echo ("copie de : " .realpath($path)."\\".$fich . " - Dans - ". realpath($cheminArrive)."\\".$fich);
     wp_die();
 }
 

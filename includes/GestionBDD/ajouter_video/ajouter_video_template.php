@@ -193,29 +193,40 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
 
-		var finalfolder = localStorage.getItem("finalfolder");
+		
+		var newpath="";
+		var filename="";
+		var filepath="";
+		
+		var finalfolder = localStorage.getItem("finalfolder");		// finalfolder = localPath + endOfPath
+		var endOfPath = localStorage.getItem("endOfPath");			// Par défaut : wordpress/wp-content/uploads/2017/07
+		var domaine = localStorage.getItem("domaine");				// Par defaut : http://webtv.le-fil.com/
+		var localPath = localStorage.getItem("localPath");			// Récupéré à partir de l'emplacement de ce fichier, utilisé pour la copie (CHEMINARRIVE)
+
+
+		localStorage.removeItem("localPath");
+		if (endOfPath===null || typeof endOfPath === 'undefined' || endOfPath === "")
+		{
+			endOfPath = "wordpress/wp-content/uploads/2017/07";
+			localStorage.setItem("endOfPath", endOfPath);
+		}
+
+		if (domaine===null || typeof domaine === 'undefined' || domaine === "")
+		{
+			domaine = "http://localhost/";
+			localStorage.setItem("domaine", domaine);
+		}
 		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
 		{
-			/*
-			var domaine = document.location.toString();
-
-			if (domaine.indexOf("//")>=0)
-			{
-				var deb = domaine.indexOf("//")+2; 	// Premier indice
-				domaine = domaine.substr(deb);		// Supprime le 'http://' ou 'https://'
-			}
-			var fin = domaine.indexOf('/')>0? domaine.indexOf('/') : 0	// Prend tout ce qui est avant le premier '/' si existant, rien sinon
-			domaine = domaine.substr(0,fin); 
-			console.log(domaine);
-			finalfolder=domaine+"/wordpress/wp-content/uploads/2017/06";
-*/
-			var domaine = `<?php echo addslashes(__DIR__ )?>`;
-			var deb = domaine.indexOf("wordpress"); 
-			domaine = domaine.substring(0,deb);		// Récupère le chemin local
-			console.log(domaine);
-			finalfolder=domaine+"wordpress\\wp-content\\uploads\\2017\\07";
-
-			localStorage.setItem("finalfolder", finalfolder);
+			setFinalfolder();
+		}
+		if (localPath===null || typeof localPath === 'undefined' || localPath === "")
+		{
+			localPath = `<?php echo addslashes(__DIR__ )?>`;
+			var deb = localPath.indexOf("wordpress"); 
+			localPath = localPath.substring(0,deb);		// Récupère le chemin local
+			localStorage.setItem("localPath", localPath);	
+			console.log("\ndomaine = " + domaine +"\nlocalPath = " + localPath +"\nendOfPath = " + endOfPath +"\nfinalfolder = " + finalfolder);		
 		}
 
 		// Si chemin en local : utiliser des anti-slash \
@@ -223,31 +234,54 @@
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
-		var newpath="";
-		var filename="";
-		var filepath="";
-		
-		document.getElementById('url').placeholder = finalfolder+"\\...";
+		document.getElementById('url').placeholder = domaine+endOfPath+"/...";
 		document.getElementById("CHEMINARRIVE").value=finalfolder;
+
+
+		function setEndOfPath(pat)
+		{
+			i = pat.indexOf('wordpress');
+			endOfPath = pat.substring(i);
+			localStorage.setItem("endOfPath", endOfPath);
+		}
+		function setDomaine(pat)
+		{
+			i = pat.indexOf('wordpress');
+			domaine = pat.substring(0,i);
+			localStorage.setItem("domaine", domaine);
+		}
+		function setFinalfolder()
+		{
+			if (localPath.indexOf('\\'))	// si localPath est constitué avec des '\' (windows)
+			{
+				finalfolder=localPath+endOfPath.replace(/\//g, '\\');
+			} else 							// si localPath est constitué avec des '/' (linux...)
+			{
+				finalfolder=localPath+endOfPath.replace(/\\/g, '/')
+			}
+			
+			localStorage.setItem("finalfolder", finalfolder);
+		}
 
 		// Dévérouille le textfield du chemin par défaut lors de l'appui sur le bouton
 		function unlockPath(){ 
 			document.getElementById('url').disabled = ''; 
-			document.getElementById('url').value = finalfolder;
+			document.getElementById('url').value = domaine+endOfPath;
 			document.getElementById('url').focus();	// Met le focus sur le textField
 		}
 
 		// Met à jour le chemin par défaut au moment où on enlève le focus du textfield
 		function changeFinalFolder(selectObj){
 			if(selectObj.value!=""){ 
-				finalfolder = selectObj.value; 
-				localStorage.setItem("finalfolder", finalfolder);
+				setEndOfPath(selectObj.value);
+				setDomaine(selectObj.value);
+				setFinalfolder();
 			}
 			if (filename != "")					// Si on avait déjà récupéré une vidéo avec 'parcourir', on actualise la page
 			{
 				document.location.href = document.location.toString();;
 			}
-			document.getElementById('url').placeholder = finalfolder+"\\...";
+			document.getElementById('url').placeholder = domaine+endOfPath+"/...";
 			document.getElementById('url').value = "";
 			document.getElementById('url').disabled = 'disabled';
 		}
@@ -307,17 +341,18 @@
  				  }
 
 			 	  
-				  // var cheminArrive = "localhost/wordpress/wp-content/uploads/2017/05/";
+				  // var cheminURL = "localhost/wordpress/wp-content/uploads/2017/05/";
 
-			 	  var cheminArrive = finalfolder + '/' + filename;
-			 	  document.getElementById('url').placeholder = cheminArrive;
+			 	  var cheminURL = domaine+endOfPath + '/' + filename;
+			 	  document.getElementById('url').placeholder = cheminURL;
+			 	  document.getElementById('url').value = document.getElementById('url').placeholder ;
 				/*		 	  
-				  //console.log(cheminArrive);
+				  //console.log(cheminURL);
 				  var tempad = document.location.toString()
 				  tempad = tempad.substr(0, tempad.indexOf('&filename'))
 				  //history.pushState({path:this.path}, '', tempad);	// n'actualise pas la page tout de suite
 				*/
-				  input.trigger('fileselect', [numFiles, cheminArrive]);
+				  input.trigger('fileselect', [numFiles, cheminURL]);
  				  
 			});
 
