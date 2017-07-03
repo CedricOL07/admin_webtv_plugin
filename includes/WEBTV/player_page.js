@@ -106,6 +106,7 @@ $(document).ready(function(){
     });
 
   });
+<<<<<<< HEAD
 /*
   window.onload = function()
   {
@@ -132,5 +133,7 @@ $(document).ready(function(){
       img.src = url;
 
     }*/
+=======
+>>>>>>> d44c8b452ab3b2677b868b9fdf826ef5d20421cb
 
 });

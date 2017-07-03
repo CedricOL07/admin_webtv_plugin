@@ -31,7 +31,7 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight){
+function generer_playlist($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max, $annee_min, $qualite_min){
 
 
     global $tab_url;

@@ -98,7 +98,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 	var current = myPlaylist.current;
 	var playlist = myPlaylist.playlist;
 
-  myPlaylist.remove(current -1);// efface du clip
 	//On efface le morceau de la base de donnée également
 	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
   $.post(
@@ -135,10 +134,10 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             titre= value.titre;
             //Permet de générer la nouvelle video.
             myPlaylist.add({
-      				title:value.titre,
-      				m4v:value.url,
-      				artist:value.artiste
-			      });
+				title:value.titre,
+				m4v:value.url,
+				artist:value.artiste
+			});
 		});
 
         console.log(titre);

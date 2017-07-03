@@ -4,6 +4,13 @@
         <!--<img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />-->
     </div>
     <div class="col-md-6" id="titre_background">
+<<<<<<< HEAD
+=======
+<!--<img id="logo2" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png"  alt="LeFil" />-->
+
+
+
+>>>>>>> d44c8b452ab3b2677b868b9fdf826ef5d20421cb
     </div>
 
         <div class="col-md-4" id="lecteur_video" >
