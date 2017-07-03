@@ -287,9 +287,9 @@ $(document).ready(function(){
 									dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 									dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 									dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
-									dateFormat: 'dd/mm/yy', firstDay: 0,
+									dateFormat: 'dd/mm/yy', firstDay: 0, 
 									initStatus: 'Choisir la date', isRTL: false};
-
+		
 	// Ouvre le calendrier lors de l'appui sur date
 	$.datepicker.setDefaults($.datepicker.regional['fr'])
 	$( '#annee_min' ).datepicker({
@@ -705,8 +705,8 @@ $(document).ready(function(){
         // Instantiate and draw our chart, passing in some options.
         chart = new google.visualization.PieChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
-
-
+		
+		
     }
 
 
@@ -1084,13 +1084,12 @@ $(document).ready(function(){
            return false;
         }
         else{
-
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
-
-            /*  /!\------ Partie enregistrant les playlist par defaut!!!!!  ------/!\*/
-
+                      //Si il a choisi de mettre la playlist comme par défaut
                     pardefaut = 1;
+
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
+
                     $.post(
                         ajaxurl,
                         {
@@ -1115,9 +1114,6 @@ $(document).ready(function(){
                     );
                // return false;
             } else {
-
-            /*  /!\------ Partie enregistrant les playlist clips !!!!!  ------/!\*/
-                    //console.log("affichage");
                     pardefaut = 0;
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date
@@ -1143,7 +1139,7 @@ $(document).ready(function(){
                     $.post(
                         ajaxurl,
                         {
-                            'action': 'enregistrement_playlist_clips_pourcentage',
+                            'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
 							'annee_max':annee_max,
 							'annee_min':annee_min,
@@ -1174,7 +1170,7 @@ $(document).ready(function(){
 
                         },
                         function(response){
-                                console.log("echo : " +response);
+                                //console.log(response);
 
                         }
                     );

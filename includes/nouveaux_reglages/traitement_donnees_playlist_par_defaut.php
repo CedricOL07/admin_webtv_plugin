@@ -4,8 +4,7 @@
 /**************************************************************************************************************************
 **
 **
-**        Fichier contenant les fonctions exécutées par les différentes reqûetes ajax de la page NOUVEAUX REGLAGES POUR LA
-**                                                    LA PLAYLIST PAR DEFAUT
+**        Fichier contenant les fonctions exécutées par les différentes reqûetes ajax de la page NOUVEAUX REGLAGES
 **
 **
 *******************************************************************************************************************************/
