@@ -1,8 +1,7 @@
 
 $(document).ready(function(){
 	
-	
-	// Ouvre le calendrier lors de l'appui sur date
+	// Création du dictionnaire français pour le calendrier
 	$.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
 		closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
 		prevText: '<Préc', prevStatus: 'Voir le mois précédent',
@@ -20,9 +19,11 @@ $(document).ready(function(){
 		dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: 'Choisir la date', isRTL: false};
+		
+	// Ouvre le calendrier lors de l'appui sur date
 	$.datepicker.setDefaults($.datepicker.regional['fr'])
 	$( '#annne_prod' ).datepicker({
-		defaultDate: "+1w",
+		defaultDate: "-1w",
 		changeMonth: true,
 		format: 'dd/mm/yyyy',
 		language: 'fr'

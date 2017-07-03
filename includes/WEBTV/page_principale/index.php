@@ -157,7 +157,7 @@ desired effect
                             </div>
                           </div>
                         </div>
-                        <input id="affichage_playlist_homepage" type="button"  data-toggle="toggle" value="Afficher/cacher la liste clips" >
+                        <input id="affichage_playlist_homepage" type="button"  data-toggle="toggle" value="Afficher/effacer la liste clips" >
                         <div id="jp-playlits-id-homepage" class="jp-playlist" style="display;">
                           <ul>
                             <li>&nbsp;</li>

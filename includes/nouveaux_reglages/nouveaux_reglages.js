@@ -295,12 +295,22 @@ $(document).ready(function(){
 	$( '#annee_min' ).datepicker({
 		changeMonth: true,
 		changeYear: true,
+		maxDate: 'today',
 		format: 'dd/mm/yyyy',
-		language: 'fr'
+		language: 'fr',
+		onSelect: function(date){
+			var msecsInADay = 86400000;
+			var date_now = date.split('/');
+			date = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
+			time = (new Date(date)).getTime()
+			$("#annee_max").datepicker( "option", "minDate", new Date( time + msecsInADay));
+			console.log(new Date( time+ msecsInADay));
+		}
 	});
 	$( '#annee_max' ).datepicker({
 		changeMonth: true,
 		changeYear: true,
+		maxDate: 'today',
 		format: 'dd/mm/yyyy',
 		language: 'fr'
 	});
@@ -1011,6 +1021,9 @@ $(document).ready(function(){
 
 
         var pardefaut = 0;
+		var annee_max = $("#annee_max").val();
+		var annee_min = $("#annee_min").val();
+		var qualite_min= $("#qualite_min").val();
         var artiste_mis_en_avant = artiste_choisi;
         var pubsinternes = pubs_internes;
         var pubsexternes = pubs_externes;
@@ -1023,8 +1036,37 @@ $(document).ready(function(){
         var nom_disponible = true;
 
         /*
-            * --------------------------  VERIFICATION DES NOMS   -----------------------------------
-            */
+		* --------------------------  VERIFICATION DES DATES MIN ET MAX   -----------------------------------
+		*/
+		
+		if (annee_max != "")
+		{
+			
+			var date_now = annee_max.split('/');
+			annee_max = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
+			console.log(annee_max);
+		} else
+		{
+			annee_max = "9999-12-31";
+		}
+		if (annee_min != "")
+		{
+			
+			var date_now = annee_min.split('/');
+			annee_min = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
+			console.log(annee_min);
+		} else
+		{
+			annee_min = "0001-01-01";
+		}
+		if ($.inArray(qualite_min, [1, 2, 3, 4, 5]) == -1)
+		{
+			qualite_min = 1;
+		}
+		
+        /*
+		* --------------------------  VERIFICATION DES NOMS   -----------------------------------
+		*/
 
        for(var i = 0; i < tableau_noms_reglages_enregistres.length ; i++){
             if(tableau_noms_reglages_enregistres[i] == nom_reglage){
@@ -1053,6 +1095,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1096,6 +1141,9 @@ $(document).ready(function(){
                         {
                             'action': 'traitement_infos_nouveaux_reglages',
                             'pardefaut':pardefaut,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
