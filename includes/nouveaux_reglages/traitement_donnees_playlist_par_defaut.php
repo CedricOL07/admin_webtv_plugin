@@ -93,7 +93,7 @@ function enregistrer_reglage_par_defaut(){
         if(isset($_POST['qualite_min'])){
             $qualite_min=$_POST['qualite_min'];
         }
-
+        echo($qualite_min);
 
         if ($par_defaut == 1){
 

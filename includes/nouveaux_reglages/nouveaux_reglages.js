@@ -1024,6 +1024,7 @@ $(document).ready(function(){
 		var annee_max = $("#annee_max").val();
 		var annee_min = $("#annee_min").val();
 		var qualite_min= $("#qualite_min").val();
+
         var artiste_mis_en_avant = artiste_choisi;
         var pubsinternes = pubs_internes;
         var pubsexternes = pubs_externes;
@@ -1059,10 +1060,7 @@ $(document).ready(function(){
 		{
 			annee_min = "00010101"; // 01/01/0001
 		}
-		if ($.inArray(qualite_min, [1, 2, 3, 4, 5]) == -1)
-		{
-			qualite_min = 1;
-		}
+
 
         /*
 		* --------------------------  VERIFICATION DES NOMS   -----------------------------------
@@ -1087,7 +1085,7 @@ $(document).ready(function(){
 
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
 
-            /*  /!\------ Partie enregistrant les playlist par defaut!!!!!  ------/!\*/
+    /*  /!\--------------- Partie enregistrant les playlist par defaut!!!!!  --------------/!\   */
 
                     pardefaut = 1;
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
@@ -1096,9 +1094,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1110,7 +1108,7 @@ $(document).ready(function(){
                             'nom_reglage':nom_reglage,
                         },
                         function(response){
-                           console.log(response);
+                           console.log( response);
                         }
                     );
                // return false;
@@ -1145,9 +1143,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,

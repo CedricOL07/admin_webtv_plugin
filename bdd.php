@@ -73,20 +73,20 @@ function vider_bdd(){
 }
 
 vider_bdd();
-ajouter_video('Get Lucky','Daft Punk','RAM','2014','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/1.mp4','Autre','5');
+ajouter_video('Get Lucky','Daft Punk','RAM','20140101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/1.mp4','Autre','5');
 ajouter_video('The Pretender','Foo Fighters','Foo','2003','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/2.mp4','Hard-rock & Metal','5');
-ajouter_video('Hurt','Johnny Cash','Cash','1985','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/3.mp4','Jazz & Blues','5');
+ajouter_video('Hurt','Johnny Cash','Cash','19850101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/3.mp4','Jazz & Blues','5');
 ajouter_video('I kissed a girl','Katy Perry','Katy','2015','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/4.mp4','Pop-rock','5');
-ajouter_video('Poker Face','Lady Gaga','Fame','2008','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/5.mp4','Pop-rock','5');
-ajouter_video('Nothing Else Matters','Metallica','Black Album','1987','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/6.mp4','Hard-rock & Metal','5');
-ajouter_video('Amaranth','Nightwish','Dark Passion Play','2010','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/7.mp4','Hard-rock & Metal','5');
-ajouter_video('Elan','Nightwish','Endless Form Of Beautiful','2015','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Hard-rock & Metal','5');
+ajouter_video('Poker Face','Lady Gaga','Fame','20080101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/5.mp4','Pop-rock','5');
+ajouter_video('Nothing Else Matters','Metallica','Black Album','19870101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/6.mp4','Hard-rock & Metal','5');
+ajouter_video('Amaranth','Nightwish','Dark Passion Play','20100101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/7.mp4','Hard-rock & Metal','5');
+ajouter_video('Elan','Nightwish','Endless Form Of Beautiful','20150101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Hard-rock & Metal','5');
 ajouter_video('Dont Speak','No Doubt','Gwen','2000','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/9.mp4','Pop-rock','5');
-ajouter_video('Snow','Red Hot Chilli Peppers','RHCP','2004','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/10.mp4','Pop-rock','5');
-ajouter_video('Papaoutai','Stromae','Maestro','2012','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/11.mp4','Musique du monde','5');
-ajouter_video('Chop Suey','System of a Down','SOAD','2002','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/12.mp4','Hard-rock & Metal','5');
-ajouter_video('The kids arent alright','The Offspring','Punk','2001','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/13.mp4','Hard-rock & Metal','5');
-ajouter_video('Zombie','The Cranberries','Ireland','1996','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/14.mp4','Pop-rock','5');
-ajouter_video('Tous les cris les SOS','ZAZ','France','2016','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/15.mp4','Musique du monde','5');
+ajouter_video('Snow','Red Hot Chilli Peppers','RHCP','20040101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/10.mp4','Pop-rock','5');
+ajouter_video('Papaoutai','Stromae','Maestro','20120101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/11.mp4','Musique du monde','5');
+ajouter_video('Chop Suey','System of a Down','SOAD','20020101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/12.mp4','Hard-rock & Metal','5');
+ajouter_video('The kids arent alright','The Offspring','Punk','20010101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/13.mp4','Hard-rock & Metal','5');
+ajouter_video('Zombie','The Cranberries','Ireland','19960101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/14.mp4','Pop-rock','5');
+ajouter_video('Tous les cris les SOS','ZAZ','France','20160101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/15.mp4','Musique du monde','5');
 
 ?>
