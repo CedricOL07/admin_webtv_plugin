@@ -14,7 +14,7 @@
 
 
 add_action( 'pluginwebtv_generer_playlist_par_defaut', 'generer_playlist_par_defaut',10,11);
-add_action( 'pluginwebtv_recup_videos_playlist_par_defaut', 'recup_videos_playlist_par_defaut',15,2);
+add_action( 'pluginwebtv_recup_videos_playlist_par_defaut', 'recup_videos_playlist_par_defaut',15,5);
 add_action('wp_ajax_effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin','effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin' );
 add_action('wp_ajax_nouvelle_video_comparaison','nouvelle_video_comparaison' );
 
@@ -28,20 +28,24 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max,$annee_min,$qualite_min){
+function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$annee_max,$annee_min,$qualite_min){
     global $tab_url;
     global $tab_titres;
     global $tab_artistes;
     global $tab_genres;
     global $tab_annees;
-    $poprock=$pourcentagepoprock;
-    $hiphop=$pourcentagehiphop;
-    $jazzblues=$pourcentagejazzblues;
-    $musiquemonde=$pourcentagemusiquemonde;
-    $hardrock=$pourcentagehardrock;
-    $electro=$pourcentageelectro;
-    $chanson=$pourcentagechanson;
-    $autres=$pourcentageautres;
+    $poprock = $pourcentagepoprock;
+    $hiphop = $pourcentagehiphop;
+    $jazzblues = $pourcentagejazzblues;
+    $musiquemonde = $pourcentagemusiquemonde;
+    $hardrock = $pourcentagehardrock;
+    $electro = $pourcentageelectro;
+    $chanson = $pourcentagechanson;
+    $autres = $pourcentageautres;
+    $annee_min = $annee_min;
+    $annee_max = $annee_max;
+    $qualite_min = $qualite_min;
+
     // Variables utiles
     $compteur=0;
     $genre_id;
@@ -170,8 +174,9 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
     $sql_query1="SELECT video_id,artiste_id,genre_id,album_id,annee_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
 		AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$annee_min' AND annee <= '$annee_max' )
 		AND qualite_id >= $qualite_min ORDER BY RAND()  LIMIT $limit;";
+    /*echo ("ldsflgj : ". $sql_query1);
+    wp_die();*/
     $tabvideos=$wpdb->get_results($sql_query1);
-
     foreach($tabvideos as $id){
 
         $id_video = $id->video_id;
@@ -182,9 +187,11 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
 
         $query_album = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_album' LIMIT 1;";
         $tab_donnees_album = $wpdb->get_results($query_album);
+
         foreach($tab_donnees_album as $results)
         {
             $tab_album[] = $results->album;
+
         }
 
         $query_annee = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
