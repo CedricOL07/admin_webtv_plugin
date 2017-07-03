@@ -60,7 +60,7 @@ $(document).ready(function(){
           myPlaylist.add({
             title:value.titre,
             m4v:value.url
-            
+
           });
           myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
         });
@@ -106,7 +106,7 @@ $(document).ready(function(){
     });
 
   });
-<<<<<<< HEAD
+
 /*
   window.onload = function()
   {
@@ -133,7 +133,6 @@ $(document).ready(function(){
       img.src = url;
 
     }*/
-=======
->>>>>>> d44c8b452ab3b2677b868b9fdf826ef5d20421cb
+
 
 });

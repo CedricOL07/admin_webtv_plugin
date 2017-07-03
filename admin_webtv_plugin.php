@@ -247,7 +247,8 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `url` varchar(255) NOT NULL,
     `artiste` varchar(255) NOT NULL,
     `genre` varchar(255) NOT NULL,
-    `annee` varchar(255) NOT NULL
+    `annee` date NOT NULL,
+    `album` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
     $alter_table_defaut_playlist=" ALTER TABLE `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin`
@@ -416,7 +417,10 @@ register_activation_hook(__FILE__, 'creation_tables_plugin');
 
 // A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
 
-
+/*
+* Fonctions : utile pour le fichier js du player_homepage.js
+*
+*/
 
 function recuperer_videos_player_page_principale() {
     //do_action('pluginwebtv_generer_la_playlist_par_defaut');

@@ -91,9 +91,9 @@ function enregistrer_reglage_par_defaut(){
             $annee_min=$_POST['annee_min'];
         }
         if(isset($_POST['qualite_min'])){
-            $qualite_min=$_POST['qualite_min'];
+            $qualite_min = $_POST['qualite_min'];
         }
-        echo($qualite_min);
+
 
         if ($par_defaut == 1){
 
@@ -106,6 +106,7 @@ function enregistrer_reglage_par_defaut(){
           $select = $wpdb->query($inserer_nouvelle_playlist_par_defaut);
 
         }
+        
         do_action('pluginwebtv_generer_la_playlist_par_defaut');
 
     }
@@ -126,8 +127,7 @@ function generer_la_playlist_par_defaut(){
     global $tab_genres;
     global $tab_artistes;
     global $tab_annees;
-    $tableau_dates_debut=array();
-    $tableau_dates_fin=array();
+    global $tab_album;
 
     //On chope les playlists enregistrés, on tri par date et quand creneau libre on met playlist defaut
     $ldefaut=1;
@@ -151,9 +151,9 @@ function generer_la_playlist_par_defaut(){
         $annee_max=$resdefaut->annee_max;
         $annee_min=$resdefaut->annee_min;
         $qualite_min=$resdefaut->qualite_min;
-      //for($i=0;$i<$nb_heures_a_completer2defaut;$i++){
+
             do_action('pluginwebtv_generer_playlist_par_defaut',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut,$annee_max,$annee_min,$qualite_min);
-        //}
+
 
     }
 
@@ -167,11 +167,12 @@ function generer_la_playlist_par_defaut(){
     $artistes=str_replace("'","''",$tab_artistes);
     $genres=str_replace("'","''",$tab_genres);
     $annees=str_replace("'","''",$tab_annees);
+    $album=str_replace("'","''",$tab_album);
 
     // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
     for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
 
-        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]')";
+        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
         $wpdb->query($inserer);
     }
 

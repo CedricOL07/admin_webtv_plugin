@@ -1021,10 +1021,9 @@ $(document).ready(function(){
 
 
         var pardefaut = 0;
-		var annee_max = $("#annee_max").val();
-		var annee_min = $("#annee_min").val();
-		var qualite_min= $("#qualite_min").val();
-
+    		var annee_max = $("#annee_max").val();
+    		var annee_min = $("#annee_min").val();
+    		var qualite_min= $("#qualite_min").val();
         var artiste_mis_en_avant = artiste_choisi;
         var pubsinternes = pubs_internes;
         var pubsexternes = pubs_externes;
@@ -1086,7 +1085,7 @@ $(document).ready(function(){
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
 
     /*  /!\--------------- Partie enregistrant les playlist par defaut!!!!!  --------------/!\   */
-
+              console.log("qualite_min : " +qualite_min);
                     pardefaut = 1;
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
                     $.post(
@@ -1108,7 +1107,7 @@ $(document).ready(function(){
                             'nom_reglage':nom_reglage,
                         },
                         function(response){
-                           console.log( response);
+                           console.log("echo : "+ response);
                         }
                     );
                // return false;

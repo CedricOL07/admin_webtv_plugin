@@ -164,9 +164,10 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
     global $tab_titres;
     global $tab_genres;
     global $tab_annees;
+    global $tab_album;
 
 
-    $sql_query1="SELECT video_id,artiste_id,genre_id,annee_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
+    $sql_query1="SELECT video_id,artiste_id,genre_id,album_id,annee_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
 		AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$annee_min' AND annee <= '$annee_max' )
 		AND qualite_id >= $qualite_min ORDER BY RAND()  LIMIT $limit;";
     $tabvideos=$wpdb->get_results($sql_query1);
@@ -177,6 +178,14 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
         $id_art1 = $id->artiste_id;
         $id_genres = $id->genre_id;
         $id_annees = $id->annee_id;
+        $id_album  = $id->album_id;
+
+        $query_album = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_album' LIMIT 1;";
+        $tab_donnees_album = $wpdb->get_results($query_album);
+        foreach($tab_donnees_album as $results)
+        {
+            $tab_album[] = $results->album;
+        }
 
         $query_annee = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
         $tab_donnees_annee = $wpdb->get_results($query_annee);
@@ -211,6 +220,7 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
             $tab_titres[]=$s->titre;
 
         }
+        //echo("entré1");
     }
 }
 /*
@@ -229,7 +239,7 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
       $id_video_meme_genre_video_courante = $results->video_id;
       $query_titre_video_meme_genre_video_courante = "SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video_meme_genre_video_courante'ORDER BY RAND();";
       $reponse_titre_video_meme_genre_video_courante = $wpdb->get_results($query_titre_video_meme_genre_video_courante);
-      
+
       foreach ($reponse_titre_video_meme_genre_video_courante as $results) {
         $tab_titre_video_meme_genre_video_courante[] = $results->titre;
 
@@ -275,7 +285,6 @@ ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des cotes  et non d
 function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     global $wpdb;
     global $titre_nouvelle_video;
-    $tab_titre_playlist_par_defaut = array();
     $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
     $video_courante= $_POST['videocourante'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
 
