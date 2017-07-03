@@ -41,7 +41,7 @@ function enregistrement_playlist_clips_pourcentage(){
 
 }
 
-function generer_playlist_clips($nom_playlist_clips){
+function generer_playlist_clips($nom_playlist){
 
   global $wpdb;
   global $tab_url;

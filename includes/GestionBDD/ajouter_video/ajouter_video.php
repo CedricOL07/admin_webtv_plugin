@@ -41,8 +41,8 @@ function ajouter_video(){
     $album = $_POST['myParams']['album'];
     $annee_prod = $_POST['myParams']['annee'];
     $qualite = $_POST['myParams']['qualite'];   
-    list($aaaa,$mm,$jj)=explode('/',$annee_prod);
-    $annee_prod = $jj.'-'.$mm.'-'.$aaaa;       // Met la date au format aaaa-mm-jj
+    list($jj,$mm,$aaaa)=explode('/',$annee_prod);
+    $annee_prod = $aaaa.$mm.$jj;       // Met la date au format aaaammjj
 
 
     // Copie de la video 

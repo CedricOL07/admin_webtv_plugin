@@ -1043,21 +1043,21 @@ $(document).ready(function(){
 		{
 
 			var date_now = annee_max.split('/');
-			annee_max = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
+			annee_max = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaa-mm-jj
 			console.log(annee_max);
 		} else
 		{
-			annee_max = "9999-12-31";
+			annee_max = "99991231";
 		}
 		if (annee_min != "")
 		{
 
 			var date_now = annee_min.split('/');
-			annee_min = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
+			annee_min = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaa-mm-jj
 			console.log(annee_min);
 		} else
 		{
-			annee_min = "0001-01-01";
+			annee_min = "00010101"; // 01/01/0001
 		}
 		if ($.inArray(qualite_min, [1, 2, 3, 4, 5]) == -1)
 		{
@@ -1096,9 +1096,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1145,9 +1145,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,

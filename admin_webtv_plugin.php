@@ -210,7 +210,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;";
     $creer_table_annee="
 CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "annee_webtv_plugin` (
     `id` int(255) NOT NULL,
-    `annee` varchar(255) DEFAULT NULL,
+    `annee` date DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;";
     $alter_table_annee="ALTER TABLE `" . $wpdb->prefix . "annee_webtv_plugin`
@@ -382,9 +382,6 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($alter_table_relation);
     $wpdb->query($alter_table_defaut_playlist);
 }
-register_activation_hook(__FILE__, 'creation_tables_plugin');
-
-
 
 
 
@@ -413,6 +410,9 @@ function pluginwebtv_supprimer_tables(){
 }
 
 
+
+register_activation_hook(__FILE__, 'pluginwebtv_supprimer_tables');
+register_activation_hook(__FILE__, 'creation_tables_plugin');
 
 // A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
 
