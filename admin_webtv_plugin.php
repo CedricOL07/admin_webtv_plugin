@@ -22,7 +22,7 @@ function php_includes(){
   //  include('includes/GenerationPlaylist.php');
     include('includes/GenerationPlaylist_par_defaut.php');
     include('includes/nouveaux_reglages/traitement_donnees_playlist_par_defaut.php');
-  //  include('includes/nouveaux_reglages/traitement_donnees.php');
+    include('includes/nouveaux_reglages/traitement_donnees_playlists_clips.php');
     include('includes/GestionBDD/gestionbdd-ajax.php');
     include('includes/GestionBDD/tableau_clips_videos/tableau_clips_videos_ajax.php');
     include('includes/GestionBDD/tableau_playlists_videos/tableau_playlists_videos_ajax.php');
@@ -30,6 +30,12 @@ function php_includes(){
 
 }
 php_includes();
+
+// Includes des pages html
+function gestion_bdd_callback(){include('includes/GestionBDD/gestionbdd.php');}
+function callback_menu_webtv(){include('includes/WEBTV/page_principale/index.php');}
+function callback_menu_erreur(){include('includes/WEBTV/page_principale/erreur.php');}
+function nouveaux_reglages_callback(){require_once('includes/nouveaux_reglages/index.php');}
 
 
  // Hook pour ajouter l'action dans la pile WP
@@ -46,7 +52,6 @@ function plugin_webtvfil(){
         $page_nouveaux_reglages=add_submenu_page( 'sous-menu-webtv', 'Nouveaux Réglages', 'Nouvelle Playlist', 'manage_options', 'myplugin-submenu1', 'nouveaux_reglages_callback' );
       //  add_submenu_page( 'sous-menu-webtv', 'Réglages Enregistrés', 'Réglages de Playlist Enregistrés', 'manage_options', 'myplugin-submenu2', 'reglages_enregistres_callback' );
         $gestioncontenu=add_submenu_page( 'sous-menu-webtv', 'Réglages Enregistrés', 'Gestion du contenu', 'manage_options', 'myplugin-submenu2', 'gestion_bdd_callback' );
-        //$pagevalidation=add_plugins_page('My Plugin Page', 'My Plugin', 'read', 'pagevalidation', 'include_pagevalidation');
 
 
 
@@ -187,40 +192,6 @@ add_action( 'admin_enqueue_scripts', 'chargement_jquery_cdn' );
 add_action( 'wp_enqueue_scripts', 'chargement_jquery_cdn' );
 
 
-function gestion_bdd_callback(){
-
-    include('includes/GestionBDD/gestionbdd.php');
-}
-
-
-/*function include_pagevalidation(){
-
-    require_once('includes/page_validation/index.php');
-    //wp_register_script( 'pagerecapitulatifjs', plugins_url('js/page_recapitulatif_reglage.js',__FILE__), array(), null, false );
-    //wp_enqueue_script('pagerecapitulatifjs');
-}*/
-
-function callback_menu_webtv(){
-   include('includes/WEBTV/page_principale/index.php');
-}
-function callback_menu_erreur(){
-    include('includes/WEBTV/page_principale/erreur.php');
-
-}
-
-
-// Includes des pages
-
-function reglages_enregistres_callback(){
-    require_once('includes/reglages_enregistrees/index.php');
-
-}
-
-function nouveaux_reglages_callback(){
-
- require_once('includes/nouveaux_reglages/index.php');
-
-}
 
 function creation_tables_plugin(){
     global $wpdb;

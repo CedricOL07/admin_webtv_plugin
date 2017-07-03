@@ -287,9 +287,9 @@ $(document).ready(function(){
 									dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 									dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 									dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
-									dateFormat: 'dd/mm/yy', firstDay: 0, 
+									dateFormat: 'dd/mm/yy', firstDay: 0,
 									initStatus: 'Choisir la date', isRTL: false};
-		
+
 	// Ouvre le calendrier lors de l'appui sur date
 	$.datepicker.setDefaults($.datepicker.regional['fr'])
 	$( '#annee_min' ).datepicker({
@@ -695,8 +695,8 @@ $(document).ready(function(){
         // Instantiate and draw our chart, passing in some options.
         chart = new google.visualization.PieChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
-		
-		
+
+
     }
 
 
@@ -1042,12 +1042,13 @@ $(document).ready(function(){
            return false;
         }
         else{
+
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
-                      //Si il a choisi de mettre la playlist comme par défaut
+
+            /*  /!\------ Partie enregistrant les playlist par defaut!!!!!  ------/!\*/
+
                     pardefaut = 1;
-
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
-
                     $.post(
                         ajaxurl,
                         {
@@ -1069,6 +1070,9 @@ $(document).ready(function(){
                     );
                // return false;
             } else {
+
+            /*  /!\------ Partie enregistrant les playlist clips !!!!!  ------/!\*/
+                    //console.log("affichage");
                     pardefaut = 0;
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date
@@ -1094,7 +1098,7 @@ $(document).ready(function(){
                     $.post(
                         ajaxurl,
                         {
-                            'action': 'traitement_infos_nouveaux_reglages',
+                            'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
@@ -1122,7 +1126,7 @@ $(document).ready(function(){
 
                         },
                         function(response){
-                                //console.log(response);
+                                console.log("echo : " +response);
 
                         }
                     );

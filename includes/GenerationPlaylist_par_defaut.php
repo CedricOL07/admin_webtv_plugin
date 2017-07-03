@@ -212,10 +212,12 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
     // --- Fabrication d'un tableau avec les titres des videos ayant le même genre que la vidéo courante --//
     $query_id_video_meme_genre_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocourante' ORDER BY RAND();";
     $reponse_id_video_meme_genre_video_courante = $wpdb->get_results($query_id_video_meme_genre_video_courante);
+
     foreach ($reponse_id_video_meme_genre_video_courante as $results) {
       $id_video_meme_genre_video_courante = $results->video_id;
       $query_titre_video_meme_genre_video_courante = "SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video_meme_genre_video_courante'ORDER BY RAND();";
       $reponse_titre_video_meme_genre_video_courante = $wpdb->get_results($query_titre_video_meme_genre_video_courante);
+      
       foreach ($reponse_titre_video_meme_genre_video_courante as $results) {
         $tab_titre_video_meme_genre_video_courante[] = $results->titre;
 

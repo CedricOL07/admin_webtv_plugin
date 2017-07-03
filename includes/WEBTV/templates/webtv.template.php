@@ -4,11 +4,8 @@
         <!--<img id="logo1" src="http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png" height="107" alt="LeFil" />-->
     </div>
     <div class="col-md-6" id="titre_background">
-
-
-
-
     </div>
+
         <div class="col-md-4" id="lecteur_video" >
             <div id="container_jplayer" class="jp-video jp-video-280p" role="application" aria-label="media player">
                 <div class="jp-type-playlist">
@@ -18,7 +15,7 @@
                             <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
                         </div>
                         <div class="jp-interface">
-                            <div class="jp-progress" style="display">
+                            <div class="jp-progress" style="display:none;">
                                 <div class="jp-seek-bar">
                                     <div class="jp-play-bar"></div>
                                 </div>
@@ -63,11 +60,13 @@
                 </div>
             </div>
         </div>
-</div>
+      </div>
+    </div>
 <style type="text/css">
     .site-inner{/
         margin-left:-15px;
     }
+
     /*
     #titre_background{
         background-color:white;

@@ -5,6 +5,7 @@
 $(document).ready(function(){
     var index_bdd_precedent;
     var myPlaylist = new jPlayerPlaylist({
+        //jPlayer: "#mon_canvas",
         jPlayer: "#player_video",
         cssSelectorAncestor: "#container_jplayer"
     }, [
@@ -13,7 +14,7 @@ $(document).ready(function(){
         playlistOptions: {
             enableRemoveControls: false,
             autoPlay: true,
-            //keyEnabled: true,
+            keyEnabled: true,
         },
         //swfPath: "../../dist/jplayer",
         supplied: "webmv, ogv, m4v, oga, mp3",
@@ -22,6 +23,9 @@ $(document).ready(function(){
         smoothPlayBar: true,
         keyEnabled: true,
         audioFullScreen: true,
+        wmode : "window",
+        emulateHtml : true,
+        //backgroundColor : "http://www.le-fil.com/wp-content/themes/lefil_com/apple-icon-152x152.png",
 
     });
 
@@ -56,6 +60,7 @@ $(document).ready(function(){
           myPlaylist.add({
             title:value.titre,
             m4v:value.url
+            
           });
           myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
         });
@@ -101,36 +106,31 @@ $(document).ready(function(){
     });
 
   });
-
+/*
   window.onload = function()
   {
-      var canvas = document.getElementById('mon_canvas');
-          if(!canvas)
-          {
-              alert("Impossible de récupérer le canvas");
-              return;
-          }
 
-      var context = canvas.getContext('2d');
-          if(!context)
-          {
-              alert("Impossible de récupérer le context du canvas");
-              return;
-          }
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      var data =  `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
+                  <foreignObject width='100%' height='100%'>
+                    <div xmlns='http://www.w3.org/1999/xhtml' style='font-size:40px'>
+                      <em>J'</em> aime <span style='color:white; text-shadow:0 0 2px blue;'>les licornes
 
+                      </span>
+                    </div>
+                  </foreignObject>
+                </svg>`;
+      var DOMURL = self.URL || self.webkitURL || self;
+      var img = new Image();
+      var svg = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
+      var url = DOMURL.createObjectURL(svg);
+      video.onload = function() {
+          ctx.drawImage(img, 0, 0);
+          DOMURL.revokeObjectURL(url);
+      };
+      img.src = url;
 
-      //C'est ici que l'on placera tout le code servant à nos dessins.
-  }
-
-
-
-
-
-
-
-
-
-
-
+    }*/
 
 });
