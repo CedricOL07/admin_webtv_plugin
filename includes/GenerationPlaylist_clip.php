@@ -13,8 +13,8 @@
 
 
 
-add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',10,11);
-add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,2);
+add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',10,14);
+add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,5);
 add_action( 'pluginwebtv_verifier_restant', 'verifier_restant',15,1);
 add_action( 'pluginwebtv_ajouter_hightlight', 'ajouter_hightlight',16,1);
 add_action( 'pluginwebtv_ajouter_pubs_internes', 'ajouter_pubs_internes',17,2);
@@ -47,6 +47,9 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     $electro=$pourcentageelectro;
     $chanson=$pourcentagechanson;
     $autres=$pourcentageautres;
+    $amin = $annee_min;
+    $amax = $annee_max;
+    $qualite = $qualite_min;
 
     // Variables utiles
     $compteur=0;
@@ -104,41 +107,41 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
         if ( $valeur_camembert > 0){
             if($valeur_camembert<20){
 
-              do_action('pluginwebtv_recup_videos',$genre_id,1);
+              do_action('pluginwebtv_recup_videos',$genre_id,1,$amax, $amin, $qualite);
             }else{
                 if($valeur_camembert<30){
 
-                   do_action('pluginwebtv_recup_videos',$genre_id,2);
+                   do_action('pluginwebtv_recup_videos',$genre_id,2,$amax, $amin, $qualite);
                 }else{
                     if($valeur_camembert<40){
-                       do_action('pluginwebtv_recup_videos',$genre_id,3);
+                       do_action('pluginwebtv_recup_videos',$genre_id,3,$amax, $amin, $qualite);
                     }else{
                         if($valeur_camembert<50){
-                           do_action('pluginwebtv_recup_videos',$genre_id,4);
+                           do_action('pluginwebtv_recup_videos',$genre_id,4,$amax, $amin, $qualite);
 
                         }else{
                             if($valeur_camembert<60){
-                               do_action('pluginwebtv_recup_videos',$genre_id,5);
+                               do_action('pluginwebtv_recup_videos',$genre_id,5,$amax, $amin, $qualite);
 
                             }else{
                                 if($valeur_camembert<70){
-                                  do_action('pluginwebtv_recup_videos',$genre_id,6);
+                                  do_action('pluginwebtv_recup_videos',$genre_id,6,$amax, $amin, $qualite);
 
                                 }else{
                                     if($valeur_camembert<80){
-                                      do_action('pluginwebtv_recup_videos',$genre_id,7);
+                                      do_action('pluginwebtv_recup_videos',$genre_id,7,$amax, $amin, $qualite);
 
                                     }else{
                                         if($valeur_camembert<90){
-                                            do_action('pluginwebtv_recup_videos',$genre_id,8);
+                                            do_action('pluginwebtv_recup_videos',$genre_id,8,$amax, $amin, $qualite);
 
                                         }else{
                                             if($valeur_camembert<100){
-                                                do_action('pluginwebtv_recup_videos',$genre_id,9);
+                                                do_action('pluginwebtv_recup_videos',$genre_id,9,$amax, $amin, $qualite);
                                             }
                                             if($valeur_camembert==100){
 
-                                               do_action('pluginwebtv_recup_videos',$genre_id,12);
+                                               do_action('pluginwebtv_recup_videos',$genre_id,12,$amax, $amin, $qualite);
 
                                             }
                                         }
@@ -425,7 +428,7 @@ function ajouter_pubs_internes($pubsinternes){
 *  generer_la_playlist dans le fichier traitement_donnees.php qui rempli la table playlist_par_defaut_webtv_plugin.
 */
 
-function recup_videos($genre,$limit){
+function recup_videos($genre,$limit,$annee_max, $annee_min, $qualite_min){
     global $tab_artistes_id;
     global $tab_url;
     global $tab_artistes;
@@ -433,7 +436,7 @@ function recup_videos($genre,$limit){
     global $tab_ids;
     global $wpdb;
     global $tab_genres;
-    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
+    $sql_query1="SELECT video_id,artiste_id,genre_id,annee_id,album_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
         AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$annee_min' AND annee <= '$annee_max' )
         AND qualite_id >= $qualite_min ORDER BY RAND()  LIMIT $limit;";
 
@@ -444,21 +447,21 @@ function recup_videos($genre,$limit){
         $id_video = $id->video_id;
         $id_art1 = $id->artiste_id;
         $id_genres = $id->genre_id;
+        $id_annees = $id->annee_id;
+        $id_albums = $id->album_id;
 
         $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
         $tab_donnees_genre = $wpdb->get_results($query_genre);
         foreach($tab_donnees_genre as $results)
         {
-          $tab_genres[] = $results->Genre;
+            $tab_genres[] = $results->Genre;
         }
 
         $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
         $tab_donnees_artistes = $wpdb->get_results($query_artistes);
 
         foreach($tab_donnees_artistes as $results){
-
-        $tab_artistes[] = $results->nom;
-
+            $tab_artistes[] = $results->nom;
         }
 
         $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
@@ -470,6 +473,13 @@ function recup_videos($genre,$limit){
 
             $tab_titres[]=$s->titre;
 
+        }
+
+        $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
+        $tab_donnees_annees = $wpdb->get_results($query_artistes);
+
+        foreach($tab_donnees_annees as $results){
+            $tab_annees[] = $results->annee;
         }
     }
 
