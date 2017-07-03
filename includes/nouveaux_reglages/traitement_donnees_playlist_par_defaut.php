@@ -20,9 +20,8 @@ add_action('wp_ajax_recuperer_tous_reglages_enregistres','recuperer_tous_reglage
 add_action('wp_ajax_supprimer_toutes_videos','supprimer_toutes_videos');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
-//add_action( 'pluginwebtv_eviter_repetition_tous_les_n_morceaux', 'eviter_repetition_tous_les_n_morceaux');
+
 add_action('wp_ajax_etat_live','etat_live');
-//add_action('wp_recupérer_id_par_defaut','recupérer_id_par_defaut');
 add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
 
 function etat_live(){

@@ -287,9 +287,9 @@ $(document).ready(function(){
 									dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 									dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 									dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
-									dateFormat: 'dd/mm/yy', firstDay: 0, 
+									dateFormat: 'dd/mm/yy', firstDay: 0,
 									initStatus: 'Choisir la date', isRTL: false};
-		
+
 	// Ouvre le calendrier lors de l'appui sur date
 	$.datepicker.setDefaults($.datepicker.regional['fr'])
 	$( '#annee_min' ).datepicker({
@@ -705,8 +705,8 @@ $(document).ready(function(){
         // Instantiate and draw our chart, passing in some options.
         chart = new google.visualization.PieChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
-		
-		
+
+
     }
 
 
@@ -1038,10 +1038,10 @@ $(document).ready(function(){
         /*
 		* --------------------------  VERIFICATION DES DATES MIN ET MAX   -----------------------------------
 		*/
-		
+
 		if (annee_max != "")
 		{
-			
+
 			var date_now = annee_max.split('/');
 			annee_max = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
 			console.log(annee_max);
@@ -1051,7 +1051,7 @@ $(document).ready(function(){
 		}
 		if (annee_min != "")
 		{
-			
+
 			var date_now = annee_min.split('/');
 			annee_min = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
 			console.log(annee_min);
@@ -1063,7 +1063,7 @@ $(document).ready(function(){
 		{
 			qualite_min = 1;
 		}
-		
+
         /*
 		* --------------------------  VERIFICATION DES NOMS   -----------------------------------
 		*/
@@ -1084,20 +1084,21 @@ $(document).ready(function(){
            return false;
         }
         else{
+
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
-                      //Si il a choisi de mettre la playlist comme par défaut
+
+            /*  /!\------ Partie enregistrant les playlist par defaut!!!!!  ------/!\*/
+
                     pardefaut = 1;
-
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
-
                     $.post(
                         ajaxurl,
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1114,6 +1115,9 @@ $(document).ready(function(){
                     );
                // return false;
             } else {
+
+            /*  /!\------ Partie enregistrant les playlist clips !!!!!  ------/!\*/
+                    //console.log("affichage");
                     pardefaut = 0;
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date
@@ -1139,11 +1143,11 @@ $(document).ready(function(){
                     $.post(
                         ajaxurl,
                         {
-                            'action': 'enregistrer_reglage_par_defaut',
+                            'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
@@ -1170,7 +1174,7 @@ $(document).ready(function(){
 
                         },
                         function(response){
-                                //console.log(response);
+                                console.log("echo : " +response);
 
                         }
                     );
