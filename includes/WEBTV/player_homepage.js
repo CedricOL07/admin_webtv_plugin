@@ -109,7 +109,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			//console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 		}
 	);
 

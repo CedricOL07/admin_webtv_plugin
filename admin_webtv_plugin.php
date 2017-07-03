@@ -12,8 +12,7 @@ define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // les add_action ('wp_ajax....', '...') permettes de déclarer les fonction PHP dans touts wordpress afin que les fonction ajax dans les fichiers javascript puissent les réutiliser
 add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
-add_action( 'wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
-add_action( 'pluginwebtv_tri_playlist_par_defaut_webtv_plugin','tri_playlist_par_defaut_webtv_plugin');
+
 
 //do_action('pluginwebtv_maj_playlist_table');
 // ce sont des fichiers avec seulement des fonctions (pas de html)
@@ -415,49 +414,5 @@ function pluginwebtv_supprimer_tables(){
 register_activation_hook(__FILE__, 'pluginwebtv_supprimer_tables');
 register_activation_hook(__FILE__, 'creation_tables_plugin');
 
-// A COMPLETER POUR METTRE A JOUR EN FONCTION DES PLAYLITS ENREGISTREES PRESENTES QUAND ON LANCE LE PLAYER
-
-/*
-* Fonctions : utile pour le fichier js du player_homepage.js
-*
-*/
-
-function recuperer_videos_player_page_principale() {
-    //do_action('pluginwebtv_generer_la_playlist_par_defaut');
-    global $wpdb;
-
-    $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
-    $result=$wpdb->get_results($query);
-    wp_send_json_success($result);
-}
-
-
-/*
-*Fonction : Permet de trouver le max id d'une video dans la table playlist par defaut.
-*Très utile pour la fonction situé dans le player_homepage.js permettant d'ajouter
-*lA dernier video ajouté dans la playlist.
-*/
- function recuperer_nouvelle_video_player_page_principal(){
-    global $wpdb;
-    $max_id = 0;
-
-    //Phase obligatoire pour connaitre l'id de la nouvelle video car celui ci est générer automatiquement lors de l'insertion
-    $query_recup_id_nouvelle_video = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin; ";
-    $reponse_recup_id_nouvelle_video = $wpdb->get_results($query_recup_id_nouvelle_video);
-    foreach ($reponse_recup_id_nouvelle_video as $key ) {
-      if ($max_id <= $key->id){
-        $max_id = $key->id;
-      }else{
-        $max_id = $max_id ;
-      }
-    }
-    //echo ("max-id : ". $max_id);
-
-    $query_recup_titre_url_nouvelle_video = "SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
-    $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
-
-    wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
-
-}
 
 ?>

@@ -21,6 +21,8 @@ add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_pa
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
 add_action('wp_ajax_etat_live','etat_live');
 add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
+add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
+add_action('wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
 
 function etat_live(){
     $etat_live;
@@ -177,6 +179,7 @@ function generer_la_playlist_par_defaut(){
     }
 
 
+
     function recup_val_par_defaut(){
       global $wpdb;
       $query_val_par_def="SELECT ParDefaut FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
@@ -192,7 +195,7 @@ function generer_la_playlist_par_defaut(){
         $query="SELECT nom,Debut,Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
         $result=$wpdb->get_results($query);
         wp_send_json_success($result);
-}
+    }
     // On genere une nouvelle playlist pour la semaine
     function recuperer_derniers_pourcentages_enregistrees(){
 
@@ -220,6 +223,49 @@ function generer_la_playlist_par_defaut(){
         wp_die();
 
     }
+
+}
+
+/*
+* Fonctions : utile pour le fichier js du player_homepage.js
+*
+*/
+
+function recuperer_videos_player_page_principale() {
+    //do_action('pluginwebtv_generer_la_playlist_par_defaut');
+    global $wpdb;
+
+    $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
+    $result=$wpdb->get_results($query);
+    wp_send_json_success($result);
+}
+
+
+/*
+*Fonction : Permet de trouver le max id d'une video dans la table playlist par defaut.
+*Très utile pour la fonction situé dans le player_homepage.js permettant d'ajouter
+*lA dernier video ajouté dans la playlist.
+*/
+ function recuperer_nouvelle_video_player_page_principal(){
+    global $wpdb;
+    $max_id = 0;
+
+    //Phase obligatoire pour connaitre l'id de la nouvelle video car celui ci est générer automatiquement lors de l'insertion
+    $query_recup_id_nouvelle_video = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin; ";
+    $reponse_recup_id_nouvelle_video = $wpdb->get_results($query_recup_id_nouvelle_video);
+    foreach ($reponse_recup_id_nouvelle_video as $key ) {
+      if ($max_id <= $key->id){
+        $max_id = $key->id;
+      }else{
+        $max_id = $max_id ;
+      }
+    }
+    //echo ("max-id : ". $max_id);
+
+    $query_recup_titre_url_nouvelle_video = "SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+    $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
+
+    wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
 
 }
 
