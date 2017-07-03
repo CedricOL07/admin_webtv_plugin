@@ -307,11 +307,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
 
 
     $creer_table_qualite="   CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "qualite_webtv_plugin` (
-    `valeur` int(255) NOT NULL,
+    `valeur` int(11) NOT NULL,
     PRIMARY KEY (`valeur`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;";
     $alter_table_qualite="   ALTER TABLE `" . $wpdb->prefix . "qualite_webtv_plugin`
-    MODIFY `valeur` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;";
+    MODIFY `valeur` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;";
 
 
     $creer_table_relation="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "relation_webtv_plugin` (
