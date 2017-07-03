@@ -426,7 +426,7 @@ function recuperer_videos_player_page_principale() {
     //do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
 
-    $query="SELECT titre, artiste, url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
+    $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
 }
@@ -453,7 +453,7 @@ function recuperer_videos_player_page_principale() {
     }
     //echo ("max-id : ". $max_id);
 
-    $query_recup_titre_url_nouvelle_video = "SELECT titre,url FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+    $query_recup_titre_url_nouvelle_video = "SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
     $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
 
     wp_send_json_success($reponse_recup_titre_url_nouvelle_video);

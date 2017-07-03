@@ -51,6 +51,7 @@ $(document).ready(function(){
 function generer_la_playlist(){
   var tableau_donnees= new Array();
   var artiste;
+  var artiste_album_annee_gener = new String();
   $.ajax({
     url: ajaxurl,
     data:{
@@ -61,17 +62,17 @@ function generer_la_playlist(){
       //console.log(data);
       $.each(data.data, function(index, value) {
         //On va récupérer le nom de l'artiste pour chaque titre
-
+        artiste_album_annee_gener=  value.artiste + " - " + value.album  + " - " +value.annee;
         var title=value.titre;
-        console.log(title);
 
         myPlaylist.add({
-			title:value.titre,
-			m4v:value.url,
-			artist:value.artiste
+    			title:value.titre,
+    			m4v:value.url,
+    			artist:artiste_album_annee_gener
         });
         //console.log(value.url);
         myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
+        console.log(title);
       });
 
     },
@@ -108,7 +109,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			'videocourante': titre_previous_current_track
 		},
 		function(response){
-			//console.log("video à ete effacé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+			//console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 		}
 	);
 
@@ -122,7 +123,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 */
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-
+  var artiste_album_annee_ajout = new String();
   $.ajax({
     url: ajaxurl,
     data:{
@@ -133,14 +134,18 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       //console.log("data : "+ data);
         $.each(data.data, function(index, value) {
             titre= value.titre;
-            //Permet de générer la nouvelle video.
-            myPlaylist.add({
-				title:value.titre,
-				m4v:value.url,
-				artist:value.artiste
-			});
-		});
+            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
 
+            // + " annee : " + value.annee + "album : " value.album;
+
+          //Permet de générer la nouvelle video.
+            myPlaylist.add({
+      				title:value.titre,
+      				m4v:value.url,
+      				artist: artiste_album_annee_ajout
+      			});
+		     });
+         console.log("artiste" +artiste_album_annee_ajout);
         console.log(titre);
     }
   });

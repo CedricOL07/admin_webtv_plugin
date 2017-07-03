@@ -227,22 +227,116 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
             $tab_titres[]=$s->titre;
 
         }
-        //echo("entré1");
     }
 }
+
+
+/*
+Nom : ajouter_video_dans_table_playlist_par_defaut_webtv_plugin()
+Fonction : Cette fonction permet de rajouter un clip video dans la table wp_playlist_par_defaut_webtv_plugin de la base de données.
+Ceci permet de faire une boucle des vidéos pour la playlist par défaut.
+ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des cotes  et non des guillemets sinon impossible d'obtenir la page!!
+*/
+
+function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
+    global $wpdb;
+    global $titre_nouvelle_video;
+    $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
+    $video_courante= $_POST['videocourante'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
+
+
+              //------- Séléction de id_genre de la video courante------
+
+    //récupération de l'id de la video courante.
+    $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
+    $reponse_id_video_courante = $wpdb -> get_var($query_id_video_courante);
+
+    $query_annee_max = "SELECT annee_max FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1 LIMIT 1;";
+    $reponse_annee_max = $wpdb->get_var($query_annee_max);
+
+    $query_annee_min = "SELECT annee_min FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1 LIMIT 1;";
+    $reponse_annee_min = $wpdb->get_var($query_annee_min);
+
+    $query_qualite_min = "SELECT qualite_min FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1 LIMIT 1;";
+    $reponse_qualite_min = $wpdb->get_var($query_qualite_min);
+
+    // recupération de l'id de la video courante dans la table playlist par defaut car les id sont différents.
+    $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
+    $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
+
+
+    //Récupération de l'id du genre de la vidéo courante
+    $query_id_genre_video_courante = "SELECT genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_courante' LIMIT 1;";
+    $reponse_id_genre_video_courante = $wpdb -> get_var($query_id_genre_video_courante);
+
+            //-------Video à ajouter ------//
+    nouvelle_video_comparaison($reponse_id_genre_video_courante, $video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min );
+
+
+
+    //Récupère information url et id de la nouvelle video
+     $query_id_video_a_ajouter_meme_genre = "SELECT id,url FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre_nouvelle_video' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+     $reponse_id_video_a_ajouter_meme_genre = $wpdb -> get_var($query_id_video_a_ajouter_meme_genre, 0);
+     $reponse_url_video_a_ajouter_meme_genre = $wpdb -> get_var($query_id_video_a_ajouter_meme_genre, 1);
+
+
+     //Récupération des informations liées à la nouvelle video avec le même genre que la vidéo courante.
+      $query_ids_video_a_ajouter_meme_genre = "SELECT artiste_id,genre_id, album_id, annee_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_a_ajouter_meme_genre'   LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+      $reponse_ids_video_a_ajouter_meme_genre = $wpdb -> get_results($query_ids_video_a_ajouter_meme_genre);
+
+      foreach ( $reponse_ids_video_a_ajouter_meme_genre  as $result){
+        $id_genre_video_a_ajouter_meme_genre = $result->genre_id;
+        $id_artiste_video_a_ajouter_meme_genre = $result->artiste_id;
+        $id_album_video_a_ajouter_meme_genre = $result->album_id;
+        $id_annee_video_a_ajouter_meme_genre = $result->annee_id;
+
+
+        $query_genre_video_a_ajouter_meme_genre = "SELECT Genre FROM ". $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genre_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+        $reponse_genre_video_a_ajouter_meme_genre = $wpdb -> get_var($query_genre_video_a_ajouter_meme_genre);
+
+        $query_artiste_video_a_ajouter_meme_genre = "SELECT nom FROM ". $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artiste_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+        $reponse_artiste_video_a_ajouter_meme_genre = $wpdb -> get_var($query_artiste_video_a_ajouter_meme_genre);
+
+        $query_annee_video_a_ajouter_meme_genre = "SELECT annee FROM ". $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annee_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+        $reponse_annee_video_a_ajouter_meme_genre = $wpdb -> get_var($query_annee_video_a_ajouter_meme_genre);
+
+        $query_album_video_a_ajouter_meme_genre = "SELECT album FROM ". $wpdb->prefix . "album_webtv_plugin WHERE id='$id_album_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
+        $reponse_album_video_a_ajouter_meme_genre = $wpdb -> get_var($query_album_video_a_ajouter_meme_genre);
+      }
+
+      //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
+      $query_titre_url_genres_artistes_annee_album_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre, annee, album) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre','$reponse_annee_video_a_ajouter_meme_genre','$reponse_album_video_a_ajouter_meme_genre')";
+      $wpdb -> query($query_titre_url_genres_artistes_annee_album_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
+
+      //Permet de trier la table par odre croissant !! Utile pour démarer toujours au clip en cours. SELECT n'actualise pas la BDD comme on pourrait le croire si on effectue
+      // la requête dans phpmyadmin.
+      $query_tri_asc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
+      $wpdb->query($query_tri_asc);
+
+      //Très utile afin d'éviter la sélection d'un doublon entre la video courante et les videos avec un titre similaire
+      $query_select_min_id_de_video_courante = "SELECT MIN(id) FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' ";
+      $reponse_select_min_id_de_video_courante = $wpdb->get_var($query_select_min_id_de_video_courante);
+
+      //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
+      $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
+      $wpdb->query($query_del_titre_video_courante);
+}
+
 /*
 * Fonction : Permet de comparer les différents titres de vidéo du même genre
 * Utilité dans la fonction effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin
 */
-function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante){
+function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min){
     global $wpdb;
     global $titre_nouvelle_video;
 
     // --- Fabrication d'un tableau avec les titres des videos ayant le même genre que la vidéo courante --//
-    $query_id_video_meme_genre_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocourante' ORDER BY RAND();";
-    $reponse_id_video_meme_genre_video_courante = $wpdb->get_results($query_id_video_meme_genre_video_courante);
+    $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocourante' AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$reponse_annee_min' AND annee <= '$reponse_annee_max' )
+		AND qualite_id >= $reponse_qualite_min ORDER BY RAND();";
+    $reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = $wpdb->get_results(  $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante);
+    echo ($query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante);
 
-    foreach ($reponse_id_video_meme_genre_video_courante as $results) {
+    foreach ($reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante as $results) {
       $id_video_meme_genre_video_courante = $results->video_id;
       $query_titre_video_meme_genre_video_courante = "SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video_meme_genre_video_courante'ORDER BY RAND();";
       $reponse_titre_video_meme_genre_video_courante = $wpdb->get_results($query_titre_video_meme_genre_video_courante);
@@ -280,81 +374,6 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
     unset($tab_titres_playlist_par_default);// supprime le tableau des 15 clips de la playlist par defaut afin de le réinitialiser à chaque fois.
 
 }
-
-
-/*
-Nom : ajouter_video_dans_table_playlist_par_defaut_webtv_plugin()
-Fonction : Cette fonction permet de rajouter un clip video dans la table wp_playlist_par_defaut_webtv_plugin de la base de données.
-Ceci permet de faire une boucle des vidéos pour la playlist par défaut.
-ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des cotes  et non des guillemets sinon impossible d'obtenir la page!!
-*/
-
-function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
-    global $wpdb;
-    global $titre_nouvelle_video;
-    $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
-    $video_courante= $_POST['videocourante'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
-
-
-              //------- Séléction de id_genre de la video courante------
-
-    //récupération de l'id de la video courante.
-    $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
-    $reponse_id_video_courante = $wpdb -> get_var($query_id_video_courante);
-
-    // recupération de l'id de la video courante dans la table playlist par defaut car les id sont différents.
-    $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
-    $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
-
-
-    //Récupération de l'id du genre de la vidéo courante
-    $query_id_genre_video_courante = "SELECT genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_courante' LIMIT 1;";
-    $reponse_id_genre_video_courante = $wpdb -> get_var($query_id_genre_video_courante);
-
-            //-------Video à ajouter ------//
-    nouvelle_video_comparaison($reponse_id_genre_video_courante, $video_courante );
-
-
-
-    //Récupère information url et id de la nouvelle video
-     $query_id_video_a_ajouter_meme_genre = "SELECT id,url FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$titre_nouvelle_video' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
-     $reponse_id_video_a_ajouter_meme_genre = $wpdb -> get_var($query_id_video_a_ajouter_meme_genre, 0);
-     $reponse_url_video_a_ajouter_meme_genre = $wpdb -> get_var($query_id_video_a_ajouter_meme_genre, 1);
-
-
-     //Récupération des informations liées à la nouvelle video avec le même genre que la vidéo courante.
-      $query_ids_video_a_ajouter_meme_genre = "SELECT artiste_id,genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_a_ajouter_meme_genre'   LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
-      $reponse_ids_video_a_ajouter_meme_genre = $wpdb -> get_results($query_ids_video_a_ajouter_meme_genre);
-
-      foreach ( $reponse_ids_video_a_ajouter_meme_genre  as $result){
-        $id_genre_video_a_ajouter_meme_genre = $result->genre_id;
-        $id_artiste_video_a_ajouter_meme_genre = $result->artiste_id;
-
-        $query_genre_video_a_ajouter_meme_genre = "SELECT Genre FROM ". $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genre_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
-        $reponse_genre_video_a_ajouter_meme_genre = $wpdb -> get_var($query_genre_video_a_ajouter_meme_genre);
-
-        $query_artiste_video_a_ajouter_meme_genre = "SELECT nom FROM ". $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artiste_video_a_ajouter_meme_genre' LIMIT 1;"; // order by rand permet de lister aléatoirement les clips musiquaux
-        $reponse_artiste_video_a_ajouter_meme_genre = $wpdb -> get_var($query_artiste_video_a_ajouter_meme_genre);
-      }
-
-      //Mise à jour de la table playlist_par_defaut_webtv_plugin avec un clips video du même genre que la video courante supprimé
-      $query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = "INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre_nouvelle_video','$reponse_url_video_a_ajouter_meme_genre','$reponse_artiste_video_a_ajouter_meme_genre','$reponse_genre_video_a_ajouter_meme_genre')";
-      $reponse_titre_url_genres_artistesvideo_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin = $wpdb -> query($query_titre_url_genres_artistes_video_a_ajouter_meme_genre_dans_table_playlist_par_defaut_webtv_plugin);
-
-      //Permet de trier la table par odre croissant !! Utile pour démarer toujours au clip en cours. SELECT n'actualise pas la BDD comme on pourrait le croire si on effectue
-      // la requête dans phpmyadmin.
-      $query_tri_asc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
-      $wpdb->query($query_tri_asc);
-
-      //Très utile afin d'éviter la sélection d'un doublon entre la video courante et les videos avec un titre similaire
-      $query_select_min_id_de_video_courante = "SELECT MIN(id) FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' ";
-      $reponse_select_min_id_de_video_courante = $wpdb->get_var($query_select_min_id_de_video_courante);
-
-      //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
-      $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
-      $wpdb->query($query_del_titre_video_courante);
-}
-
 
 
 

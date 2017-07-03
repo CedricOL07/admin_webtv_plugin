@@ -43,69 +43,76 @@ $(document).ready(function(){
 *
 */
 
-  function generer_la_playlist(){
-    var tableau_donnees= new Array();
-    var artiste;
-    $.ajax({
-      url: myAjax.ajaxurl,
-      data:{
-        'action':'recuperer_videos_player_page_principale',
-      },
-      dataType: 'JSON',
-      success: function(data) {
-        //console.log(data);
-        $.each(data.data, function(index, value) {
-          var title=value.titre;
-          console.log(title);
-          myPlaylist.add({
-            title:value.titre,
-            m4v:value.url
+function generer_la_playlist(){
+  var tableau_donnees= new Array();
+  var artiste;
+  var artiste_album_annee_gener = new String();
+  $.ajax({
+    url: myAjax.ajaxurl,
+    data:{
+      'action':'recuperer_videos_player_page_principale',
+    },
+    dataType: 'JSON',
+    success: function(data) {
+      //console.log(data);
+      $.each(data.data, function(index, value) {
+        //On va récupérer le nom de l'artiste pour chaque titre
+        artiste_album_annee_gener=  value.artiste + " - " + value.album  + " - " +value.annee;
+        var title=value.titre;
 
-          });
-          myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
+        myPlaylist.add({
+    			title:value.titre,
+    			m4v:value.url,
+    			artist:artiste_album_annee_gener
         });
-      },
+        //console.log(value.url);
+        myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
+        console.log(title);
+      });
 
-      error: function (xhr, ajaxOptions, thrownError) {
-        console.log(xhr.status);
-        console.log(thrownError);
-      }
-
-    });
-  }
-  generer_la_playlist();
-
-  /*
-  * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
-  * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
-  */
-  jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
-  {
-      var playlist = myPlaylist.playlist;
-    $.ajax({
-      url:  myAjax.ajaxurl,
-      data:{
-        'action' : 'recuperer_nouvelle_video_player_page_principal'
-      },
-      dataType: 'JSON',
-      success: function(data) {
-        //console.log("data : "+ data);
-          $.each(data.data, function(index, value) {
-              titre= value.titre;
-              //Permet de générer la nouvelle video.
-              myPlaylist.add({
-  				title:value.titre,
-  				m4v:value.url,
-  				artist:value.artiste
-  			});
-          myPlaylist.remove(0);// supprime le premier clip de la playlist.
-  		});
-
-          console.log(titre);
-      }
-    });
-
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      console.log(xhr.status);
+      console.log(thrownError);
+    }
   });
+}
+generer_la_playlist();
+
+/*
+* Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+* Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+*/
+jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
+{
+  var artiste_album_annee_ajout = new String();
+  $.ajax({
+    url: myAjax.ajaxurl,
+    data:{
+      'action' : 'recuperer_nouvelle_video_player_page_principal'
+    },
+    dataType: 'JSON',
+    success: function(data) {
+      //console.log("data : "+ data);
+        $.each(data.data, function(index, value) {
+            titre= value.titre;
+            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+
+            // + " annee : " + value.annee + "album : " value.album;
+
+          //Permet de générer la nouvelle video.
+            myPlaylist.add({
+      				title:value.titre,
+      				m4v:value.url,
+      				artist: artiste_album_annee_ajout
+      			});
+		     });
+         console.log("artiste" +artiste_album_annee_ajout);
+        console.log(titre);
+    }
+  });
+
+});
 
 /*
   window.onload = function()
