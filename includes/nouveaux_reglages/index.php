@@ -57,8 +57,14 @@
                                         </div>
 
                                     </div>
+                                </div>
+                            </div>
 
-                                
+
+                            <div class="row col-md-12" id = "colonne_sliders">
+
+                                <div class="col-md-5"> 
+
                                     <!--  ************* Couleur playlist ****************-->
 
                                     <label for="amount">Pop Rock</label>
@@ -99,27 +105,55 @@
                                     
 
                                     <div id="slider_autres" ></div>
-
-                                </div>
-                                <div class="col-md-7 col-sm-7 " id="chart_div">
                                 </div>
 
+                                <div class="col-md-6 col-sm-6" id="chart_div" ></div>
+                            </div>
                    
 
                     <!--  Choix playlist par défaut -->
-                        <div class="col-md-11 col-sm-11">
-                            <div class="box">
-                                <div class=" box-header with-border">
-                                    <h3 class="box-title"> Definir comme réglage par défaut</h3>
-                                </div>
-                                <div class="checkbox" style="padding-bottom:1%;padding-left:1%;">
-                                    <label><input type="checkbox" name="checkbox_par_defaut" id="checkbox_par_defaut" value="">Faire de ce réglage le réglage par défaut</label>
+
+                            <div class="row col-md-12">
+                                <div class="col-md-11 col-sm-11">
+                                    <div class="box">
+                                        <div class=" box-header with-border">
+                                            <h3 class="box-title"> Réglages avancés</h3>
+                                        </div>
+
+                                        <div id="datepicker">                    
+                                            <input type="text" id="annee_min" name="annee_min" placeholder="Date minimale... " />             
+                                            <input type="text" id="annee_max" name="annee_max" placeholder="Date maximale... " />
+                                        
+                                            Qualité minimale :
+                                            <select name="qualite_min" id="qualite_min" class="form-control">
+                                               <option value="1">1</option>
+                                               <option value="2">2</option>
+                                               <option value="3">3</option>
+                                               <option value="4">4</option>
+                                               <option value="5">5</option>
+                                           </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                    <div class="col-md-12 col-sm-12 " >
+                    <!--  Choix playlist par défaut -->
+                            <div class="row col-md-12">
+                                <div class="col-md-11 col-sm-11">
+                                    <div class="box">
+                                        <div class=" box-header with-border">
+                                            <h3 class="box-title"> Definir comme réglage par défaut</h3>
+                                        </div>
+                                        <div class="checkbox" style="padding-bottom:1%;padding-left:1%;">
+                                            <label><input type="checkbox" name="checkbox_par_defaut" id="checkbox_par_defaut" value="">Faire de ce réglage le réglage par défaut</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                    <div class="row col-md-12">
                     <!-- cette balise div englobe les balise publicité, mettre un artiste en higlight diffusion afin d'aligner les boxes verticalement.
 
 

@@ -271,6 +271,41 @@ $(document).ready(function(){
 * ------------------------- DATEPICKER ET AFFICHAGE DE LA PROGRAMMATION ET CRENEAUX DISPONIBLES  ------------------------------------
 */
 
+	// Création du dictionnaire français pour le calendrier
+	$.datepicker.regional['fr'] = {	clearText: 'Effacer', clearStatus: '',
+									closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
+									prevText: '<Préc', prevStatus: 'Voir le mois précédent',
+									nextText: 'Suiv>', nextStatus: 'Voir le mois suivant',
+									currentText: 'Courant', currentStatus: 'Voir le mois courant',
+									monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
+									'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+									monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
+									'Jul','Aoû','Sep','Oct','Nov','Déc'],
+									monthStatus: 'Voir un autre mois', yearStatus: 'Voir un autre année',
+									weekHeader: 'Sm', weekStatus: '',
+									dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+									dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+									dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
+									dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
+									dateFormat: 'dd/mm/yy', firstDay: 0, 
+									initStatus: 'Choisir la date', isRTL: false};
+		
+	// Ouvre le calendrier lors de l'appui sur date
+	$.datepicker.setDefaults($.datepicker.regional['fr'])
+	$( '#annee_min' ).datepicker({
+		changeMonth: true,
+		changeYear: true,
+		format: 'dd/mm/yyyy',
+		language: 'fr'
+	});
+	$( '#annee_max' ).datepicker({
+		changeMonth: true,
+		changeYear: true,
+		format: 'dd/mm/yyyy',
+		language: 'fr'
+	});
+
+
     function verifier_date_debut(date){
         $.post(
             ajaxurl,
@@ -646,9 +681,10 @@ $(document).ready(function(){
         ]);
 
         // Set chart options
+		var h = $('#colonne_sliders').height();
         options = {'title':'Repartition des genres dans la playlist',
-                   'width':600,
-                   'height':400,
+                   //'width':h*1.2,
+                   'height':h*1.2,
                    is3D: true,
                    legend: {
                        position: 'labeled',
@@ -656,10 +692,11 @@ $(document).ready(function(){
                    backgroundColor: 'transparent'
 
                   };
-
         // Instantiate and draw our chart, passing in some options.
         chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+		chart.draw(data, options);
+		
+		
     }
 
 
