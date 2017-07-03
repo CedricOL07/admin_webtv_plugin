@@ -43,34 +43,34 @@ function enregistrement_playlist_clips_pourcentage(){
 
 function generer_playlist_clips($nom_playlist){
 
-  global $wpdb;
-  global $tab_url;
-  global $tab_titres;
-  global $tab_genres;
-  global $tab_artistes;
-  $tableau_dates_debut=array();
-  $tableau_dates_fin=array();
+    global $wpdb;
+    global $tab_url;
+    global $tab_titres;
+    global $tab_genres;
+    global $tab_artistes;
+    $tableau_dates_debut=array();
+    $tableau_dates_fin=array();
 
-  $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist_clips'";
-  $resultdefaut=$wpdb->get_results($querydefaut);
-  foreach($resultdefaut as $resdefaut){
-      $nomdefaut =$resdefaut->nom;
-      //NULL si case vide
-      $artistehightdefaut=$resdefaut->artiste_highlight;
-      $pubsinternesdefaut=$resdefaut->publicites_internes;
-      $pubsexternesdefaut=$resdefaut->publicites_externes;
-      $poprockdefaut=$resdefaut->pourcentage_poprock;
-      $hiphopdefaut=$resdefaut->pourcentage_rap;
-      $jazzbluesdefaut=$resdefaut->pourcentage_jazzblues;
-      $musiquemondedefaut=$resdefaut->pourcentage_musiquemonde;
-      $electrodefaut=$resdefaut->pourcentage_electro;
-      $hardrockdefaut=$resdefaut->pourcentage_hardrock;
-      $chansondefaut=$resdefaut->pourcentage_chanson;
-      $autresdefaut=$resdefaut->pourcentage_autres;
-      $annee_max=$resdefaut->annee_max;
-      $annee_min=$resdefaut->annee_min;
-      $qualite_min=$resdefaut->qualite_min;
-          do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut,$annee_max,$annee_min,$qualite_min);
+    $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist'";
+    $resultdefaut=$wpdb->get_results($querydefaut);
+    foreach($resultdefaut as $resdefaut){
+        $nomdefaut =$resdefaut->nom;
+        //NULL si case vide
+        $artistehightdefaut=$resdefaut->artiste_highlight;
+        $pubsinternesdefaut=$resdefaut->publicites_internes;
+        $pubsexternesdefaut=$resdefaut->publicites_externes;
+        $poprockdefaut=$resdefaut->pourcentage_poprock;
+        $hiphopdefaut=$resdefaut->pourcentage_rap;
+        $jazzbluesdefaut=$resdefaut->pourcentage_jazzblues;
+        $musiquemondedefaut=$resdefaut->pourcentage_musiquemonde;
+        $electrodefaut=$resdefaut->pourcentage_electro;
+        $hardrockdefaut=$resdefaut->pourcentage_hardrock;
+        $chansondefaut=$resdefaut->pourcentage_chanson;
+        $autresdefaut=$resdefaut->pourcentage_autres;
+        $annee_max=$resdefaut->annee_max;
+        $annee_min=$resdefaut->annee_min;
+        $qualite_min=$resdefaut->qualite_min;
+            do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut,$annee_max,$annee_min,$qualite_min);
 
   }
 
