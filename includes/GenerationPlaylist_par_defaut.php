@@ -28,11 +28,12 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight){
+function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max,$annee_min,$qualite_min){
     global $tab_url;
     global $tab_titres;
     global $tab_artistes;
     global $tab_genres;
+    global $tab_annees;
     $poprock=$pourcentagepoprock;
     $hiphop=$pourcentagehiphop;
     $jazzblues=$pourcentagejazzblues;
@@ -56,98 +57,97 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
     $tableaupourcentages[6] = $pourcentagechanson;
     $tableaupourcentages[7] = $pourcentageautres;
 
-  while (sizeof($tab_titres)<15){
-      for ($i=0; $i <sizeof($tableaupourcentages) ; $i++) {
+	while (sizeof($tab_titres)<15){
+	    for ($i=0; $i <sizeof($tableaupourcentages) ; $i++) {
 
-          $valeur_camembert=$tableaupourcentages[$i];
+	          $valeur_camembert=$tableaupourcentages[$i];
 
-          if ($i==0)
-          {
-              $genre_id=5; //correspond au Pop-rock
-          }
-          if ($i==1)
-          {
-              $genre_id=3; //correspond au Hip-hop & Reggae
-          }
-          if ($i==2)
-          {
-              $genre_id=7; //correspond au Jazz & Blues
-          }
-          if ($i==3)
-          {
-              $genre_id=9; //correspond au Musique du monde
-          }
-          if ($i==4)
-          {
-              $genre_id=2; //correspond au Hard-rock & metal
-          }
-          if ($i==5)
-          {
-              $genre_id=4; //correspond au Musique électronique
-          }
-          if ($i==6)
-          {
-              $genre_id=8; //correspond à Chanson Française
-          }
-          if ($i==7)
-          {
-              $genre_id=12; //correspond à Autre
-          }
+	          if ($i==0)
+	          {
+	              $genre_id=5; //correspond au Pop-rock
+	          }
+	          if ($i==1)
+	          {
+	              $genre_id=3; //correspond au Hip-hop & Reggae
+	          }
+	          if ($i==2)
+	          {
+	              $genre_id=7; //correspond au Jazz & Blues
+	          }
+	          if ($i==3)
+	          {
+	              $genre_id=9; //correspond au Musique du monde
+	          }
+	          if ($i==4)
+	          {
+	              $genre_id=2; //correspond au Hard-rock & metal
+	          }
+	          if ($i==5)
+	          {
+	              $genre_id=4; //correspond au Musique électronique
+	          }
+	          if ($i==6)
+	          {
+	              $genre_id=8; //correspond à Chanson Française
+	          }
+	          if ($i==7)
+	          {
+	              $genre_id=12; //correspond à Autre
+	          }
 
-          if ( $valeur_camembert > 0){
+	          if ( $valeur_camembert > 0){
 
-            if($valeur_camembert<20){
+	            if($valeur_camembert<20){
 
-              do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1);
+	              do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,1,$annee_max,$annee_min,$qualite_min);
 
-            }else{
-                if($valeur_camembert<30){
+	            }else{
+	                if($valeur_camembert<30){
 
-                   do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,2);
-                }else{
-                    if($valeur_camembert<40){
-                       do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,3);
-                    }else{
-                        if($valeur_camembert<50){
-                           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,4);
+	                   do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,2,$annee_max,$annee_min,$qualite_min);
+	                }else{
+	                    if($valeur_camembert<40){
+	                       do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,3,$annee_max,$annee_min,$qualite_min);
+	                    }else{
+	                        if($valeur_camembert<50){
+	                           do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,4,$annee_max,$annee_min,$qualite_min);
 
-                        }else{
-                            if($valeur_camembert<60){
-                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,5);
+	                        }else{
+	                            if($valeur_camembert<60){
+	                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,5,$annee_max,$annee_min,$qualite_min);
 
-                            }else{
-                                if($valeur_camembert<70){
-                                  do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,6);
+	                            }else{
+	                                if($valeur_camembert<70){
+	                                  do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,6,$annee_max,$annee_min,$qualite_min);
 
-                                }else{
-                                    if($valeur_camembert<80){
-                                      do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,7);
+	                                }else{
+	                                    if($valeur_camembert<80){
+	                                      do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,7,$annee_max,$annee_min,$qualite_min);
 
-                                    }else{
-                                        if($valeur_camembert<90){
-                                            do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,8);
+	                                    }else{
+	                                        if($valeur_camembert<90){
+	                                            do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,8,$annee_max,$annee_min,$qualite_min);
 
-                                        }else{
-                                            if($valeur_camembert<100){
-                                                do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,9);
-                                            }
-                                            if($valeur_camembert==100){
+	                                        }else{
+	                                            if($valeur_camembert<100){
+	                                                do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,9,$annee_max,$annee_min,$qualite_min);
+	                                            }
+	                                            if($valeur_camembert==100){
 
-                                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,12);
+	                                               do_action('pluginwebtv_recup_videos_playlist_par_defaut',$genre_id,12,$annee_max,$annee_min,$qualite_min);
 
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }// -----\ Fin du else /----
-        }
-      }//----\ Fin du for($i=0;$i<sizeof($tableaupourcentages);$i++) /--------
-
-  }
+	                                            }
+	                                        }
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }// -----\ Fin du else /----
+	        }
+	    }//----\ Fin du for($i=0;$i<sizeof($tableaupourcentages);$i++) /--------
+	}
 }
 /*
 *  Fonction : Récupere un nombre $limt de vidéos du genre $genre en ajoutant l'url et le titre au tableau tab_url et tab_titres
@@ -156,16 +156,19 @@ function generer_playlist_par_defaut($pourcentagepoprock,$pourcentagehiphop,$pou
 *  generer_la_playlist dans le fichier traitement_donnees.php qui rempli la table playlist_par_defaut_webtv_plugin.
 */
 
-function recup_videos_playlist_par_defaut($genre,$limit){
+function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$qualite_min){
     global $tab_artistes_id;
     global $wpdb;
     global $tab_url;
     global $tab_artistes;
     global $tab_titres;
     global $tab_genres;
+    global $tab_annees;
 
 
-    $sql_query1="SELECT video_id,artiste_id,genre_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre' ORDER BY RAND()  LIMIT $limit;";
+    $sql_query1="SELECT video_id,artiste_id,genre_id,annee_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
+		AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$annee_min' AND annee <= '$annee_max' )
+		AND qualite_id >= $qualite_min ORDER BY RAND()  LIMIT $limit;";
     $tabvideos=$wpdb->get_results($sql_query1);
 
     foreach($tabvideos as $id){
@@ -173,6 +176,15 @@ function recup_videos_playlist_par_defaut($genre,$limit){
         $id_video = $id->video_id;
         $id_art1 = $id->artiste_id;
         $id_genres = $id->genre_id;
+        $id_annees = $id->annee_id;
+
+        $query_annee = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
+        $tab_donnees_annee = $wpdb->get_results($query_annee);
+        foreach($tab_donnees_annee as $results)
+        {
+            $tab_annees[] = $results->annee;
+        }
+
         $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
         $tab_donnees_genre = $wpdb->get_results($query_genre);
         foreach($tab_donnees_genre as $results)
@@ -248,7 +260,7 @@ function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante)
     }
 
     unset($tab_titre_video_meme_genre_video_courante);// supprime le tableau des videos ayant le meme genre afin de le réinitialiser à chaque fois.
-    unset($tab_titre_playlist_par_defaut);// supprime le tableau des 15 clips de la playlist par defaut afin de le réinitialiser à chaque fois.
+    unset($tab_titres_playlist_par_default);// supprime le tableau des 15 clips de la playlist par defaut afin de le réinitialiser à chaque fois.
 
 }
 

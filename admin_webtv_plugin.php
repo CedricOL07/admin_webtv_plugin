@@ -246,7 +246,8 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `titre` varchar(255) NOT NULL,
     `url` varchar(255) NOT NULL,
     `artiste` varchar(255) NOT NULL,
-    `genre` varchar(255) NOT NULL
+    `genre` varchar(255) NOT NULL,
+    `annee` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
     $alter_table_defaut_playlist=" ALTER TABLE `" . $wpdb->prefix . "playlist_par_defaut_webtv_plugin`
@@ -265,17 +266,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
         `id_clip8` int(11) NOT NULL,
         `id_clip9` int(11) NOT NULL,
         `id_clip10` int(11) NOT NULL,
-        `id_clip1ister_deactivation_hook( __FILE__, 'pluginwebtv_supprimer_tables' );
-  $.post(
-    myAjax.ajaxurl,
-    {
-      'action':'recuperer_videos_player_page_principale'
-    },
-    function (reponse){
-
-    }
-  );
-1` int(11) NOT NULL,
+        `id_clip11` int(11) NOT NULL,
         `id_clip12` int(11) NOT NULL,
         `id_clip13` int(11) NOT NULL,
         `id_clip14` int(11) NOT NULL,
@@ -299,9 +290,9 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `publicites_internes` varchar(255) DEFAULT '',
     `publicites_externes` varchar(255) DEFAULT '',
     `artiste_highlight` varchar(255) DEFAULT '',
-    `annee_max` date,
-    `annee_min` date,
-    `qualite_min` int,
+    `annee_max` date DEFAULT '1999-12-31',
+    `annee_min` date DEFAULT '0001-01-01',
+    `qualite_min` int(11) NOT NULL,
     `Debut` varchar(255) DEFAULT '',
     `Fin` varchar(255) DEFAULT '',
     `ParDefaut` tinyint(1) NOT NULL DEFAULT '0',

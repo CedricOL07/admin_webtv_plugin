@@ -12,7 +12,6 @@
 Appel des différentes fonctions du programme
 */
 
-//add_action( 'wp_ajax_traitement_infos_nouveaux_reglages', 'traitement_infos_nouveaux_reglages' );
 add_action('wp_ajax_recuperer_programmation','recuperer_programmation');
 add_action('wp_ajax_recuperer_noms_reglages','recuperer_noms_reglages');
 add_action('wp_ajax_recuperer_derniers_pourcentages_enregistrees','recuperer_derniers_pourcentages_enregistrees');
@@ -20,7 +19,6 @@ add_action('wp_ajax_recuperer_tous_reglages_enregistres','recuperer_tous_reglage
 add_action('wp_ajax_supprimer_toutes_videos','supprimer_toutes_videos');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
-
 add_action('wp_ajax_etat_live','etat_live');
 add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
 
@@ -103,7 +101,7 @@ function enregistrer_reglage_par_defaut(){
           $select1=$wpdb->query($effacer_ancienne_playlist_par_defaut);
 
           $inserer_nouvelle_playlist_par_defaut="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde,
-          pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,annee_min,annee_max,qualite_min,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$par_defaut');";
+          pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,annee_max,annee_min,qualite_min,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$annee_min','$annee_max','$qualite_min','$par_defaut');";
 
           $select = $wpdb->query($inserer_nouvelle_playlist_par_defaut);
 
@@ -127,13 +125,14 @@ function generer_la_playlist_par_defaut(){
     global $tab_titres;
     global $tab_genres;
     global $tab_artistes;
+    global $tab_annees;
     $tableau_dates_debut=array();
     $tableau_dates_fin=array();
 
     //On chope les playlists enregistrés, on tri par date et quand creneau libre on met playlist defaut
     $ldefaut=1;
     //$querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut='$ldefaut';";
-    $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin";
+    $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut = 1;";
     $resultdefaut=$wpdb->get_results($querydefaut);
     foreach($resultdefaut as $resdefaut){
         $nomdefaut =$resdefaut->nom;
@@ -167,11 +166,12 @@ function generer_la_playlist_par_defaut(){
     $titre=str_replace("'","''",$tab_titres);
     $artistes=str_replace("'","''",$tab_artistes);
     $genres=str_replace("'","''",$tab_genres);
+    $annees=str_replace("'","''",$tab_annees);
 
     // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
     for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
 
-        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]')";
+        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]')";
         $wpdb->query($inserer);
     }
 
