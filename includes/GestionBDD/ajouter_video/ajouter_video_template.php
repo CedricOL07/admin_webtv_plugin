@@ -216,10 +216,6 @@
 			domaine = "http://localhost/";
 			localStorage.setItem("domaine", domaine);
 		}
-		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
-		{
-			setFinalfolder();
-		}
 		if (localPath===null || typeof localPath === 'undefined' || localPath === "")
 		{
 			localPath = `<?php echo addslashes(__DIR__ )?>`;
@@ -227,6 +223,10 @@
 			localPath = localPath.substring(0,deb);		// Récupère le chemin local
 			localStorage.setItem("localPath", localPath);	
 			console.log("\ndomaine = " + domaine +"\nlocalPath = " + localPath +"\nendOfPath = " + endOfPath +"\nfinalfolder = " + finalfolder);		
+		}
+		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
+		{
+			setFinalfolder();
 		}
 
 		// Si chemin en local : utiliser des anti-slash \
