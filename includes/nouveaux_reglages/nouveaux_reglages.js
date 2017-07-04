@@ -1021,9 +1021,9 @@ $(document).ready(function(){
 
 
         var pardefaut = 0;
-    		var annee_max = $("#annee_max").val();
-    		var annee_min = $("#annee_min").val();
-    		var qualite_min= $("#qualite_min").val();
+		var annee_max = $("#annee_max").val();
+		var annee_min = $("#annee_min").val();
+		var qualite_min= $("#qualite_min").val();
         var artiste_mis_en_avant = artiste_choisi;
         var pubsinternes = pubs_internes;
         var pubsexternes = pubs_externes;
@@ -1037,7 +1037,7 @@ $(document).ready(function(){
 
         /*
 		* --------------------------  VERIFICATION DES DATES MIN ET MAX   -----------------------------------
-		*/
+		*/ 
 
 		if (annee_max != "")
 		{
@@ -1048,10 +1048,9 @@ $(document).ready(function(){
 		} else
 		{
 			annee_max = "99991231";
-		}
+		} 
 		if (annee_min != "")
 		{
-
 			var date_now = annee_min.split('/');
 			annee_min = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaa-mm-jj
 			console.log(annee_min);
@@ -1075,8 +1074,6 @@ $(document).ready(function(){
 
 
         if(nom_disponible == false){
-
-
             alert('Le nom de réglage que vous avez entré  est déjà utilisé, veuillez en choisir un nouveau');
            return false;
         }
@@ -1093,9 +1090,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1142,9 +1139,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
@@ -1171,7 +1168,8 @@ $(document).ready(function(){
 
                         },
                         function(response){
-                                console.log("echo : " +response);
+							
+                                console.log("echo "+tableau_pourcentages.musiquemonde+ " : " +response);
 
                         }
                     );

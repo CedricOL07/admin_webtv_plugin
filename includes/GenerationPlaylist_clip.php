@@ -13,7 +13,7 @@
 
 
 
-add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',10,14);
+add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',10,15);
 add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,5);
 add_action( 'pluginwebtv_verifier_restant', 'verifier_restant',15,1);
 add_action( 'pluginwebtv_ajouter_hightlight', 'ajouter_hightlight',16,1);
@@ -31,7 +31,7 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max, $annee_min, $qualite_min){
+function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max, $annee_min, $qualite_min, $debut){
 
 
     global $tab_url;
@@ -39,6 +39,7 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     global $tab_artistes;
     global $tab_genres;
     global $tab_ids;
+    global $tab_durees
     $poprock=$pourcentagepoprock;
     $hiphop=$pourcentagehiphop;
     $jazzblues=$pourcentagejazzblues;
@@ -50,10 +51,13 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     $amin = $annee_min;
     $amax = $annee_max;
     $qualite = $qualite_min;
+    $deb = $debut;
 
     // Variables utiles
     $compteur=0;
     $genre_id;
+
+    echo ($musiquemonde." = ");
 
     $tableaupourcentages=array();
 
@@ -175,6 +179,13 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     }
    // do_action('pluginwebtv_recuperer_artistes_nouvelle_playlist');
 
+    for (var $i=0, $i<sizeof($tab_url), $i++)
+    {
+        $tab_durees[] = recuperer_duree_clip($tab_url[$i], $tab_titres[$i]);
+    }
+
+    $duree_total = array_sum($tab_durees);
+    //echo $duree_total." [ ".$tab_durees." ] ";
 
 }
 
@@ -459,27 +470,27 @@ function recup_videos($genre,$limit,$annee_max, $annee_min, $qualite_min){
 
         $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_art1' LIMIT 1;";
         $tab_donnees_artistes = $wpdb->get_results($query_artistes);
-
         foreach($tab_donnees_artistes as $results){
             $tab_artistes[] = $results->nom;
         }
 
         $query_url_titre = "SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
         $tab_donnees_url_titre = $wpdb->get_results($query_url_titre);
-
         foreach($tab_donnees_url_titre as $s){
-
             $tab_url[]=$s->url;
-
             $tab_titres[]=$s->titre;
-
         }
 
         $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
-        $tab_donnees_annees = $wpdb->get_results($query_artistes);
-
+        $tab_donnees_annees = $wpdb->get_results($query_annees);
         foreach($tab_donnees_annees as $results){
             $tab_annees[] = $results->annee;
+        }
+
+        $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
+        $tab_donnees_albums = $wpdb->get_results($query_albums);
+        foreach($tab_donnees_albums as $results){
+            $tab_albums[] = $results->album;
         }
     }
 
