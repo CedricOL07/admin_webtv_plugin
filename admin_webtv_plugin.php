@@ -351,7 +351,8 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     (4, 'Musique electronique'),
     (5, 'Pop-rock'),
     (11, 'Publicité Externe'),
-    (10, 'Publicité Interne');";
+    (10, 'Publicité Interne'),
+    (13, 'Logo');";
 
     $remplir_table_qualite="
     INSERT INTO `" . $wpdb->prefix . "qualite_webtv_plugin` (`valeur`) VALUES (1),(2),(3),(4),(5);";

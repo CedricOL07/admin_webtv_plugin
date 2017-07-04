@@ -8,8 +8,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	    
-      
+
+
 	</head>
     <body>
 		<style type="text/css">
@@ -29,7 +29,7 @@
 			.btn{
 				border-radius: 0px;
 			}
-	
+
 			.row{
 				margin-bottom: 2px;
 			}
@@ -41,7 +41,7 @@
 					<h1 style="text-align:center"><B><U>Gestion du contenu</U></B></h1>
 				</div>
 			</div>
-			
+
 			<!-- Création d'un formulaire: appelera le fichier ajouter_video.php -->
 			<form method="post" name="ajout" enctype="multipart/form-data">
 			<div class="col-md-12" id="warning-insertion"></div>
@@ -58,7 +58,7 @@
 				<div class="form-group">
 				    &nbsp;
 				</div>
-				
+
 				<!-- Ligne 1 -->
 				<div class="row">
 					<div class="col-md-2">
@@ -107,7 +107,9 @@
 							<option value="Hard-rock & Metal">Métal & Hard-Rock</option>
 							<option value="Musique electronique">Electro</option>
 							<option value="Chanson française">Chanson Française</option>
-							<option value="Autre">Autre...</option>
+							<option value="Publicité Externe">Publicité Externe</option>
+              <option value="Publicité Interne">Publicité Interne</option>
+              <option value="Logo">Logo</option>
 						</select>
 					</div>
 
@@ -134,7 +136,7 @@
 						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
 					</div>
 
-					
+
 				</div>
 
 				<!-- Ligne 5 -->
@@ -146,7 +148,7 @@
 						<div class="input-group">
 							<label class="input-group-btn">
 								<span class="btn btn-sm btn-primary">
-									Parcourir <!-- &hellip; --> <input type="file" id="chemin1" style="display: none;" multiple> 
+									Parcourir <!-- &hellip; --> <input type="file" id="chemin1" style="display: none;" multiple>
 								</span>
 							</label>
 							<input type="text" class="form-control input-sm" name="url" id="url" placeholder="..." onblur="changeFinalFolder(this)">
@@ -171,33 +173,33 @@
 
 		        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-				<script type="text/javascript"> 
-					document.getElementById('chemin1').disabled = 'disabled'; 
-					document.getElementById('url').disabled = 'disabled'; 
+				<script type="text/javascript">
+					document.getElementById('chemin1').disabled = 'disabled';
+					document.getElementById('url').disabled = 'disabled';
 				</script>
 			</form>
 
 
 		</div>
-		
-		
-	
+
+
+
 
 		<script type="text/javascript" src="<?php echo plugins_url('admin_webtv_plugin/includes/GestionBDD/ajouter_video/ajouter_video.js');?>">
 		</script>
     </body>
 
-	
+
 	<script>
 
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			// CHEMIN A ADAPTER POUR L'ENREGISTREMENT DES VIDEOS \\
 
-		
+
 		var newpath="";
 		var filename="";
 		var filepath="";
-		
+
 		var finalfolder = localStorage.getItem("finalfolder");		// finalfolder = localPath + endOfPath
 		var endOfPath = localStorage.getItem("endOfPath");			// Par défaut : wordpress/wp-content/uploads/2017/07
 		var domaine = localStorage.getItem("domaine");				// Par defaut : http://webtv.le-fil.com/
@@ -219,10 +221,10 @@
 		if (localPath===null || typeof localPath === 'undefined' || localPath === "")
 		{
 			localPath = `<?php echo addslashes(__DIR__ )?>`;
-			var deb = localPath.indexOf("wordpress"); 
+			var deb = localPath.indexOf("wordpress");
 			localPath = localPath.substring(0,deb);		// Récupère le chemin local
-			localStorage.setItem("localPath", localPath);	
-			console.log("\ndomaine = " + domaine +"\nlocalPath = " + localPath +"\nendOfPath = " + endOfPath +"\nfinalfolder = " + finalfolder);		
+			localStorage.setItem("localPath", localPath);
+			console.log("\ndomaine = " + domaine +"\nlocalPath = " + localPath +"\nendOfPath = " + endOfPath +"\nfinalfolder = " + finalfolder);
 		}
 		if (finalfolder===null || typeof finalfolder === 'undefined' || finalfolder === "")
 		{
@@ -259,20 +261,20 @@
 			{
 				finalfolder=localPath+endOfPath.replace(/\\/g, '/')
 			}
-			
+
 			localStorage.setItem("finalfolder", finalfolder);
 		}
 
 		// Dévérouille le textfield du chemin par défaut lors de l'appui sur le bouton
-		function unlockPath(){ 
-			document.getElementById('url').disabled = ''; 
+		function unlockPath(){
+			document.getElementById('url').disabled = '';
 			document.getElementById('url').value = domaine+endOfPath;
 			document.getElementById('url').focus();	// Met le focus sur le textField
 		}
 
 		// Met à jour le chemin par défaut au moment où on enlève le focus du textfield
 		function changeFinalFolder(selectObj){
-			if(selectObj.value!=""){ 
+			if(selectObj.value!=""){
 				setEndOfPath(selectObj.value);
 				setDomaine(selectObj.value);
 				setFinalfolder();
@@ -296,7 +298,7 @@
 	        }
 	    }
 
-	    // Met à jour le "chemin initial" 
+	    // Met à jour le "chemin initial"
 		function changePath(selectObj)
 		{
 			newpath = document.location.toString();
@@ -306,7 +308,7 @@
 			{
 				document.location.href = newpath;
 			}
-			
+
 			commentUrl();
 		}
 
@@ -323,7 +325,7 @@
 
 		$(function() {
 
-			
+
 
 			// Permet d'ouvrir la fenetre "parcourir" de l'explorateur
 			$(document).on('change', ':file', function() {
@@ -340,20 +342,20 @@
  				  	copier();
  				  }
 
-			 	  
+
 				  // var cheminURL = "localhost/wordpress/wp-content/uploads/2017/05/";
 
 			 	  var cheminURL = domaine+endOfPath + '/' + filename;
 			 	  document.getElementById('url').placeholder = cheminURL;
 			 	  document.getElementById('url').value = document.getElementById('url').placeholder ;
-				/*		 	  
+				/*
 				  //console.log(cheminURL);
 				  var tempad = document.location.toString()
 				  tempad = tempad.substr(0, tempad.indexOf('&filename'))
 				  //history.pushState({path:this.path}, '', tempad);	// n'actualise pas la page tout de suite
 				*/
 				  input.trigger('fileselect', [numFiles, cheminURL]);
- 				  
+
 			});
 
 			// Remplissage auto du champ de l'url
@@ -377,6 +379,5 @@
 	</script>
 
 
-    
-</html>
 
+</html>
