@@ -16,7 +16,7 @@
                             <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
                         </div>
                         <div class="jp-interface">
-                            <div class="jp-progress" style="display:none;">
+                            <div class="jp-progress" style="display">
                                 <div class="jp-seek-bar">
                                     <div class="jp-play-bar"></div>
                                 </div>

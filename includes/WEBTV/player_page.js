@@ -86,6 +86,9 @@ generer_la_playlist();
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
   var artiste_album_annee_ajout = new String();
+
+  myPlaylist.remove(0);// efface le premier clip de la playlist du player.
+
   $.ajax({
     url: myAjax.ajaxurl,
     data:{
@@ -98,7 +101,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             titre= value.titre;
             artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
 
-            // + " annee : " + value.annee + "album : " value.album;
 
           //Permet de générer la nouvelle video.
             myPlaylist.add({
@@ -107,39 +109,13 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       				artist: artiste_album_annee_ajout
       			});
 		     });
-         console.log("artiste" +artiste_album_annee_ajout);
+
+         //console.log("artiste" +artiste_album_annee_ajout);
         console.log(titre);
     }
   });
 
 });
-
-/*
-  window.onload = function()
-  {
-
-      var canvas = document.getElementById("canvas");
-      var ctx = canvas.getContext("2d");
-      var data =  `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
-                  <foreignObject width='100%' height='100%'>
-                    <div xmlns='http://www.w3.org/1999/xhtml' style='font-size:40px'>
-                      <em>J'</em> aime <span style='color:white; text-shadow:0 0 2px blue;'>les licornes
-
-                      </span>
-                    </div>
-                  </foreignObject>
-                </svg>`;
-      var DOMURL = self.URL || self.webkitURL || self;
-      var img = new Image();
-      var svg = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
-      var url = DOMURL.createObjectURL(svg);
-      video.onload = function() {
-          ctx.drawImage(img, 0, 0);
-          DOMURL.revokeObjectURL(url);
-      };
-      img.src = url;
-
-    }*/
 
 
 });
