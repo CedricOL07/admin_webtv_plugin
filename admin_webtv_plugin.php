@@ -261,11 +261,14 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `artiste` varchar(255) NOT NULL,
     `genre` varchar(255) NOT NULL,
     `annee` date NOT NULL,
-    `album` varchar(255) NOT NULL
+    `album` varchar(255) NOT NULL,
     `Debut` varchar(255) DEFAULT '',
-    `Fin` varchar(255) DEFAULT '',
-    PRIMARY KEY (`nom`)
+    `Fin` varchar(255) DEFAULT ''
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+    $alter_table_playlist_clip=" ALTER TABLE `" . $wpdb->prefix . "playlistclip_webtv_plugin`
+        ADD UNIQUE (id),
+    MODIFY `id` int(255) NOT NULL AUTO_INCREMENT";
 
 
     $creer_table_playlists_enregistrees="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlistenregistrees_webtv_plugin` (
@@ -373,6 +376,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($alter_table_videos);
     $wpdb->query($alter_table_relation);
     $wpdb->query($alter_table_defaut_playlist);
+    $wpdb->query($alter_table_playlist_clip);
 }
 
 
@@ -396,6 +400,7 @@ function pluginwebtv_supprimer_tables(){
     $wpdb->query($effacer_table_annee);
     $wpdb->query($effacer_table_artiste);
     $wpdb->query($effacer_table_playlist);
+    $wpdb->query($effacer_table_playlistclip);
     $wpdb->query($effacer_table_videos);
     $wpdb->query($effacer_table_relation);
     $wpdb->query($effacer_table_videos);
