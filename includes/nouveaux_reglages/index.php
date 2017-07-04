@@ -132,6 +132,7 @@
                                           <label for="amount">Logo : </label>
                                         </div>
                                         <select name="freq_logo" id="freq_logo" class=" col-md-2 col-sm-2">
+                                          <option value="0">0</option>
                                            <option value="1">1</option>
                                            <option value="2">2</option>
                                            <option value="3">3</option>

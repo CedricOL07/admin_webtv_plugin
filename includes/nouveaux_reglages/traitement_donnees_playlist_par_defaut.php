@@ -23,6 +23,7 @@ add_action('wp_ajax_etat_live','etat_live');
 add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
 add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 add_action('wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
+add_action('pluginwebtv_freq_logo', 'freq_logo');
 
 function etat_live(){
     $etat_live;
@@ -81,8 +82,7 @@ function enregistrer_reglage_par_defaut(){
           pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,annee_max,annee_min,qualite_min,Freq_logo,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$annee_max','$annee_min','$qualite_min','$freq_logo','$par_defaut');";
 
           $select = $wpdb->query($inserer_nouvelle_playlist_par_defaut);
-          echo ($inserer_nouvelle_playlist_par_defaut);
-          wp_die();
+
         }
 
         do_action('pluginwebtv_generer_la_playlist_par_defaut');
@@ -106,6 +106,8 @@ function generer_la_playlist_par_defaut(){
     global $tab_artistes;
     global $tab_annees;
     global $tab_album;
+    global $tab_logo_titre;
+    global $tab_logo_url;
 
     //On chope les playlists enregistrés, on tri par date et quand creneau libre on met playlist defaut
     $ldefaut=1;
@@ -129,39 +131,110 @@ function generer_la_playlist_par_defaut(){
         $annee_max=$resdefaut->annee_max;
         $annee_min=$resdefaut->annee_min;
         $qualite_min=$resdefaut->qualite_min;
+        $frequence_logo = $resdefaut->Freq_logo;
 
             do_action('pluginwebtv_generer_playlist_par_defaut',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$annee_max,$annee_min,$qualite_min);
-
+            // appelle la fonction de récupération des logo.
+            do_action('pluginwebtv_freq_logo',$frequence_logo);
 
     }
 
     $effacer_existant ="TRUNCATE TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";
     $wpdb->query($effacer_existant);
 
-
     //$tab_glob1=array();
     //On met tout ca dans la table Playlist
-    $titre=str_replace("'","''",$tab_titres);
-    $artistes=str_replace("'","''",$tab_artistes);
-    $genres=str_replace("'","''",$tab_genres);
-    $annees=str_replace("'","''",$tab_annees);
-    $album=str_replace("'","''",$tab_album);
+    $titre = str_replace("'","''",$tab_titres);
+    $artistes = str_replace("'","''",$tab_artistes);
+    $genres = str_replace("'","''",$tab_genres);
+    $annees = str_replace("'","''",$tab_annees);
+    $album = str_replace("'","''",$tab_album);
+    $logo_titre = str_replace("'","''",$tab_logo_titre);
 
-    // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
-    for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+    // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin en fonction du nombre de logo(s)
+    switch ($frequence_logo) {
+      case 0:
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
 
-        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
-        $wpdb->query($inserer);
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+        }
+        break;
+
+      case 1:
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+          if ($k!=6){
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+          }
+          else{
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$logo_titre[0]','$tab_logo_url[0]','undef','undef','undef', 'undef')";
+            $wpdb->query($inserer);
+          }
+        }
+        break;
+
+      case 2:
+        $l = 0;// permet d'incrémenter pour le tableau de pub
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+          if ($k!=6 && $k!=11){
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+          }
+          else{
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$logo_titre[$l]','$tab_logo_url[$l]','undef','undef','undef', 'undef')";
+            $wpdb->query($inserer);
+            $l++;
+          }
+        }
+        break;
+
+      case 3:
+        $l = 0;// permet d'incrémenter pour le tableau de pub
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+          if ($k!=3 && $k!=6 && $k!=9){
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+          }
+          else{
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$logo_titre[$l]','$tab_logo_url[$l]','undef','undef','undef', 'undef')";
+            $wpdb->query($inserer);
+            $l++;
+          }
+        }
+        break;
+
+      case 4:
+        $l = 0;// permet d'incrémenter pour le tableau de pub
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+          if ($k!=3 && $k!=6 && $k!=9 && $k!=11){
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+          }
+          else{
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$logo_titre[$l]','$tab_logo_url[$l]','undef','undef','undef', 'undef')";
+            $wpdb->query($inserer);
+            $l++;
+          }
+        }
+        break;
+
+      case 5:
+        $l = 0;// permet d'incrémenter pour le tableau de pub
+        for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+          if ($k!=2 && $k!=4 && $k!=6 && $k!=8 && $k!=10){
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+            $wpdb->query($inserer);
+          }
+          else{
+            $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$logo_titre[$l]','$tab_logo_url[$l]','undef','undef','undef', 'undef')";
+            $wpdb->query($inserer);
+            $l++;
+          }
+        }
+        break;
     }
 
-
-
-    function recup_val_par_defaut(){
-      global $wpdb;
-      $query_val_par_def="SELECT ParDefaut FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
-      $result_val_par_def=$wpdb->get_var($query_val_par_def);
-      wp_send_json_success($result);
-    }
 
 
     function recuperer_programmation(){
@@ -200,6 +273,52 @@ function generer_la_playlist_par_defaut(){
 
     }
 
+}
+/*
+* fonction : récupère le nombre de fois que le logo sera insérer dans la playlist
+* dans le tableau $tab_video_logo, les doublons sont acceptés.
+*/
+function freq_logo($frequence_logo){
+  global $wpdb;
+  global $tab_video_logo;
+  global $tab_logo_titre;
+  global $tab_logo_url;
+
+  $query_id_video_logo="SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='13' ORDER BY RAND();";// genre du Logo est 13
+  $result_id_video_logo = $wpdb->get_results($query_id_video_logo);
+  foreach ($result_id_video_logo as   $results) {
+    $tab_video_logo_verif[] = $results->video_id;
+  }
+  //si il n'y a pas de logo dans la table relation_webtv_plugin
+ if (sizeof($tab_video_logo_verif) > 0){
+
+   //incrémente un logo tant que la fréquence choisi par l'utilisateur n'est pas atteinte.
+   while (sizeof($tab_video_logo) <= ($frequence_logo-1)) {// -1 car le tableau commence à 0
+
+     // insère les logo présent dans le tableau  $tab_video_logo_verif issue de la requète
+     for ($i=0; $i < sizeof($tab_video_logo_verif) ; $i++) {
+
+       // si  le tableau de logo final  dépasse la fréquence on stop la boucle sinon on continue de répèter meme s'il y a présence de doublons.
+        if (sizeof($tab_video_logo) > ($frequence_logo -1) ) {// -1 car le tableau commence à 0
+          break;
+        }
+        else{
+          $tab_video_logo[] = $tab_video_logo_verif[$i];
+          //echo(" id video : " . $tab_video_logo[$i]);
+        }
+      }
+    }
+    // récupère titre et url du tableau des id_ logo créer
+    foreach ($tab_video_logo as $key) {
+      $query_titre_url_video_logo="SELECT titre,url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$key';";
+      $tab_logo_titre[] =$wpdb->get_var($query_titre_url_video_logo,0,0);
+      $tab_logo_url[] = $wpdb->get_var($query_titre_url_video_logo,1,0);
+    }
+  }
+ else {
+   echo '<script>alert(\"Il n\'y a pas de logo dans la base de données donc aucun logo n\'est insérer dans la playlist. \")</script>';
+   break;
+ }
 }
 
 /*
