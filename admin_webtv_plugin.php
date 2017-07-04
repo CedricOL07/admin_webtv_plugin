@@ -397,6 +397,7 @@ function pluginwebtv_supprimer_tables(){
     $effacer_table_qualite="DROP TABLE " . $wpdb->prefix . "qualite_webtv_plugin;";
     $effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
     $effacer_table_playlistclip="DROP TABLE " . $wpdb->prefix . "playlistclip_webtv_plugin;";
+    $effacer_table_genre="DROP TABLE " . $wpdb->prefix . "genre_webtv_plugin;";
 
 
     $wpdb->query($effacer_table_playlistenregistres);
@@ -407,6 +408,7 @@ function pluginwebtv_supprimer_tables(){
     $wpdb->query($effacer_table_videos);
     $wpdb->query($effacer_table_relation);
     $wpdb->query($effacer_table_videos);
+    $wpdb->query($effacer_table_genre);
 
 }
 
