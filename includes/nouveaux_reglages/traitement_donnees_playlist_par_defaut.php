@@ -50,52 +50,27 @@ function enregistrer_reglage_par_defaut(){
         // Liste des variables transmises dans la requête ajax
         // On passe un booléen pour vérifier que la playlist a été définie comme par défaut ou non
         if(isset($_POST['pardefaut'])){
-
             $par_defaut=$_POST['pardefaut'];
             if ($par_defaut == true){
               $par_defaut =1;
             }
-        }
+          }
 
         // = true si playlist définie comme par défaut
         // On passe un booléen pour vérifier que la playlist doit être passer directement à la suite ou non
-        if(isset($_POST['nom_reglage'])){
-            $nom_reglage=$_POST['nom_reglage'];
-        }
-        if(isset($_POST['pourcentage_poprock'])){
-            $pourcentage_poprock=$_POST['pourcentage_poprock'];
-        }
-        if(isset($_POST['pourcentage_hiphop'])){
-            $pourcentage_hiphop=$_POST['pourcentage_hiphop'];
-        }
-        if(isset($_POST['pourcentage_jazzblues'])){
-            $pourcentage_jazzblues=$_POST['pourcentage_jazzblues'];
-        }
-        if(isset($_POST['pourcentage_musiquemonde'])){
-            $pourcentage_musique_monde=$_POST['pourcentage_musiquemonde'];
-        }
-        if(isset($_POST['pourcentage_hardrock'])){
-            $pourcentage_hardrock=$_POST['pourcentage_hardrock'];
-        }
-        if(isset($_POST['pourcentage_electro'])){
-            $pourcentage_electro=$_POST['pourcentage_electro'];
-        }
-        if(isset($_POST['pourcentage_chanson'])){
-            $pourcentage_chanson=$_POST['pourcentage_chanson'];
-        }
-        if(isset($_POST['pourcentage_autres'])){
-            $pourcentage_autres=$_POST['pourcentage_autres'];
-        }
-        if(isset($_POST['annee_max'])){
-            $annee_max=$_POST['annee_max'];
-        }
-        if(isset($_POST['annee_min'])){
-            $annee_min=$_POST['annee_min'];
-        }
-        if(isset($_POST['qualite_min'])){
-            $qualite_min = $_POST['qualite_min'];
-        }
-
+        if(isset($_POST['nom_reglage'])){$nom_reglage=$_POST['nom_reglage'];}
+        if(isset($_POST['pourcentage_poprock'])){$pourcentage_poprock=$_POST['pourcentage_poprock'];}
+        if(isset($_POST['pourcentage_hiphop'])){$pourcentage_hiphop=$_POST['pourcentage_hiphop'];}
+        if(isset($_POST['pourcentage_jazzblues'])){$pourcentage_jazzblues=$_POST['pourcentage_jazzblues'];}
+        if(isset($_POST['pourcentage_musiquemonde'])){$pourcentage_musique_monde=$_POST['pourcentage_musiquemonde'];}
+        if(isset($_POST['pourcentage_hardrock'])){$pourcentage_hardrock=$_POST['pourcentage_hardrock'];}
+        if(isset($_POST['pourcentage_electro'])){$pourcentage_electro=$_POST['pourcentage_electro'];}
+        if(isset($_POST['pourcentage_chanson'])){$pourcentage_chanson=$_POST['pourcentage_chanson'];}
+        if(isset($_POST['pourcentage_autres'])){$pourcentage_autres=$_POST['pourcentage_autres'];}
+        if(isset($_POST['annee_max'])){$annee_max=$_POST['annee_max'];}
+        if(isset($_POST['annee_min'])){$annee_min=$_POST['annee_min'];}
+        if(isset($_POST['qualite_min'])){$qualite_min = $_POST['qualite_min'];}
+        if(isset($_POST['freq_logo'])){$freq_logo = $_POST['freq_logo'];}
 
         if ($par_defaut == 1){
 
@@ -103,10 +78,11 @@ function enregistrer_reglage_par_defaut(){
           $select1=$wpdb->query($effacer_ancienne_playlist_par_defaut);
 
           $inserer_nouvelle_playlist_par_defaut="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde,
-          pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,annee_max,annee_min,qualite_min,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$annee_max','$annee_min','$qualite_min','$par_defaut');";
+          pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,annee_max,annee_min,qualite_min,Freq_logo,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues','$pourcentage_musique_monde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$annee_max','$annee_min','$qualite_min','$freq_logo','$par_defaut');";
 
           $select = $wpdb->query($inserer_nouvelle_playlist_par_defaut);
-
+          echo ($inserer_nouvelle_playlist_par_defaut);
+          wp_die();
         }
 
         do_action('pluginwebtv_generer_la_playlist_par_defaut');

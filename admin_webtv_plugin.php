@@ -287,8 +287,9 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `annee_max` date DEFAULT '1999-12-31',
     `annee_min` date DEFAULT '0001-01-01',
     `qualite_min` int(11) NOT NULL,
-    `Debut` varchar(255) DEFAULT '',
+    `Debut` varchar(255) DEFAULT '',    
     `Fin` varchar(255) DEFAULT '',
+    `Freq_logo` int(11) NOT NULL,
     `ParDefaut` tinyint(1) NOT NULL DEFAULT '0',
     PRIMARY KEY (`nom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

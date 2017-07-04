@@ -80,7 +80,7 @@ ajouter_video('I kissed a girl','Katy Perry','Katy','2015','http://localhost/wor
 ajouter_video('Poker Face','Lady Gaga','Fame','20080101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/5.mp4','Pop-rock','5');
 ajouter_video('Nothing Else Matters','Metallica','Black Album','19870101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/6.mp4','Hard-rock & Metal','5');
 ajouter_video('Amaranth','Nightwish','Dark Passion Play','20100101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/7.mp4','Hard-rock & Metal','5');
-ajouter_video('Elan','Nightwish','Endless Form Of Beautiful','20150101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Hard-rock & Metal','5');
+ajouter_video('Elan','Nightwish','Endless Form Of Beautiful','20150101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Logo','5');
 ajouter_video('Dont Speak','No Doubt','Gwen','2000','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/9.mp4','Pop-rock','5');
 ajouter_video('Snow','Red Hot Chilli Peppers','RHCP','20040101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/10.mp4','Pop-rock','5');
 ajouter_video('Papaoutai','Stromae','Maestro','20120101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/11.mp4','Musique du monde','5');

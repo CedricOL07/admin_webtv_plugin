@@ -1032,12 +1032,13 @@ $(document).ready(function(){
         var passer_des_que_possible = false;
         var date_debut;
         var date_fin;
+        var freq_logo = $("#freq_logo").val();
 
         var nom_disponible = true;
 
         /*
 		* --------------------------  VERIFICATION DES DATES MIN ET MAX   -----------------------------------
-		*/ 
+		*/
 
 		if (annee_max != "")
 		{
@@ -1048,7 +1049,7 @@ $(document).ready(function(){
 		} else
 		{
 			annee_max = "99991231";
-		} 
+		}
 		if (annee_min != "")
 		{
 			var date_now = annee_min.split('/');
@@ -1090,9 +1091,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1102,6 +1103,7 @@ $(document).ready(function(){
                             'pourcentage_chanson':tableau_pourcentages.chanson,
                             'pourcentage_autres':tableau_pourcentages.autres,
                             'nom_reglage':nom_reglage,
+                            'freq_logo':freq_logo,
                         },
                         function(response){
                            console.log("echo : "+ response);
@@ -1139,9 +1141,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-							'annee_max':annee_max,
-							'annee_min':annee_min,
-							'qualite_min':qualite_min,
+              							'annee_max':annee_max,
+              							'annee_min':annee_min,
+              							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
@@ -1164,12 +1166,13 @@ $(document).ready(function(){
                             'camembert_electro':montantsliders.montant_electro,
                             'camembert_chanson':montantsliders.montant_chanson,
                             'camembert_autres':montantsliders.montant_autres,
-                            'camembert_hardrock':montantsliders.montant_hardrock
+                            'camembert_hardrock':montantsliders.montant_hardrock,
+                            'freq_logo':freq_logo,
 
                         },
                         function(response){
-							
-                                console.log("echo "+tableau_pourcentages.musiquemonde+ " : " +response);
+
+                                console.log("echo : "+response);
 
                         }
                     );
