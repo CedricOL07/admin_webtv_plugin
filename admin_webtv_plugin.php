@@ -255,25 +255,16 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     MODIFY `id` int(255) NOT NULL AUTO_INCREMENT";
 
     $creer_table_playlist_clip="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "playlistclip_webtv_plugin` (
-        `nom` varchar(255) NOT NULL,
-        `id_clip1` int(11) NOT NULL,
-        `id_clip2` int(11) NOT NULL,
-        `id_clip3` int(11) NOT NULL,
-        `id_clip4` int(11) NOT NULL,
-        `id_clip5` int(11) NOT NULL,
-        `id_clip6` int(11) NOT NULL,
-        `id_clip7` int(11) NOT NULL,
-        `id_clip8` int(11) NOT NULL,
-        `id_clip9` int(11) NOT NULL,
-        `id_clip10` int(11) NOT NULL,
-        `id_clip11` int(11) NOT NULL,
-        `id_clip12` int(11) NOT NULL,
-        `id_clip13` int(11) NOT NULL,
-        `id_clip14` int(11) NOT NULL,
-        `id_clip15` int(11) NOT NULL,
-        `Debut` varchar(255) DEFAULT '',
-        `Fin` varchar(255) DEFAULT '',
-        PRIMARY KEY (`nom`)
+    `id` int(255) NOT NULL,
+    `titre` varchar(255) NOT NULL,
+    `url` varchar(255) NOT NULL,
+    `artiste` varchar(255) NOT NULL,
+    `genre` varchar(255) NOT NULL,
+    `annee` date NOT NULL,
+    `album` varchar(255) NOT NULL
+    `Debut` varchar(255) DEFAULT '',
+    `Fin` varchar(255) DEFAULT '',
+    PRIMARY KEY (`nom`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
