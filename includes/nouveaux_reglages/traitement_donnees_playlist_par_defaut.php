@@ -241,8 +241,9 @@ function insertion_logo_dans_playlist_par_defaut($frequence_logo, $id_video_cour
 
         $query_inserer_nouveau_logo="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$tab_logo_titre[$random]','$tab_logo_url[$random]','undef','undef','undef', 'undef')";
         $wpdb->query($query_inserer_nouveau_logo);
-      
 
+        $query_tri_desc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id DESC;";
+        $wpdb->query($query_tri_desc);
       }
     }
     unset($tab_logo_titre);

@@ -252,8 +252,8 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     // recupération de l'id de la video courante dans la table playlist par defaut car les id sont différents.
     $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
     $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
-    echo("bouh! ".$reponse_id_videocourante_dans_playlist_par_defaut % $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
-    wp_die();
+    $query_tri_asc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
+    $wpdb->query($query_tri_asc);
     // Ajoute une pub si on arrive à la video de la playlist qui son id identique à la fréquence des logos.
     if ($reponse_id_videocourante_dans_playlist_par_defaut % $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut == 0 && $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut > 0) {
         do_action('pluginwebtv_freq_logo',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
