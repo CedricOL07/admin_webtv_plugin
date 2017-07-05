@@ -14,8 +14,6 @@ Appel des différentes fonctions du programme
 
 add_action('wp_ajax_recuperer_programmation','recuperer_programmation');
 add_action('wp_ajax_recuperer_noms_reglages','recuperer_noms_reglages');
-add_action('wp_ajax_recuperer_derniers_pourcentages_enregistrees','recuperer_derniers_pourcentages_enregistrees');
-add_action('wp_ajax_recuperer_tous_reglages_enregistres','recuperer_tous_reglages_enregistres');
 add_action('wp_ajax_supprimer_toutes_videos','supprimer_toutes_videos');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
@@ -235,7 +233,10 @@ function generer_la_playlist_par_defaut(){
         break;
     }
 
-
+/*
+* Fonction permettant d'afficher la programmation (situé dans le fihier homepage.js)
+*
+*/
 
     function recuperer_programmation(){
     // permet de récupérer le nom, le début et la fin d'une playlist enregistrée dans la base de donnée
@@ -245,33 +246,7 @@ function generer_la_playlist_par_defaut(){
         $result=$wpdb->get_results($query);
         wp_send_json_success($result);
     }
-    // On genere une nouvelle playlist pour la semaine
-    function recuperer_derniers_pourcentages_enregistrees(){
 
-        global $wpdb;
-        global $montantpop;
-        $recuperer="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin ORDER BY id DESC LIMIT 1;";
-        $result=$wpdb->get_results($recuperer);
-
-        wp_send_json_success($result);
-    }
-
-    function recuperer_tous_reglages_enregistres(){
-        global $wpdb;
-        $query="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
-        $result=$wpdb->get_results($query);
-        wp_send_json_success($result);
-
-    }
-
-    function supprimer_toutes_videos(){
-        global $wpdb;
-
-        $query="DELETE FROM " . $wpdb->prefix . "videos_webtv_plugin;";
-        $wpdb->query($query);
-        wp_die();
-
-    }
 
 }
 /*
