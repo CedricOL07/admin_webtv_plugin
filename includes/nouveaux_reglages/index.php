@@ -22,7 +22,7 @@
         ?>
 
 
-	<!--Pour modifier les emplacements des boxes il y a des commentaires laissé dans le code notamement dans la partie publicité-->
+    <!--Pour modifier les emplacements des boxes il y a des commentaires laissé dans le code notamement dans la partie publicité-->
 
     <body class="hold-transition skin-black sidebar-mini">
 
@@ -178,9 +178,11 @@
 
                             <div class="col-md-12 col-sm-12" id="pub-box">
 
-                                <div class="col-md-4 col-sm-4" id="select_pub_label">
-                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
+                                <div class="col-md-5 col-sm-5" id="select_pub_label">
+                                    <div class="col-md-8 col-sm-8" id="select_pub_label">
                                         Sélectionner une pub externe :
+                                    </div>
+                                    <div class="col-md-4 col-sm-4" id="affichage_pubs_externes" style="font-style: italic">
                                     </div>
                                     <div class="col-md-12 col-sm-12" style="margin-top:10px">
                                         <input type="button" name="select_pubs_externes" id="select_pubs_externes" value="select">
@@ -190,21 +192,21 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-1 col-sm-1" id="affichage_pubs_externes" style="font-style: lighter">
-                                </div>
 
                                 <div class="col-md-2 col-sm-2" id="pub_selector_externe_box"  style="margin-top:10px">
-                                    <select name="pubs_selector_externe"  id="pubs_selector_externe"  multiple>
+                                    <select name="pubs_selector_externe"  id="pubs_selector_externe"  multiple size="5">
                                     </select>
                                 </div>
 
-                           	</div>
+                            </div>
 
                             <div class="col-md-12 col-sm-12" id="pub-box">
 
-                                <div class="col-md-4 col-sm-4" id="select_pub_label">
-                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
+                                <div class="col-md-5 col-sm-5" id="select_pub_label">
+                                    <div class="col-md-8 col-sm-8" id="select_pub_label">
                                         Sélectionner une pub interne :
+                                    </div>
+                                    <div class="col-md-4 col-sm-4" id="affichage_pubs_internes" style="font-style: italic">
                                     </div>
                                     <div class="col-md-12 col-sm-12" style="margin-top:10px">
                                         <input type="button" name="select_pubs_internes" id="select_pubs_internes" value="select">
@@ -214,11 +216,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-1 col-sm-1" id="affichage_pubs_internes" style="font-style: lighter">
-                                </div>
 
                                 <div class="col-md-2 col-sm-2" id="pub_selector_interne_box" style="margin-top:10px" >
-                                    <select name="pubs_selector_interne"  id="pubs_selector_interne"  multiple>
+                                    <select name="pubs_selector_interne"  id="pubs_selector_interne"  multiple size="5">
                                     </select>
                                 </div>
 
@@ -239,9 +239,11 @@
 
                             <div class="col-md-12 col-sm-12" id="pub-box">
 
-                                <div class="col-md-4 col-sm-4" id="select_pub_label">
-                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
-                                         Selectionner un artiste en Highlight :
+                                <div class="col-md-5 col-sm-5" id="select_pub_label">
+                                    <div class="col-md-8 col-sm-8" id="select_pub_label">
+                                         Sélectionner un artiste highlight :
+                                    </div>
+                                    <div class="col-md-4 col-sm-4" id="affichage_artiste_higlight" style="font-style: italic">
                                     </div>
                                     <div class="col-md-12 col-sm-12" style="margin-top:10px">
                                         <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select">
@@ -251,11 +253,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-1 col-sm-1" id="affichage_artiste_higlight" style="font-style: lighter">
-                                </div>
 
                                 <div class="col-md-2 col-sm-2" id="highlight_selector_interne_box" style="margin-top:10px" >
-                                    <select name="classement_artistes_higlights"  id="classement_artistes_higlights"  multiple>
+                                    <select name="classement_artistes_higlights"  id="classement_artistes_higlights"  size = "5">
                                     </select>
                                 </div>
 
