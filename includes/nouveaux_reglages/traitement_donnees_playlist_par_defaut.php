@@ -14,11 +14,9 @@ Appel des différentes fonctions du programme
 
 add_action('wp_ajax_recuperer_programmation','recuperer_programmation');
 add_action('wp_ajax_recuperer_noms_reglages','recuperer_noms_reglages');
-add_action('wp_ajax_supprimer_toutes_videos','supprimer_toutes_videos');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
 add_action('wp_ajax_etat_live','etat_live');
-add_action('wp_ajax_recup_val_par_defaut', 'recup_val_par_defaut');
 add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 add_action('wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
 add_action('pluginwebtv_freq_logo', 'freq_logo');
@@ -87,6 +85,10 @@ function enregistrer_reglage_par_defaut(){
 
     }
 
+/*
+*Fonction : permet de récupérer les noms de la playlist enregistrer  : utile dans le fihier nouveaux_reglages.js
+*
+*/
 function recuperer_noms_reglages(){
     global $wpdb;
     $recuperer_noms="SELECT nom FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
@@ -302,9 +304,7 @@ function freq_logo($frequence_logo){
 */
 
 function recuperer_videos_player_page_principale() {
-    //do_action('pluginwebtv_generer_la_playlist_par_defaut');
     global $wpdb;
-
     $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
