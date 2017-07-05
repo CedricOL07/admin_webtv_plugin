@@ -100,46 +100,54 @@
                             </div>
 
 
-                    <!--  Choix playlist par défaut -->
+                    <!--  Réglages avancés -->
 
                             <div class="row col-md-12">
-                                <div class="col-md-11 col-sm-11">
-                                    <div class="box">
-                                        <div class="col-md-11 col-sm-11">
-                                          <div class=" box-header with-border">
-                                              <h3 class="box-title"> Réglages avancés</h3>
-                                          </div>
+                                <div class="col-md-11 col-sm-11 box">
+                                    <div class=" box-header with-border">
+                                        <h3 class="box-title"> Réglages avancés</h3>
+                                    </div>
 
-                                          <div id="datepicker" class="col-md-7 col-sm-7">
-                                              <input type="text" id="annee_min" name="annee_min" placeholder="Date minimale... " />
-                                              <input type="text" id="annee_max" name="annee_max" placeholder="Date maximale... " />
-                                          </div>
-
-                                          <div class="col-md-3 col-sm-3">
-                                             <label for="amount">Qualité minimale :</label>
-                                          </div>
-                                          <select name="qualite_min" id="qualite_min" class="col-md-2 col-sm-2">
-                                              <option value="1">1</option>
-                                              <option value="2">2</option>
-                                              <option value="3">3</option>
-                                              <option value="4">4</option>
-                                              <option value="5">5</option>
-                                          </select>
+                                    <div class="col-md-12 col-sm-12" style="margin-top:10px" >
+                                        <div id="datepicker" class="col-md-6 col-sm-6" >
+                                            <input type="text" id="annee_min" name="annee_min" placeholder="Date minimale... " />
+                                            <input type="text" id="annee_max" name="annee_max" placeholder="Date maximale... " />
                                         </div>
 
-                                        <div class="col-md-11 col-sm-11">
-                                        <div class="col-md-offset-7 col-md-3 col-sm-3">
-                                          <label for="amount">Logo : </label>
+                                        <div class="col-md-3 col-sm-3">
+                                            <label for="amount">Qualité minimale :</label>
                                         </div>
-                                        <select name="freq_logo" id="freq_logo" class=" col-md-2 col-sm-2">
-                                           <option value="0">0</option>
-                                           <option value="1">1</option>
-                                           <option value="2">2</option>
-                                           <option value="3">3</option>
-                                           <option value="4">4</option>
-                                           <option value="5">5</option>
+                                        <select name="qualite_min" id="qualite_min" class="col-md-1 col-sm-1">
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
                                         </select>
-                                      </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12" style="margin-top:10px">
+                                        <div class="col-md-offset-6 col-md-3 col-sm-3">
+                                            <label for="amount">Lancer le logo tous les : </label>
+                                        </div>
+                                        <select name="freq_logo" id="freq_logo" class="col-md-1 col-sm-1">
+                                            <option value="0">-jamais-</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+
+                                        </select>
+                                        <div class="col-md-1 col-sm-1">
+                                            <label for="amount"> clips </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
