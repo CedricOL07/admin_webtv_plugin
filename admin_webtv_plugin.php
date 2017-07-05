@@ -18,8 +18,10 @@ add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer
 // ce sont des fichiers avec seulement des fonctions (pas de html)
 function php_includes(){
 
-  //  include('includes/GenerationPlaylist.php');
+
     include('includes/GenerationPlaylist_par_defaut.php');
+    include('includes/GenerationPlaylist_clip.php');
+    include('includes/WEBTV/traitement_duree_clips.php');
     include('includes/nouveaux_reglages/traitement_donnees_playlist_par_defaut.php');
     include('includes/nouveaux_reglages/traitement_donnees_playlists_clips.php');
     include('includes/GestionBDD/gestionbdd-ajax.php');
