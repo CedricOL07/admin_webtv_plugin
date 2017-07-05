@@ -155,14 +155,12 @@
 
                     <!--  Choix playlist par défaut -->
                             <div class="row col-md-12">
-                                <div class="col-md-11 col-sm-11">
-                                    <div class="box">
-                                        <div class=" box-header with-border">
-                                            <h3 class="box-title"> Definir comme réglage par défaut</h3>
-                                        </div>
-                                        <div class="checkbox" style="padding-bottom:1%;padding-left:1%;">
-                                            <label><input type="checkbox" name="checkbox_par_defaut" id="checkbox_par_defaut" value="">Faire de ce réglage le réglage par défaut</label>
-                                        </div>
+                                <div class="col-md-11 col-sm-11 box">
+                                    <div class=" box-header with-border">
+                                        <h3 class="box-title"> Definir comme réglage par défaut</h3>
+                                    </div>
+                                    <div class="checkbox" style="padding-bottom:1%;padding-left:1%;">
+                                        <label><input type="checkbox" name="checkbox_par_defaut" id="checkbox_par_defaut" value="">Faire de ce réglage le réglage par défaut</label>
                                     </div>
                                 </div>
                             </div>
