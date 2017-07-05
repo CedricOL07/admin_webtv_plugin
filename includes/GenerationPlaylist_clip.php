@@ -13,7 +13,7 @@
 
 
 
-add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',10,15);
+add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',15,15);
 add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,5);
 add_action( 'pluginwebtv_verifier_restant', 'verifier_restant',15,1);
 add_action( 'pluginwebtv_ajouter_hightlight', 'ajouter_hightlight',16,1);
@@ -31,7 +31,7 @@ $tab_titres=array();
 
 
 //Génère une playlist de 8 morceaux selon les pourcentages choisit par l'utilisateur
-function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcentagejazzblues,$pourcentagemusiquemonde,$pourcentagehardrock,$pourcentageelectro,$pourcentagechanson,$pourcentageautres,$pubsinternes,$pubsexternes,$artistehighlight,$annee_max, $annee_min, $qualite_min, $debut){
+function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pourcentagejazzblues, $pourcentagemusiquemonde, $pourcentagehardrock, $pourcentageelectro, $pourcentagechanson, $pourcentageautres, $pubsinternes, $pubsexternes,$artistehighlight,$annee_max, $annee_min, $qualite_min, $debut){
 
 
     global $tab_url;
@@ -39,7 +39,8 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     global $tab_artistes;
     global $tab_genres;
     global $tab_ids;
-    global $tab_durees
+    global $tab_durees;
+    global $duree_total;
     $poprock=$pourcentagepoprock;
     $hiphop=$pourcentagehiphop;
     $jazzblues=$pourcentagejazzblues;
@@ -57,13 +58,11 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
     $compteur=0;
     $genre_id;
 
-    echo ($musiquemonde." = ");
-
     $tableaupourcentages=array();
 
     $tableaupourcentages[0] = $pourcentagepoprock;
-    $tableaupourcentages[1] =  $pourcentagehiphop;
-    $tableaupourcentages[2] =  $pourcentagejazzblues;
+    $tableaupourcentages[1] = $pourcentagehiphop;
+    $tableaupourcentages[2] = $pourcentagejazzblues;
     $tableaupourcentages[3] = $pourcentagemusiquemonde;
     $tableaupourcentages[4] = $pourcentagehardrock;
     $tableaupourcentages[5] = $pourcentageelectro;
@@ -181,10 +180,11 @@ function generer_playlist_clips($pourcentagepoprock,$pourcentagehiphop,$pourcent
 
     for (var $i=0, $i<sizeof($tab_url), $i++)
     {
-        $tab_durees[] = recuperer_duree_clip($tab_url[$i], $tab_titres[$i]);
+        do_action(wp_ajax_recuperer_duree_clip($tab_url[$i], $tab_titres[$i]));
+        $duree_total = $duree_total+$tab_durees[$i];
     }
 
-    $duree_total = array_sum($tab_durees);
+    
     //echo $duree_total." [ ".$tab_durees." ] ";
 
 }

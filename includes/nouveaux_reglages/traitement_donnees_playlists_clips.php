@@ -56,9 +56,12 @@ function generer_la_playlist_clips($nom_playlist){
     global $tab_titres;
     global $tab_genres;
     global $tab_artistes;
+    global $tab_durees;
+    global $duree_total;
+
     $tableau_dates_debut=array();
     $tableau_dates_fin=array();
-    
+
     $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
     $resultdefaut=$wpdb->get_results($querydefaut);
     foreach($resultdefaut as $resdefaut){
@@ -84,9 +87,31 @@ function generer_la_playlist_clips($nom_playlist){
 
         do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut,$amax,$amin,$qmin,$debut);
 
+    }
 
-  }
+    echo ($debut." = ".$tab_durees[1]." - ".$tab_durees[2]." - ".$tab_durees[3]." - ".$tab_durees[4]." - ".$tab_durees[5]." - ".$tab_durees[0]." - ");
+    //$heure_fin = $debut
 
+/*
+    $ajouter_fin ="INSERT INTO " . $wpdb->prefix . "playlistclip_webtv_plugin (Fin) VALUES ($heure_fin);";
+    $wpdb->query($effacer_existant);
+
+
+    //$tab_glob1=array();
+    //On met tout ca dans la table Playlist
+    $titre=str_replace("'","''",$tab_titres);
+    $artistes=str_replace("'","''",$tab_artistes);
+    $genres=str_replace("'","''",$tab_genres);
+    $annees=str_replace("'","''",$tab_annees);
+    $album=str_replace("'","''",$tab_album);
+
+    // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
+    for($k=0;$k<12;$k++){ // remettre sizeof($titre) une fois pb résolu.
+
+        $inserer="INSERT INTO " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin(titre,url,artiste,genre,annee,album) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]')";
+        $wpdb->query($inserer);
+    }
+*/
 }
 
 
