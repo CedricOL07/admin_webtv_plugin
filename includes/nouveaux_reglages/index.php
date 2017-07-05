@@ -176,58 +176,53 @@
 
                             </div>
 
-                            <div class="col-md-11 col-sm-11" id="pub-box">
+                            <div class="col-md-12 col-sm-12" id="pub-box">
 
-                                <div class="col-md-3 col-sm-3" id="select_pub_label">
-
-                                Sélectionner une pub externe :
-
+                                <div class="col-md-4 col-sm-4" id="select_pub_label">
+                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
+                                        Sélectionner une pub externe :
+                                    </div>
+                                    <div class="col-md-12 col-sm-12" style="margin-top:10px">
+                                        <input type="button" name="select_pubs_externes" id="select_pubs_externes" value="select">
+                                        </input>
+                                        <input type="button" name="supprimer_pubs_externes" id="supprimer_pubs_externes" value="supprimer">
+                                        </input>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-2 col-sm-2" id="affichage_pubs_externes" style="font-style: lighter">
+                                <div class="col-md-1 col-sm-1" id="affichage_pubs_externes" style="font-style: lighter">
                                 </div>
 
-                                <div class="col-md-2 col-sm-2" id="pub_selector_externe_box" >
-
+                                <div class="col-md-2 col-sm-2" id="pub_selector_externe_box"  style="margin-top:10px">
                                     <select name="pubs_selector_externe"  id="pubs_selector_externe"  multiple>
                                     </select>
-
                                 </div>
 
-	                                <div class="col-md-6 col-sm-6">
-                                 		<input type="button" name="select_pubs_externes" id="select_pubs_externes" value="select">
-                                		</input>
+                           	</div>
 
-                                		<input type="button" name="supprimer_pubs_externes" id="supprimer_pubs_externes" value="supprimer">
-                                		</input>
-                                	</div>
+                            <div class="col-md-12 col-sm-12" id="pub-box">
 
-                           		</div>
-
-                            <div  class="col-md-11 col-sm-11" id="pub-box">
-                                <div class="col-md-3 col-sm-3" id="select_pub_label">
-
-                                Selectionner une pub interne :
-
+                                <div class="col-md-4 col-sm-4" id="select_pub_label">
+                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
+                                        Sélectionner une pub interne :
+                                    </div>
+                                    <div class="col-md-12 col-sm-12" style="margin-top:10px">
+                                        <input type="button" name="select_pubs_internes" id="select_pubs_internes" value="select">
+                                        </input>
+                                        <input type="button" name="supprimer_pubs_internes" id="supprimer_pubs_internes" value="supprimer">
+                                        </input>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-2 col-sm-2" id="affichage_pubs_internes" style="font-style: lighter">
+                                <div class="col-md-1 col-sm-1" id="affichage_pubs_internes" style="font-style: lighter">
                                 </div>
 
-                                <div class="col-md-2 col-sm-2" id="pub_selector_interne_box" >
-
-                                	<select name="pubs_selector_interne"  id="pubs_selector_interne" multiple>
+                                <div class="col-md-2 col-sm-2" id="pub_selector_interne_box" style="margin-top:10px" >
+                                    <select name="pubs_selector_interne"  id="pubs_selector_interne"  multiple>
                                     </select>
-
                                 </div>
-                                <div class="col-md-6 col-sm-6">
-                                 	<input type="button" name="select_pubs_internes" id="select_pubs_internes" value="select">
-                                	</input>
 
-                                	<input type="button" name="supprimer_pubs_internes" id="supprimer_pubs_internes" value="supprimer">
-                                	</input>
-                                </div>
-                             </div>
+                            </div>
                         </div>
 
 
@@ -237,39 +232,35 @@
 
 
                         <div class="col-md-11 col-sm-11 box" id="partie_highlight">
-                        <!--Attention à la dimension de la balise ! 11 est le maximum de colonne insérées dans la box. c'est à dire que les div dans cette boite leur somme de colonne ne doivent pas dépasser 11. Exemple en dessous 6 (une div) et l'autre 5 (une div) 		5 + 6 = 11 -->
 
-                            <div id="highlights">
+                            <div class=" box-header with-border">
+                                <h3 class="box-title"> Mettre un artiste en Highlight</h3>
+                            </div>
 
+                            <div class="col-md-12 col-sm-12" id="pub-box">
 
-                                <div class=" box-header with-border">
-
-                                    <h3 class="box-title"> Mettre un artiste en highlights</h3>
-
+                                <div class="col-md-4 col-sm-4" id="select_pub_label">
+                                    <div class="col-md-12 col-sm-12" id="select_pub_label">
+                                         Selectionner un artiste en Highlight :
+                                    </div>
+                                    <div class="col-md-12 col-sm-12" style="margin-top:10px">
+                                        <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select">
+                                        </input>
+                                        <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer">
+                                        </input>
+                                    </div>
                                 </div>
 
-                                <div for="tags" class="glyphicon glyphicon-search">
+                                <div class="col-md-1 col-sm-1" id="affichage_artiste_higlight" style="font-style: lighter">
+                                </div>
 
-                                	 <select class="col-md-7 col-sm-7" name="classement_artistes_higlights" id="classement_artistes_higlights" multiple>
-                                	 </select>
-
-                                	 <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select">
-                                	 </input>
-
-                                	 <input type="button" name="supprimer_artistes_higlight" id="supprimer_artistes_higlight" value="supprimer">
-
-                                	 <!--<input type="button" name="supprimer_artistes_higlight_le_dernier_selectionne" id="supprimer_artistes_higlight_le_dernier_selectionne" value="supprimer le dernier selectionné">-->
-
-                                    <div class="col-md-2 col-sm-2">
-                                      Artiste sélectionné :
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-2" id="affichage_artiste_higlight" style="font-style: lighter">
-                                  	</div>
-
+                                <div class="col-md-2 col-sm-2" id="highlight_selector_interne_box" style="margin-top:10px" >
+                                    <select name="classement_artistes_higlights"  id="classement_artistes_higlights"  multiple>
+                                    </select>
                                 </div>
 
                             </div>
+
                         </div>
 
 <!--***************** Diffusion ****************-->
@@ -285,70 +276,59 @@
 
                                 </div>
 
-                                <div  class="col-md-7 col-sm-7" >
-
-                                    <input type="button" id="bouton_choisir_date" value="Choisir la date" class="btn btn-primary display"/>
-
-                                    <div>
-                                    <input type="button" id="bouton_voir_programmation" value="Voir la programmation" class="btn btn-primary display" />
-									                  </div>
-
-                                    <div id="calendrier_dates">
-
-                                    </div>
-
-                                    <div>
-                                    <input type="button" name="cacher" id="cacher_programmation" value="cacher" class="hidden" >
-									</div>
+                                <div  class="row col-md-12 col-sm-12 box-header with-border" style="margin-top:10px; margin-bottom:10px" >
 
                                     <div id="picker_choisir_date">
                                     </div>
-
                                     <div id="trigger_choisir_date" class="hidden">
-
                                         <div id="datetimepicker">
-
                                             <div>Debut
                                             <input type="text" id="from" name="from"/></div>
                                             <div>Fin
                                             <input type="text" id="to" name="to"/></div>
                                             <!--<input type="button" id="confirmer_date" value="confirmer" class="btn btn-primary"/>-->
                                             <input type="button" id="annuler_choisir_date" value="annuler" class="btn btn-primary"/>
-
                                         </div>
-
                                         <label id="label_warning_calendar" style="color:red;">
                                         </label>
-
-
-                               			<div>
-                                        <input type="button" id="bouton_voir_programmation_partie_choix_date" value="Voir la programmation" class="btn btn-primary display" />
+                                        <div>
+                                            <input type="button" id="bouton_voir_programmation_partie_choix_date" value="Voir la programmation" class="btn btn-primary display" />
                                         </div>
                                         <div id="calendrier_dates_partie_choix_date">
                                         </div>
-
                                         <div>
-                                    	<input type="button" name="cacher" id="cacher_programmation_partie_choix_date" value="cacher" class="hidden">
-										</div>
+                                            <input type="button" name="cacher" id="cacher_programmation_partie_choix_date" value="cacher" class="hidden">
+                                        </div>
+                                    </div>
 
+                                    <!-- Boutons choisir date / passer dès que possible -->
+                                    <div class="col-md-2 col-sm-2">
+                                        <input type="button" id="bouton_choisir_date" value="Choisir la date" class="btn btn-primary display"/>
+                                    </div>
 
+                                    <div class="col-md-5 col-sm-5">
+                                        <input type="button" id="bouton_voir_premiere_date_disponible" value="Passer la playlist dès que possible" class="btn btn-primary display"/>
+                                        <div id="trigger_premiere_date_dispo" class="hidden" >
+                                            <div id="text_prochain_passage"> </div>
+                                            <input type='button' class='btn btn-primary' id='annuler_date_dispo' value='Annuler' />
+                                        </div>
                                     </div>
                                 </div>
 
-                            <div class="col-md-5 col-sm-5">
+                                <!-- Voir la programmation -->
 
-                                <input type="button" id="bouton_voir_premiere_date_disponible" value="Passer la playlist dès que possible" class="btn btn-primary display"/>
-
-                                <div id="trigger_premiere_date_dispo" class="hidden" >
-
-                                    <div id="text_prochain_passage">
+                                <div  class="row col-md-12 col-sm-12 box-header with-border" style="margin-top:10px"  > 
+                                    <div class="col-md-2 col-sm-2" >
+                                        <input type="button" id="bouton_voir_programmation" value="Voir la programmation" class="btn btn-primary display" />
                                     </div>
-
-                                    <input type='button' class='btn btn-primary' id='annuler_date_dispo' value='Annuler' />
-
-
+                                    
+                                    <div id="calendrier_dates"> 
+                                    </div>
+                                    <div>
+                                        <input type="button" name="cacher" id="cacher_programmation" value="cacher" class="hidden" >
+                                    </div>
                                 </div>
-                            </div>
+                            
                         </div>
                     </div>
 
