@@ -88,12 +88,11 @@ generer_la_playlist();
 
 /*--------------------------------------- Règles internes --------------------------------------------------*/
 
-var bool2=false;
-var bool3=false;
-var videonepasrepasser;
-var artisteanepasrepasser;
 
-//Fonction pour effacer les morceaux au fur et à mesure
+/*
+* Fonction : Permet d'ajouter une nouvelle video du meme genre et dans la meme tranche d'année
+* que la video qui a été effacer dans le player.
+*/
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
 	var current = myPlaylist.current;
@@ -145,7 +144,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       				artist: artiste_album_annee_ajout
       			});
 		     });
-         console.log("artiste" +artiste_album_annee_ajout);
         console.log(titre);
     }
   });
@@ -183,60 +181,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 
 
 
-// Ne pas repasser le meme morceaux + meme artiste
-/*
-jQuery("#player_video").bind(jQuery.jPlayer.event.timeupdate, function (event){
-
-
-  var current         = myPlaylist.current,
-  playlist        = myPlaylist.playlist;
-titre_webtvunction (index, obj){
-
-    if (obj.title==event.jPlayer.status.media.title && index<current+19 && index!=current && bool2 ==false && index !=0 ){
-      bool2=true;
-      videonepasrepasser=index;
-    }
-  });
-  if(bool2==true ){
-    bool2=false;
-    // var s=videonepasrepasser-current;
-    //console.log('video a ne pas repasser en position '+videonepasrepasser+' soit dans  '+s+' vidéos');
-    myPlaylist.remove(videonepasrepasser);
-  }
-
-  else{
-
-
-    if(playlist.length>10){
-      var art;
-      var titr;
-      var lien;
-      jQuery.each(playlist, function (index, obj){
-        if (obj.artist==event.jPlayer.status.media.artist && index<current+4 && index!=current && index !=0 && index<playlist.length-5 ){
-
-          artisteanepasrepasser=index;
-          bool3=true;
-          art=obj.artist;
-          titr=obj.title;
-          lien=obj.m4v;
-        }
-      });
-      if(bool3==true){
-        // console.log('Artiste a ne pas repasser au '+artisteanepasrepasser+'  ');
-        bool3=false;
-        myPlaylist.remove(artisteanepasrepasser);
-        myPlaylist.add({
-          title:titr,
-          artist:art,
-          m4v:lien,
-          loop:true
-
-        });
-
-      }
-    }
-  }
-*/
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
   var on_live=false;
