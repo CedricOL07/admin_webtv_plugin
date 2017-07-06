@@ -59,6 +59,7 @@ function generer_la_playlist_clips($nom_playlist){
     global $tab_durees;
     global $duree_total;
 
+    
     $tableau_dates_debut=array();
     $tableau_dates_fin=array();
 
@@ -88,8 +89,11 @@ function generer_la_playlist_clips($nom_playlist){
         do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubsinternesdefaut,$pubsexternesdefaut,$artistehightdefaut,$amax,$amin,$qmin,$debut);
 
     }
+    
+    echo ($tab_artistes[0].$tab_artistes[1]." = ".$tab_durees[1]." - ".$tab_durees[2]." - ".$tab_durees[3]." - ".$tab_durees[4]." - ".$tab_durees[5]." - ".$tab_durees[0]." - ");
 
-    echo ($debut." = ".$tab_durees[1]." - ".$tab_durees[2]." - ".$tab_durees[3]." - ".$tab_durees[4]." - ".$tab_durees[5]." - ".$tab_durees[0]." - ");
+
+    
     //$heure_fin = $debut
 
 /*

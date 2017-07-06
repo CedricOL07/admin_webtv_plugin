@@ -563,8 +563,8 @@ $(document).ready(function(){
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
+                alert(xhr.status+" -alerte");
+                alert(thrownError+" -alerte.");
             }
         });
     }
@@ -864,8 +864,8 @@ $(document).ready(function(){
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
+                alert(xhr.status+" -alerte récupérer_noms");
+                alert(thrownError+" -alerte récupérer_noms.");
             }
         });
 
@@ -1091,9 +1091,9 @@ $(document).ready(function(){
                         {
                             'action': 'enregistrer_reglage_par_defaut',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,
                             'pourcentage_jazzblues':tableau_pourcentages.jazzblues,
@@ -1135,15 +1135,16 @@ $(document).ready(function(){
                     }
                     //console.log('requeteajax');
                 if(duree_picked==true){
+					console.log("Entrée dans le js-playlist-clip");
 
                     $.post(
-                        ajaxurl,
+                        ajaxurl,							
                         {
-                            'action': 'enregistrement_playlist_clips_pourcentage',
+							'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,
-              							'annee_max':annee_max,
-              							'annee_min':annee_min,
-              							'qualite_min':qualite_min,
+							'annee_max':annee_max,
+							'annee_min':annee_min,
+							'qualite_min':qualite_min,
                             'passer_des_que_possible':passer_des_que_possible,
                             'pourcentage_poprock':tableau_pourcentages.poprock,
                             'pourcentage_hiphop':tableau_pourcentages.hiphop,

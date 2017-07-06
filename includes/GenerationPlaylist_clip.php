@@ -55,8 +55,10 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
     $deb = $debut;
 
     // Variables utiles
-    $compteur=0;
-    $genre_id;
+   // $compteur=0;
+   $genre_id;
+   $duree_total = 0;
+
 
     $tableaupourcentages=array();
 
@@ -161,7 +163,7 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
     //echo 'test tabrul';
     //var_dump($tab_url);
 
-    $nb_track=$compteur;
+   // $nb_track=$compteur;
 
 
     //do_action('pluginwebtv_verifier_restant',$tableaupourcentages);
@@ -169,26 +171,30 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
     if($artistehighlight!= NULL){
         do_action('pluginwebtv_ajouter_hightlight',$artistehighlight);
     }
+
+
     if($pubsinternes != NULL){
         do_action('pluginwebtv_ajouter_pubs_internes',$pubsinternes);
     }
     //ajouter_pubs($pubsinternes,$pubsexternes);
     if($pubsexternes != NULL){
-        do_action('pluginwebtv_ajouter_pubs_esxterne',$pubsexternes);
+        do_action('pluginwebtv_ajouter_pubs_externe',$pubsexternes);
     }
    // do_action('pluginwebtv_recuperer_artistes_nouvelle_playlist');
 
-    for (var $i=0, $i<sizeof($tab_url), $i++)
-    {
-        do_action(wp_ajax_recuperer_duree_clip($tab_url[$i], $tab_titres[$i]));
-        $duree_total = $duree_total+$tab_durees[$i];
-    }
+    do_action('wp_ajax_recuperer_duree_clip');
 
-    
-    //echo $duree_total." [ ".$tab_durees." ] ";
+/*
+    for ($i=0; $i<sizeof($tab_url); $i++)
+    {
+        $duree_total = $duree_total+$tab_durees[$i];
+    }    
+*/
 
 }
 
+
+/* ----------------------------------------------------------------------------------------------------------------
 
 //Complète la playlist avec 4 morceaux choisi selon l'ordre d'importance des genres
 function verifier_restant($tableaupourcentages){
@@ -208,12 +214,12 @@ function verifier_restant($tableaupourcentages){
     /*
     count : compte les éléments d'un tableau
     array_unique : élime tous les doublons
-    */
+    *//*
     if (count(array_unique($tableaupourcentages))==1)// Si tous les pourcentages sont égaux
     {
 
         /*unset($tab_url);
-        unset($tab_titres);*/
+        unset($tab_titres);*//*
 
         //echo 'tous les pourcentages sont égaux';
         //Tableau avec tous les ids video d'un genre
@@ -240,14 +246,14 @@ function verifier_restant($tableaupourcentages){
               /*  foreach($tab_donnees as $t){
                     $tab_url[]= $t[0];
                     $tab_titres[]=$t[1];
-                }*/
+                }*//*
             }
         }
 
     }else // Si les pourcentages sont différents entre eux
     {
     /*  unset($tab_url);
-      unset($tab_titres);*/
+      unset($tab_titres);*//*
         //   echo 'pourcentages pas égaux';
 
         $track_restante=12-$nb_track;
@@ -315,7 +321,7 @@ function verifier_restant($tableaupourcentages){
                 foreach($rms as $re){
                     $art=$re->nom;
                     $tab_artistes[]=$art;
-                }*/
+                }*//*
 
 
                 $sql_query2 = "SELECT url, titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id2';";
@@ -323,6 +329,7 @@ function verifier_restant($tableaupourcentages){
                 foreach($tab_donnees as $tab){
                     $tab_url[]=$tab->url;
                     $tab_titres[]=$tab->titre;
+
                 }
             }
             echo $tab_url[1];
@@ -331,6 +338,8 @@ function verifier_restant($tableaupourcentages){
     }
 
 }
+// ----------------------------------------------------------------------------------------------------------------------------
+*/
 
 //Ajouter l'artiste à mettre en avant sélectionné par l'utilisateur
 function ajouter_hightlight($artiste){
@@ -340,6 +349,7 @@ function ajouter_hightlight($artiste){
     global $tab_artistes_id;
     global $tab_artistes;
     global $tab_ids;
+
 
    // $tab_artistes[]=$artiste;
 
@@ -362,6 +372,8 @@ function ajouter_hightlight($artiste){
         foreach($re as $vid){
             $tab_url[]=$vid->url;
             $tab_titres[]=$vid->titre;
+
+            
         }
     }
 
@@ -447,6 +459,7 @@ function recup_videos($genre,$limit,$annee_max, $annee_min, $qualite_min){
     global $tab_ids;
     global $wpdb;
     global $tab_genres;
+
     $sql_query1="SELECT video_id,artiste_id,genre_id,annee_id,album_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre'
         AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$annee_min' AND annee <= '$annee_max' )
         AND qualite_id >= $qualite_min ORDER BY RAND()  LIMIT $limit;";
