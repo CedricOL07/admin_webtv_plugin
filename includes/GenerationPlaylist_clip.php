@@ -17,8 +17,8 @@ add_action( 'pluginwebtv_generer_playlist_clips', 'generer_playlist_clips',15,16
 add_action( 'pluginwebtv_recup_videos', 'recup_videos',15,5);
 add_action( 'pluginwebtv_verifier_restant', 'verifier_restant',15,1);
 add_action( 'pluginwebtv_ajouter_hightlight', 'ajouter_hightlight',16,1);
-add_action( 'pluginwebtv_ajouter_pubs_internes', 'ajouter_pubs_internes',17,2);
-add_action( 'pluginwebtv_ajouter_pubs_externes', 'ajouter_pubs_externes',17,2);
+add_action( 'pluginwebtv_ajouter_pubs_internes', 'ajouter_pubs_internes',17,1);
+add_action( 'pluginwebtv_ajouter_pubs_externes', 'ajouter_pubs_externes',17,1);
 //add_action( 'pluginwebtv_recuperer_artistes_nouvelle_playlist', 'recuperer_artistes_nouvelle_playlist');
 
 
@@ -37,6 +37,7 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
     global $tab_ids;
     global $tab_durees;
     global $duree_total;
+    global $max;
     $poprock=$pourcentagepoprock;
     $hiphop=$pourcentagehiphop;
     $jazzblues=$pourcentagejazzblues;
@@ -45,6 +46,9 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
     $electro=$pourcentageelectro;
     $chanson=$pourcentagechanson;
     $autres=$pourcentageautres;
+    $pint=$pubsinternes;
+    $pext=$pubsexternes;
+    $highlight=$artistehighlight;
     $amin = $annee_min;
     $amax = $annee_max;
     $qualite = $qualite_min;
@@ -162,6 +166,8 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
         }//----\ Fin du for($i=0;$i<sizeof($tableaupourcentages);$i++) /--------
     }
 
+
+
     if (sizeof($tab_titres)>12)
     {
         for($i=12; $i<sizeof($tab_titres); $i++)
@@ -174,6 +180,8 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
             unset($tab_albums[$i]);
         }
     }
+
+    $max=12;
     //echo 'test tabrul';
     //var_dump($tab_url);
 
@@ -181,17 +189,20 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
 
     //do_action('pluginwebtv_verifier_restant',$tableaupourcentages);
 
-    if($artistehighlight!= NULL){
-        do_action('pluginwebtv_ajouter_hightlight',$artistehighlight);
+
+    if($highlight != NULL){
+        do_action('pluginwebtv_ajouter_hightlight',$highlight);
+        $max++;
     }
 
-
-    if($pubsinternes != NULL){
-        do_action('pluginwebtv_ajouter_pubs_internes',$pubsinternes);
+    if($pint != NULL){
+        do_action('pluginwebtv_ajouter_pubs_internes',$pint);
+        $max++;
     }
     //ajouter_pubs($pubsinternes,$pubsexternes);
-    if($pubsexternes != NULL){
-        do_action('pluginwebtv_ajouter_pubs_externe',$pubsexternes);
+    if($pext != NULL){
+        do_action('pluginwebtv_ajouter_pubs_externe',$pext);
+        $max++;
     }
 
 /*
@@ -200,6 +211,10 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
         $duree_total = $duree_total+$tab_durees[$i];
     }    
 */
+    $max--;
+    $pppm = sizeof($tab_titres)." - ".$max."\n".$tab_titres[$max-1];
+    echo ($pppm);
+
 
 }
 
@@ -210,15 +225,19 @@ function ajouter_hightlight($artiste){
     global $wpdb;
     global $tab_url;
     global $tab_titres;
-    global $tab_artistes_id;
+    global $tab_genres;
+    global $tab_annees;
     global $tab_artistes;
-    global $tab_ids;
-
+    global $max;
+    $nom_artiste = $artiste;
+    $id_video;
+    $id_genres;
+    $id_annees;
+    $id_albums;
 
    // $tab_artistes[]=$artiste;
 
-    $art;
-    $recup_idartiste="SELECT id FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE nom='$artiste'";
+    $recup_idartiste="SELECT id FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE nom='$artiste' LIMIT 1";
     $result=$wpdb->get_results($recup_idartiste);
     foreach($result as $r){
         $art=$r->id;
@@ -226,40 +245,34 @@ function ajouter_hightlight($artiste){
     //On récupère une seule vidéo de l'artiste
     $sql_query1="SELECT video_id,album_id,genre_id,annee_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE artiste_id='$art' ORDER BY RAND() LIMIT 1;";
     $resultat=$wpdb->get_results($sql_query1);
-    foreach($resultat as $result){
+    
+    foreach($resultat as $id){
         
         $id_video = $id->video_id;
         $id_genres = $id->genre_id;
         $id_annees = $id->annee_id;
         $id_albums = $id->album_id;
-
-
-        $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
-        $tab_donnees_genre = $wpdb->get_results($query_genre);
-        foreach($tab_donnees_genre as $results){
-            $tab_genres[] = $results->Genre;
-        }
-
-        $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
-        $tab_donnees_annees = $wpdb->get_results($query_annees);
-        foreach($tab_donnees_annees as $results){
-            $tab_annees[] = $results->annee;
-        }
-
-        $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
-        $tab_donnees_albums = $wpdb->get_results($query_albums);
-        foreach($tab_donnees_albums as $results){
-            $tab_albums[] = $results->album;
-        }
-
-        $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
-        $re=$wpdb->get_results($query);
-        foreach($re as $vid){
-            $tab_url[]=$vid->url;
-            $tab_titres[]=$vid->titre; 
-        }
     }
-    $tab_artistes[] = $artiste; 
+
+
+    $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
+    $tab_donnees_genre = $wpdb->get_var($query_genre);
+        $tab_genres[] = $tab_donnees_genre;    
+
+    $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
+    $tab_donnees_annees = (string)$wpdb->get_var($query_annees);
+        $tab_annees[] = $tab_donnees_annees;
+
+    $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
+    $tab_donnees_albums = $wpdb->get_var($query_albums);
+        $tab_albums[] = $tab_donnees_albums;
+
+    $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
+    $tab_donnees_titre_url=$wpdb->get_var($query);
+        $tab_url[]=$tab_donnees_titre_url->url;
+        $tab_titres[]=$tab_donnees_titre_url->titre; 
+
+    $tab_artistes[] = $nom_artiste; 
 
 }
 //Ajouter les pubs externes sélectionnées par l'utilisateur dans la page nouveaux réglages
@@ -269,50 +282,42 @@ function ajouter_pubs_externes($pubsexternes){
     global $tab_titres;
     global $tab_artistes_id;
     global $tab_artistes;
-    global $tab_ids;
+    $id_video;
+    $id_genres;
+    $id_annees;
+    $id_albums;
 
     $recup_externes="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='10' ORDER BY RAND() LIMIT 1; ";
     $res1=$wpdb->get_results($recup_externes);
-    foreach($res1 as $r){
+    foreach($res1 as $id){
+        
         $id_video = $id->video_id;
         $id_genres = $id->genre_id;
         $id_annees = $id->annee_id;
         $id_albums = $id->album_id;
-        $id_artistes =$id->artiste_id;
-
-        $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artistes';";
-        $rms=$wpdb->get_results($query3);
-        foreach($rms as $re){
-            $art=$re->nom;
-            $tab_artistes[]=$art;
-        }
-
-        $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
-        $tab_donnees_genre = $wpdb->get_results($query_genre);
-        foreach($tab_donnees_genre as $results){
-            $tab_genres[] = $results->Genre;
-        }
-
-        $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
-        $tab_donnees_annees = $wpdb->get_results($query_annees);
-        foreach($tab_donnees_annees as $results){
-            $tab_annees[] = $results->annee;
-        }
-
-        $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
-        $tab_donnees_albums = $wpdb->get_results($query_albums);
-        foreach($tab_donnees_albums as $results){
-            $tab_albums[] = $results->album;
-        }
-
-        $query_videos="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video';";
-        $result=$wpdb->get_results($query_videos);
-        foreach($result as $tt){
-            $tab_url[]=$tt->url;
-            $tab_titres[]=$tt->titre;
-            // $tab_artistes[]='Pub';
-        }
     }
+
+    $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
+    $tab_donnees_genre = $wpdb->get_var($query_genre);
+        $tab_genres[] = $tab_donnees_genre;    
+
+    $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artistes';";
+    $tab_donnees_artistes = $wpdb->get_var($query_artistes);
+        $tab_artistes[] = $tab_donnees_artistes;    
+
+    $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
+    $tab_donnees_annees = (string)$wpdb->get_var($query_annees);
+        $tab_annees[] = $tab_donnees_annees;
+
+    $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
+    $tab_donnees_albums = $wpdb->get_var($query_albums);
+        $tab_albums[] = $tab_donnees_albums;
+
+    $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
+    $tab_donnees_titre_url=$wpdb->get_var($query);
+        $tab_url[]=$tab_donnees_titre_url->url;
+        $tab_titres[]=$tab_donnees_titre_url->titre;
+    
 }
 //Ajouter les pubs internes sélectionnées par l'utilisateur dans la page nouveaux réglages
 function ajouter_pubs_internes($pubsinternes){
@@ -320,51 +325,43 @@ function ajouter_pubs_internes($pubsinternes){
     global $tab_url;
     global $tab_titres;
     global $tab_artistes_id;
-    global $tab_ids;
     global $tab_artistes;
-    $art;
+    $id_video;
+    $id_genres;
+    $id_annees;
+    $id_albums;
+
     $recup_internes="SELECT video_id,artiste_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='10' ORDER BY RAND() LIMIT 1;";
-    $res=$wpdb->get_results($recup_internes);
-    foreach($res as $t){
+    $res2=$wpdb->get_results($recup_internes);
+    foreach($res2 as $id){
+        
         $id_video = $id->video_id;
         $id_genres = $id->genre_id;
         $id_annees = $id->annee_id;
         $id_albums = $id->album_id;
-        $id_artistes =$id->artiste_id;
-
-        $query3="SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artistes';";
-        $rms=$wpdb->get_results($query3);
-        foreach($rms as $re){
-            $art=$re->nom;
-            $tab_artistes[]=$art;
-        }
-
-        $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
-        $tab_donnees_genre = $wpdb->get_results($query_genre);
-        foreach($tab_donnees_genre as $results){
-            $tab_genres[] = $results->Genre;
-        }
-
-        $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
-        $tab_donnees_annees = $wpdb->get_results($query_annees);
-        foreach($tab_donnees_annees as $results){
-            $tab_annees[] = $results->annee;
-        }
-
-        $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
-        $tab_donnees_albums = $wpdb->get_results($query_albums);
-        foreach($tab_donnees_albums as $results){
-            $tab_albums[] = $results->album;
-        }
-
-        $query_videos="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video';";
-        $result=$wpdb->get_results($query_videos);
-        foreach($result as $tt){
-            $tab_url[]=$tt->url;
-            $tab_titres[]=$tt->titre;
-            // $tab_artistes[]='Pub';
-        }
     }
+
+    $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
+    $tab_donnees_genre = $wpdb->get_var($query_genre);
+        $tab_genres[] = $tab_donnees_genre;    
+
+    $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artistes';";
+    $tab_donnees_artistes = $wpdb->get_var($query_artistes);
+        $tab_artistes[] = $tab_donnees_artistes;    
+
+    $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
+    $tab_donnees_annees = (string)$wpdb->get_var($query_annees);
+        $tab_annees[] = $tab_donnees_annees;
+
+    $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
+    $tab_donnees_albums = $wpdb->get_var($query_albums);
+        $tab_albums[] = $tab_donnees_albums;
+
+    $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
+    $tab_donnees_titre_url=$wpdb->get_var($query);
+        $tab_url[]=$tab_donnees_titre_url->url;
+        $tab_titres[]=$tab_donnees_titre_url->titre;
+    
 
 
 }
@@ -380,7 +377,6 @@ function recup_videos($genre,$limit,$annee_max, $annee_min, $qualite_min){
     global $tab_url;
     global $tab_artistes;
     global $tab_titres;
-    global $tab_ids;
     global $wpdb;
     global $tab_genres;
 

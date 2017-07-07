@@ -48,12 +48,6 @@ $(document).ready(function(){
         $("#cacher_programmation").hide();
     });
 
-   /* $("#confirmer_date").click(function () {
-        $('#bouton_voir_programmation_partie_choix_date').hide();
-        $('#bouton_voir_premiere_date_disponible').hide();
-        afficher_programmation_partie_choix_date();
-
-    })*/
 
     $('#annuler_choisir_date').click(function(){
         $('#bouton_voir_programmation').show();
@@ -123,147 +117,103 @@ $(document).ready(function(){
         }
     });
 
-    //recupere et affiche les artistes en higlight
-    var compteur_artistes_highlights = 0 ;// permet d'avoir un id unique à notre option afin d'eviter les doublons
+    
+    /*
+    ***********Recupere et affiche l'artiste en highlight**********
+    */
     var artiste_choisi; // permet de récupérer l'artiste choisi lors de l'enregistrement
-
+	var artiste_highlight;
+	
     $('#select_artiste_higlight').click(function(){
-
-        var artiste_highlight = $('#classement_artistes_higlights').val();
-        var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
+        artiste_highlight = null;
+		artiste_highlight = $('#classement_artistes_higlights').val();
         //mettre string devant artiste_highlight sinon la fonction replace n'est pas une fonction.
-
         if (artiste_highlight == null){
-
-            alert('Aucun artiste selectionné à ajouter.');
-
+            alert('Aucun artiste selectionné...');
+        }else
+		{
+            $('#select_artiste_higlight').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+            $('#affichage_artiste_higlight').append('<div id="ah"> '+artiste_highlight+' </div>'); // crée le texte avec l'artiste highlight
+			artiste_choisi = artiste_highlight;
+			//console.log(artiste_choisi);
         }
-
-        else{
-
-            compteur_artistes_highlights++; // on place le compteur au début afin d'éviter qu'il soit décalé.
-            $('#select_artiste_higlight').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
-            $('#affichage_artiste_higlight').show();
-            $('#affichage_artiste_higlight').append('<option id="'+artiste_highlight_sans_espace + compteur_artistes_highlights +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
-            artiste_choisi = $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).val();
-
-        }
-        //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
     });
-
     //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
     $('#supprimer_artistes_higlight').click(function(){
-
-        var artiste_highlight = $('#classement_artistes_higlights').val();
-        var artiste_highlight_sans_espace = String(artiste_highlight).replace(' ',"_");
-
         if (artiste_highlight == null){
             alert('Aucun artiste selectionné à supprimer.');
-        }
-
-        else{
-            //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
-            if ($('#classement_artistes_higlights').val() == $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).val() ) {
-
-                $('#select_artiste_higlight').removeAttr("disabled", "disabled");
-                $('#'+artiste_highlight_sans_espace + compteur_artistes_highlights).hide('<option id="'+ artiste_highlight_sans_espace + compteur_artistes_highlights +'" value="'+artiste_highlight+'">'+ artiste_highlight +'</option>');
-
-            }
-        }
+        }else
+		{
+            $('#select_artiste_higlight').removeAttr("disabled", "disabled");
+			artiste_highlight = null;
+			artiste_choisi=null;
+			$('#ah').remove();
+		}
     });
 
     /*
     ***********Recupere et affiche les pubs externes**********
     */
-
-    var compteur_pubs = 0 ;// permet d'avoir un id unique à notre option afin d'eviter les doublons et se restreindre à 3 pubs max (externes et internes comprises)
-     //recupere et affiche les pubs externes
+    var pub_externe_choisie; // permet de récupérer l'artiste choisi lors de l'enregistrement
+	var pubs_externes;
+	
     $('#select_pubs_externes').click(function(){
-
-        var pubs_externes = $('#pubs_selector_externe').val();
-        var pubs_externes_sans_espaces = String(pubs_externes).replace(' ',"_");
-        //mettre string devant pubs_externessinon la fonction replace n'est pas une fonction.
-
+        pubs_externes = null;
+		pubs_externes = $('#pubs_selector_externe').val();
         if (pubs_externes == null){
-            alert('Aucune pub externe selectionnée à ajouter.')
+            alert('Aucune pub externe selectionnée...');
+        }else
+		{
+            $('#select_pubs_externes').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+            $('#affichage_pubs_externes').append('<div id="pe"> '+pubs_externes+' </div>'); // crée le texte avec la pub externe
+			pub_externe_choisie = pubs_externes;
+			//console.log(artiste_choisi);
         }
-
-        else{
-            compteur_pubs++; // on place le compteur au début afin d'éviter qu'il soit décalé.
-            $('#select_pubs_externes').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
-            $('#affichage_pubs_externes').show();
-            $('#affichage_pubs_externes').append('<option id="'+pubs_externes_sans_espaces + compteur_pubs +'" value="'+pubs_externes+'">'+ pubs_externes +'</option>');
-
-        }
-        //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
     });
-
-    //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
+    //supprimer l'affichage de la pub externe
     $('#supprimer_pubs_externes').click(function(){
-
-        var pubs_externes = $('#pubs_selector_externe').val();
-        var pubs_externes_sans_espaces = String(pubs_externes).replace(' ',"_");
-
-
-        if (pubs_externes==null){
-            alert('Aucune pub externe selectionnée à supprimer.');
-        }
-
-        else{
-
-            //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
-            if ($('#pubs_selector_externe').val() == $('#'+pubs_externes_sans_espaces + compteur_pubs).val() ) {
-
-                $('#select_pubs_externes').removeAttr("disabled", "disabled");
-                $('#'+pubs_externes_sans_espaces + compteur_pubs).hide('<option id="'+ pubs_externes_sans_espaces + compteur_pubs +'" value="'+pubs_externes+'">'+ pubs_externes +'</option>');
-
-            }
-        }
+        if (pubs_externes == null){
+            alert('Aucune pub externe selectionnée...');
+        }else
+		{
+            $('#select_pubs_externes').removeAttr("disabled", "disabled");
+			pubs_externes = null;
+			pub_externe_choisie=null;
+			$('#pe').remove();
+		}
     });
 
 
     /*
     ***********Recupere et affiche les pubs internes**********
     */
+    var pub_interne_choisie; // permet de récupérer l'artiste choisi lors de l'enregistrement
+	var pubs_internes;
+	
     $('#select_pubs_internes').click(function(){
-
-        var pubs_internes = $('#pubs_selector_interne').val();
-        var pubs_internes_sans_espace = String(pubs_internes).replace(' ',"_");
-        //mettre string devant pubs_internes sinon la fonction replace n'est pas une fonction.
-
+        pubs_internes = null;
+		pubs_internes = $('#pubs_selector_interne').val();
         if (pubs_internes == null){
-            alert('Aucune pub interne selectionnée à ajouter.')
+            alert('Aucune pub interne selectionnée...');
+        }else
+		{
+            $('#select_pubs_internes').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
+            $('#affichage_pubs_internes').append('<div id="pe"> '+pubs_internes+' </div>'); // crée le texte avec la pub interne
+			pub_interne_choisie = pubs_internes;
+			//console.log(artiste_choisi);
         }
-
-        else{
-        compteur_pubs++; // on place le compteur au début afin d'éviter qu'il soit décalé.
-        $('#select_pubs_internes').attr("disabled", "disabled");// on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
-        $('#affichage_pubs_internes').show();
-        $('#affichage_pubs_internes').append('<option id="'+pubs_internes_sans_espace + compteur_pubs +'" value="'+pubs_internes+'">'+ pubs_internes +'</option>');
-
-        }
-        //faire une fonction communicant avec la base de données afin de récupérer l'artiste highlits
     });
-
-    //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
+    //supprimer l'affichage de la pub interne
     $('#supprimer_pubs_internes').click(function(){
-
-        var pubs_internes = $('#pubs_selector_interne').val();
-        var pubs_internes_sans_espace = String(pubs_internes).replace(' ',"_");
-
-        if (pubs_internes==null){
-            alert('Aucune pubs interne selectionnée à supprimer.');
-        }
-
-        else{
-            //on compare la valeur sélectionner dans le tableau avec la valeur de l'id de l'option créer  entre les balise de l'id select_artiste_higlight.
-            if ($('#pubs_selector_interne').val() == $('#'+pubs_internes_sans_espace + compteur_pubs).val() ) {
-
+        if (pubs_internes == null){
+            alert('Aucune pub interne selectionnée...');
+        }else
+		{
             $('#select_pubs_internes').removeAttr("disabled", "disabled");
-            $('#'+pubs_internes_sans_espace + compteur_pubs).hide('<option id="'+ pubs_internes_sans_espace + compteur_pubs +'" value="'+pubs_internes+'">'+ pubs_internes +'</option>');
-
-            }
-        }
+			pubs_internes = null;
+			pub_interne_choisie=null;
+			$('#pe').remove();
+		}
     });
 
 
@@ -461,6 +411,9 @@ $(document).ready(function(){
         ); */
 
     }
+	
+	var passer_des_que_possible_clicked = false;
+	
     function recuperer_creneau_dispo(){
         $.post(
             ajaxurl,
@@ -478,7 +431,7 @@ $(document).ready(function(){
                 var heurefin =response.data[1]['date'];
                 var heure_fin=(heurefin.substr(11)).substr(0,5);
                 // var heure_fin1=heure_fin.susbtr(0,5);
-
+				passer_des_que_possible_clicked = true;
                 $('#text_prochain_passage').text('La playlist passera le '+day1+' de '+heure_debut+' à '+heure_fin+'');
 
             }
@@ -852,15 +805,9 @@ $(document).ready(function(){
             },
             dataType: 'JSON',
             success: function(data){
-
-
                 $.each(data.data,function(key,value){
-
-
                     tableau_noms_reglages_enregistres.push(value.nom);
                 });
-
-
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -869,137 +816,12 @@ $(document).ready(function(){
             }
         });
 
-
-
-
     }
     recuperer_noms();
 
 
 
 
-
-
-
-
-
-
-    /*
-* -----------------------------------------------------  Publicités   --------------------------------------------------------
-*/
-
-
-    /*var pubs_internes= new Array();
-    var pubs_externes = new Array();
-    function pubs(){
-        function remove(value){
-
-            //permet de détecter si il n'y a rien dans le tableau
-            var idx = this.indexOf(value);
-            if (idx != -1) {
-                return this.splice(idx, 1); // The second parameter is the number of elements to remove.
-            }
-            return false;
-        }
-
-        $('#pubs-selector').multiselect({
-            enableFiltering: true,
-            nonSelectedText: 'Choisir une ou plusieurs publicites',
-            onChange: function(options, checked) {
-                var $option = $(options);
-
-
-                var $group = $option.parent('optgroup');
-                if ($group.hasClass('pubs_externes_group')) {
-                    var $options = $('option', $group);
-                    $options = $options.filter(':selected');
-                    if(checked){
-                        pubs_externes.push(options.val());
-                    }else{
-                        pubs_externes.splice($.inArray(options.val(), pubs_externes),1);
-                    }
-                    // console.log(pubs_externes);
-                }
-                if ($group.hasClass('pubs_internes_group')) {
-                    var $options = $('option', $group);
-                    $options = $options.filter(':selected');
-                    if(checked){
-                        pubs_internes.push(options.val());
-                    }else{
-                        pubs_internes.splice($.inArray(options.val(), pubs_internes),1);
-                        //pubs_internes.remove(options.val());
-                    }
-                    // console.log(pubs_internes);
-                }
-
-            }
-
-        });
-
-    }
-    pubs();
-    function recup_pubs_externes(){
-        $.ajax({
-            url: ajaxurl,
-            data:{
-                'action':'recup_pubs_externes',
-            },
-            dataType: 'JSON',
-            success: function(data){
-
-                $('#pubs-selector').append('<optgroup class="pubs_externes_group" label="Publicités Externes">');
-
-                $.each(data.data,function(key,value){
-
-
-                    $('.pubs_externes_group').append('<option value="'+value+'">'+ value +'</option>');
-
-                });
-                $('#pubs-selector-externe').append('<option value=exemple>exemple(problème)</option>');
-                $("#pubs-selector").multiselect('rebuild');
-
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
-        // $('#pubs-selector').append('</optgroup>');
-
-    }
-    function recup_pubs_internes(){
-        $.ajax({
-            url: ajaxurl,
-            data:{
-                'action':'recup_pubs_internes',
-            },
-            dataType: 'JSON',
-            success: function(data){
-                //$('#pubs-selector').append('<optgroup class="pubs_internes_group" label="Publicités Internes">');
-                $.each(data.data,function(key,value){
-                    $('#pubs-selector-interne').append('<option value="'+value+'">'+ value +'</option>');
-
-                });
-                    $('#pubs-selector-interne').append('<option value=exemple>exemple(problème)</option>');
-
-                    $("#pubs-selector").multiselect('rebuild');
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
-
-
-    }
-
-    recup_pubs_externes();
-    recup_pubs_internes();
-
-
-
-*/
 
 
     /*
@@ -1025,8 +847,8 @@ $(document).ready(function(){
 		var annee_min = $("#annee_min").val();
 		var qualite_min= $("#qualite_min").val();
         var artiste_mis_en_avant = artiste_choisi;
-        var pubsinternes = pubs_internes;
-        var pubsexternes = pubs_externes;
+        var pubsinternes = pub_interne_choisie;
+        var pubsexternes = pub_externe_choisie;
         var nom_reglage = $("#input_nom_reglage").val();
         var tableau_pourcentages = recuperer_pourcentages();
         var passer_des_que_possible = false;
@@ -1042,9 +864,8 @@ $(document).ready(function(){
 
 		if (annee_max != "")
 		{
-
 			var date_now = annee_max.split('/');
-			annee_max = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaa-mm-jj
+			annee_max = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaammjj
 			console.log(annee_max);
 		} else
 		{
@@ -1053,7 +874,7 @@ $(document).ready(function(){
 		if (annee_min != "")
 		{
 			var date_now = annee_min.split('/');
-			annee_min = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaa-mm-jj
+			annee_min = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaammjj
 			console.log(annee_min);
 		} else
 		{
@@ -1083,8 +904,7 @@ $(document).ready(function(){
       			if($('input[name=checkbox_par_defaut]').is(':checked') ){
 
     /*  /!\--------------- Partie enregistrant les playlist par defaut!!!!!  --------------/!\   */
-              console.log("qualite_min : " +qualite_min);
-                    pardefaut = 1;
+				    pardefaut = 1;
                     //On récupere nom du réglage + pourcentages et on indique (avec un boolean) que c'est playlist par defaut
                     $.post(
                         ajaxurl,
@@ -1110,7 +930,7 @@ $(document).ready(function(){
                         }
                     );
                // return false;
-            } else {
+				} else {
 
             /*  /!\------ Partie enregistrant les playlist clips !!!!!  ------/!\*/
                     //console.log("affichage");
@@ -1129,10 +949,13 @@ $(document).ready(function(){
                         duree_picked=true;
 
                     }
-                    if( $('#bouton_choisir_date').is(':disabled')){
+                    if(date_debut_selectionnee && date_fin_selectionnee && passer_des_que_possible_clicked==false){
                         passer_des_que_possible=true;
                         duree_picked=true;
-                    }
+						console.log("Duree picked = true");
+                    } else{
+						console.log("Duree picked = false");
+					}
                     //console.log('requeteajax');
                 if(duree_picked==true){
 					
@@ -1174,7 +997,7 @@ $(document).ready(function(){
                         },
                         function(response){
 
-                                console.log("echo : "+response);
+                                console.log("echo : "+artiste_mis_en_avant+" : "+response);
 
                         }
                     );
@@ -1183,7 +1006,7 @@ $(document).ready(function(){
                     $('#bouton_choisir_date').removeAttr("disabled");
                     $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
                 }else{
-                    alert('Veuillez choisir une option de diffusion pour la playlist');
+                    alert('Veuillez choisir une date de diffusion pour la playlist');
                     return false;
                     }
                 }

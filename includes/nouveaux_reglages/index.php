@@ -243,13 +243,13 @@
                                 <h3 class="box-title"> Mettre un artiste en Highlight</h3>
                             </div>
 
-                            <div class="col-md-12 col-sm-12" id="pub-box">
+                            <div class="col-md-12 col-sm-12" id="highlights">
 
                                 <div class="col-md-5 col-sm-5" id="select_pub_label">
                                     <div class="col-md-8 col-sm-8" id="select_pub_label">
                                          Sélectionner un artiste highlight :
                                     </div>
-                                    <div class="col-md-4 col-sm-4" id="affichage_artiste_higlight" style="font-style: italic">
+                                    <div class="col-md-4 col-sm-4" id="affichage_artiste_higlight" name="affichage_highlight" style="font-style: italic">
                                     </div>
                                     <div class="col-md-12 col-sm-12" style="margin-top:10px">
                                         <input type="button" name="select_artiste_higlight" id="select_artiste_higlight" value="select">
