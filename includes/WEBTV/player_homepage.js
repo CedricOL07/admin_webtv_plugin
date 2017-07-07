@@ -14,6 +14,7 @@ $(document).ready(function(){
   ],  {
     playlistOptions: {
       enableRemoveControls: false,
+      loopOnPrevious: true,
       autoPlay: true,
       keyEnabled: true,
     },
@@ -59,11 +60,12 @@ function generer_la_playlist(){
     },
     dataType: 'JSON',
     success: function(data) {
-      //console.log(data);
+      //console.log("génération de la playlist: "+data);
       $.each(data.data, function(index, value) {
         //On va récupérer le nom de l'artiste pour chaque titre
         artiste_album_annee_gener=  value.artiste + " - " + value.album  + " - " +value.annee;
         var title=value.titre;
+        var url = value.url;
 
         myPlaylist.add({
     			title:value.titre,
@@ -72,7 +74,7 @@ function generer_la_playlist(){
         });
         //console.log(value.url);
         myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
-        console.log(title);
+        //console.log(url);
       });
 
     },
@@ -97,32 +99,71 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
 	var current = myPlaylist.current;
 	var playlist = myPlaylist.playlist;
+  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
+  var genre_logo;
 
-  myPlaylist.remove(current-1);
-	//On efface le morceau de la base de donnée également
-	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+
+  //console.log(titre_current_track);
   $.post(
-		ajaxurl,
-		{
-			'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
-			'videocourante': titre_previous_current_track
-		},
-		function(response){
-			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
-		}
-	);
+    ajaxurl,
+    {
+      'action': 'recup_genre_video_courante_logo',
+      'videocourante': titre_current_track
+    },
+    function(response){
+    // pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+      genre_logo =response;
+
+    // supprime la video de logo et on se remet en place
+      if( genre_logo == 1){
+
+          console.log("indique : " +response);
+          myPlaylist.remove(current);
+          myPlaylist.select(0);
+          myPlaylist.pause(0);
+          myPlaylist.play(0);
+
+        //On efface le logo de la base de donnée également
+        $.post(
+          ajaxurl,
+          {
+            'action': 'supprimer_logo_de_playlist_par_defaut',
+          },
+          function(response){
+            console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 
 
-});
+          }
+        );
+      }
+      // sinon on supprime seulement la video précédement joué
+      else{
+        myPlaylist.remove(current-1);
+      	//On efface le morceau de la base de donnée également
+      	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+        $.post(
+      		ajaxurl,
+      		{
+      			'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
+      			'videocouranteprevious': titre_previous_current_track
+      		},
+      		function(response){
+      			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 
+          }
+      	);
+      }
+    }
+  );
 
 /*
 * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
 * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
 */
-jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
-{
   var artiste_album_annee_ajout = new String();
+  var titre;
+  var url;
+  var genre;// var genre logo différent pour d'autre utilisation
   $.ajax({
     url: ajaxurl,
     data:{
@@ -132,10 +173,25 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     success: function(data) {
       //console.log("data : "+ data);
         $.each(data.data, function(index, value) {
+          genre = value.genre;
+          // si une video avec le genre logo forcer à la lire
+          if (genre === "Logo"){
+
+            titre = value.titre;
+            url = value.url;
+            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+          //Permet de générer la nouvelle video avec le logo.
+            myPlaylist.add({
+              title:value.titre,
+              m4v:value.url,
+              artist: artiste_album_annee_ajout,
+            }, true);
+
+        }
+
+          else{
             titre= value.titre;
             artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-
-            // + " annee : " + value.annee + "album : " value.album;
 
           //Permet de générer la nouvelle video.
             myPlaylist.add({
@@ -143,8 +199,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       				m4v:value.url,
       				artist: artiste_album_annee_ajout
       			});
-		     });
-        console.log(titre);
+          }
+      });
     }
   });
 
@@ -183,7 +239,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 
 /*-------------------------------------- FIN Règles internes ---------------------------------------------*/
 /* REGLAGES DU LIVE */
-  var on_live=false;
+  /*var on_live=false;
   $("#player_video").bind(jQuery.jPlayer.event.ended , function (event){
     //console.log(on_live);
     if(on_live==true ){
@@ -225,6 +281,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
        // console.log(response);
       })
     }
-  });
+  });*/
 
 });

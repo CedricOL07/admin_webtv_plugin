@@ -147,8 +147,8 @@ desired effect
                                 </div>
                               </div>
                               <div class="jp-toggles">
-                                <!--<button class="jp-repeat" role="button" tabindex="0">repeat</button>
-                                <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>-->
+                                <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
                                 <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
                               </div>
                             </div>

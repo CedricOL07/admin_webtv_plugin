@@ -242,7 +242,8 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     global $wpdb;
     global $titre_nouvelle_video;
     $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
-    $video_courante= $_POST['videocourante'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
+    $video_courante= $_POST['videocouranteprevious'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
+
 
     $query_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut = "SELECT Freq_logo FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1;";
     $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut = $wpdb->get_var($query_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
@@ -250,14 +251,15 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
               //------- Séléction de id_genre de la video courante------//
 
     // recupération de l'id de la video courante dans la table playlist par defaut car les id sont différents.
-    $query_id_videocourante_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
-    $reponse_id_videocourante_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocourante_dans_playlist_par_defaut);
+    $query_id_videocouranteprevious_dans_playlist_par_defaut = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
+    $reponse_id_videocouranteprevious_dans_playlist_par_defaut = $wpdb->get_var($query_id_videocouranteprevious_dans_playlist_par_defaut);
     $query_tri_asc = "ALTER TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin ORDER BY id ASC;";
     $wpdb->query($query_tri_asc);
     // Ajoute une pub si on arrive à la video de la playlist qui son id identique à la fréquence des logos.
-    if ($reponse_id_videocourante_dans_playlist_par_defaut % $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut == 0 && $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut > 0) {
+    if ($reponse_id_videocouranteprevious_dans_playlist_par_defaut % $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut == 0 && $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut > 0) {
+
         do_action('pluginwebtv_freq_logo',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
-        do_action('pluginwebtv_insertion_logo_dans_playlist_par_defaut',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut, $reponse_id_videocourante_dans_playlist_par_defaut);
+        do_action('pluginwebtv_insertion_logo_dans_playlist_par_defaut',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut, $reponse_id_videocouranteprevious_dans_playlist_par_defaut, $video_courante);
     }
     // s'l faut ajouter un nouveau clip dans la playslist par defaut.
     else {
@@ -273,7 +275,6 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
 
     $query_qualite_min = "SELECT qualite_min FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1 LIMIT 1;";
     $reponse_qualite_min = $wpdb->get_var($query_qualite_min);
-
 
 
     //Récupération de l'id du genre de la vidéo courante
@@ -328,9 +329,14 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       $query_select_min_id_de_video_courante = "SELECT MIN(id) FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante' ";
       $reponse_select_min_id_de_video_courante = $wpdb->get_var($query_select_min_id_de_video_courante);
 
+
       //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
       $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
       $wpdb->query($query_del_titre_video_courante);
+
+      /*echo($query_del_titre_video_courante. " et ". $reponse_select_min_id_de_video_courante );
+      wp_die();*/
+
     }
 }
 
@@ -338,12 +344,12 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
 * Fonction : Permet de comparer les différents titres de vidéo du même genre
 * Utilité dans la fonction effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin
 */
-function nouvelle_video_comparaison($genre_videocourante, $titre_video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min){
+function nouvelle_video_comparaison($genre_videocouranteprevious, $titre_video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min){
     global $wpdb;
     global $titre_nouvelle_video;
 
     // --- Fabrication d'un tableau avec les titres des videos ayant le même genre que la vidéo courante --//
-    $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocourante' AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$reponse_annee_min' AND annee <= '$reponse_annee_max' )
+    $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocouranteprevious' AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$reponse_annee_min' AND annee <= '$reponse_annee_max' )
 		AND qualite_id >= $reponse_qualite_min ORDER BY RAND();";
     $reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = $wpdb->get_results(  $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante);
 

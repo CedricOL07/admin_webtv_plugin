@@ -12,9 +12,9 @@ $(document).ready(function(){
       });
     }
   );
-*/
 
-  //if (val_par_defaut == 0){// permet d'éviter les valeur NULL des horaires car la playlist par défaut n'en a pas.
+
+  if (val_par_defaut == 0){// permet d'éviter les valeur NULL des horaires car la playlist par défaut n'en a pas.
     $.post(
       ajaxurl,
       {
@@ -41,5 +41,5 @@ $(document).ready(function(){
       }
     );
 
-  //}
+  }*/
 });
