@@ -563,8 +563,8 @@ $(document).ready(function(){
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status+" -alerte");
-                alert(thrownError+" -alerte.");
+                alert(" -alerte artiste highlight");
+                alert(" -alerte highlight.");
             }
         });
     }
@@ -598,8 +598,8 @@ $(document).ready(function(){
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
+                alert("- pub ext");
+                alert("- pub ext.");
             }
         });
     }
@@ -633,8 +633,8 @@ $(document).ready(function(){
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
+                alert("- pub int");
+                alert("- pub int.");
             }
         });
 
@@ -1135,7 +1135,8 @@ $(document).ready(function(){
                     }
                     //console.log('requeteajax');
                 if(duree_picked==true){
-					console.log("Entrée dans le js-playlist-clip");
+					
+					console.log("Entrée dans le js-playlist-clip "+annee_max+annee_min+ " qualite_min : " +qualite_min);
 
                     $.post(
                         ajaxurl,							
