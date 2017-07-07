@@ -38,6 +38,9 @@
                                         <div class="jp-volume-bar-value"></div>
                                     </div>
                                 </div>
+                                <div class="jp-toggles">
+                                  <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                </div>
 
                      <div class="jp-toggles">
 
