@@ -118,6 +118,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       if( genre_logo >= 1){
 
           console.log("indique : " +genre_logo);
+          myPlaylist.remove(current);
           myPlaylist.select(0);
           myPlaylist.play(0);
 
