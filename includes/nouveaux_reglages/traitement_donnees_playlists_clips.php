@@ -27,9 +27,9 @@ function enregistrement_playlist_clips_pourcentage(){
   if(isset($_POST['pourcentage_electro'])){ $pourcentage_electro=$_POST['pourcentage_electro'];}
   if(isset($_POST['pourcentage_chanson'])){ $pourcentage_chanson=$_POST['pourcentage_chanson'];}
   if(isset($_POST['pourcentage_autres'])){ $pourcentage_autres=$_POST['pourcentage_autres'];}
-  if(isset($_POST['pubs_internes'])){ $pubs_internes = $_POST['pubs_internes'];} else { $pubs_internes = NULL; }
-  if(isset($_POST['pubs_externes'])){ $pubs_externes = $_POST['pubs_externes'];} else { $pubs_externes = NULL; }
-  if(isset($_POST['artistehighlight'])){ $artiste_en_highlight=$_POST['artistehighlight'];} else { $artiste_en_highlight = NULL; }
+  if(isset($_POST['pubs_internes'])){ $pubs_internes = $_POST['pubs_internes'];} else { $pubs_internes = "no_pub_int"; }
+  if(isset($_POST['pubs_externes'])){ $pubs_externes = $_POST['pubs_externes'];} else { $pubs_externes = "no_pub_ext"; }
+  if(isset($_POST['artistehighlight'])){ $artiste_en_highlight=$_POST['artistehighlight'];} else { $artiste_en_highlight = "no_highlight"; }
   if(isset($_POST['annee_min'])){ $annee_min=$_POST['annee_min'];}
   if(isset($_POST['annee_max'])){ $annee_max=$_POST['annee_max'];}
   if(isset($_POST['qualite_min'])){ $qualite_min=$_POST['qualite_min'];}
@@ -53,12 +53,13 @@ function enregistrement_playlist_clips_pourcentage(){
 function generer_la_playlist_clips($nom_playlist){
 
     global $wpdb;
-    global $tab_url;
-    global $tab_titres;
-    global $tab_genres;
-    global $tab_artistes;
-    global $tab_durees;
-    global $duree_total;
+    global $tab_url_clip;
+    global $tab_titres_clip;
+    global $tab_artistes_clip;
+    global $tab_annees_clip;
+    global $tab_genres_clip;
+    global $tab_albums_clip;
+    global $max_clip;
 
     $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
     $resultdefaut=$wpdb->get_results($querydefaut);
@@ -86,32 +87,33 @@ function generer_la_playlist_clips($nom_playlist){
 
         do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubinternedefaut,$pubexternedefaut,$artistehighlightdefaut,$amax,$amin,$qmin,$debut,$fin);
 
+
       //  do_action('pluginwebtv_freq_logo',$frequence_logo); ///////////////////////////////// LOGO
-        $ppp = sizeof($tab_titres)." - ".sizeof($tab_artistes)."\n";
-        for ($i=0; $i<sizeof($tab_titres); $i++)
+        $ppp = "\n".sizeof($tab_titres_clip)." - ".sizeof($tab_artistes_clip)." - ".$max_clip."\n";
+        for ($i=0; $i<$max_clip; $i++)
         {
-          $ppp = $ppp.("\n- ".$tab_artistes[$i]." - ".$tab_titres[$i]." - ".$tab_albums[$i]);
+          $ppp = $ppp.("\n- ".$tab_artistes_clip[$i]." - ".$tab_titres_clip[$i]." - ".$tab_albums_clip[$i]);
         }
-        echo $ppp;
-wp_die();
+        echo ($ppp);
     }
 
 
     //$tab_glob1=array();
     //On met tout ca dans la table Playlist
-    $titre=str_replace("'","''",$tab_titres);
-    $url=str_replace("'","''",$tab_url);
-    $artistes=str_replace("'","''",$tab_artistes);
-    $genres=str_replace("'","''",$tab_genres);
-    $annees=str_replace("'","''",$tab_annees);
-    $album=str_replace("'","''",$tab_album);
+    $titres=str_replace("'","''",$tab_titres_clip);
+    $urls=str_replace("'","''",$tab_url_clip);
+    $artistes=str_replace("'","''",$tab_artistes_clip);
+    $genres=str_replace("'","''",$tab_genres_clip);
+    $annees=str_replace("'","''",$tab_annees_clip);
+    $albums=str_replace("'","''",$tab_album);
 
+        $wpdb->query("TRUNCATE TABLE " . $wpdb->prefix . "playlistclip_webtv_plugin");
     // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
-    for($k=0;$k<sizeof($tab_titres)-1;$k++){ // remettre sizeof($titre) une fois pb résolu.
+    for($k=0;$k<$max_clip;$k++){ // remettre count($titre) une fois pb résolu.
 
         // On insère sur toutes les cases les mêmes dates de début et de fin, elles nous permettront à la fin de chaque clip de déterminer si il faut arreter ou non la playlist
 
-        $inserer="INSERT INTO " . $wpdb->prefix . "playlistclip_webtv_plugin(titre,url,artiste,genre,annee,album,Debut,Fin) VALUES('$titre[$k]','$tab_url[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$album[$k]', '$debut','$fin')";
+        $inserer="INSERT INTO " . $wpdb->prefix . "playlistclip_webtv_plugin(titre,url,artiste,genre,annee,album,Debut,Fin) VALUES('$titres[$k]','$urls[$k]','$artistes[$k]','$genres[$k]','$annees[$k]', '$albums[$k]', '$debut','$fin')";
         $wpdb->query($inserer);
     }
 

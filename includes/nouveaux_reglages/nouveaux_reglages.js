@@ -457,7 +457,7 @@ $(document).ready(function(){
 
     // Il faut modifier le time format avec HH:ss pour pour pouvoir modifier les secondes sur la page
     $( "#from" ).datetimepicker({
-        defaultDate: "+1w",
+        defaultDate: "+1d",
         changeMonth: true,
         timeFormat: 'HH:mm',
         stepHour: 1,// permet de chosir le pas pour les heures
@@ -471,13 +471,12 @@ $(document).ready(function(){
         }
     });
     $( "#to" ).datetimepicker({
-        defaultDate: "+1w",
+        defaultDate: "+1d",
         changeMonth: true,
         timeFormat: 'HH:mm',
         stepHour: 1,// permet de chosir le pas pour les herues
         stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
-            $( "#from" ).datepicker( "option", "maxDate", selectedDate );
             date_fin_selectionnee=selectedDate;
             // afficher_playlists_jour_fin(date_fin_selectionnee);
         }
