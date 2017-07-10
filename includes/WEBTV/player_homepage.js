@@ -111,16 +111,14 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       'videocourante': titre_current_track
     },
     function(response){
-    // pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+
       genre_logo =response;
-
+      console.log("GENRE : " + genre_logo +" fds");
     // supprime la video de logo et on se remet en place
-      if( genre_logo == 1){
+      if( genre_logo >= 1){
 
-          console.log("indique : " +response);
-          myPlaylist.remove(current);
+          console.log("indique : " +genre_logo);
           myPlaylist.select(0);
-          myPlaylist.pause(0);
           myPlaylist.play(0);
 
         //On efface le logo de la base de donnée également
@@ -131,13 +129,15 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
           },
           function(response){
             console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
-
-
           }
         );
       }
       // sinon on supprime seulement la video précédement joué
       else{
+        var artiste_album_annee_ajout = new String();
+        var titre;
+        var url;
+        var genre;// var genre logo différent pour d'autre utilisation
         myPlaylist.remove(current-1);
       	//On efface le morceau de la base de donnée également
       	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
@@ -148,61 +148,61 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       			'videocouranteprevious': titre_previous_current_track
       		},
       		function(response){
-      			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+      			//console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 
           }
       	);
       }
+
+    /*
+    * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+    * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+    */
+
+      $.ajax({
+        url: ajaxurl,
+        data:{
+          'action' : 'recuperer_nouvelle_video_player_page_principal'
+        },
+        dataType: 'JSON',
+        success: function(data) {
+          //console.log("data : "+ data);
+            $.each(data.data, function(index, value) {
+              genre = value.genre;
+              // si une video avec le genre logo forcer à la lire
+              if (genre === "Logo"){
+                //console.log("entré")
+                titre = value.titre;
+                url = value.url;
+                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+              //Permet de générer la nouvelle video avec le logo.
+                myPlaylist.add({
+                  title:value.titre,
+                  m4v:value.url,
+                  artist: artiste_album_annee_ajout,
+                }, true);
+
+            }
+
+              else{
+                titre= value.titre;
+                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+
+              //Permet de générer la nouvelle video.
+                myPlaylist.add({
+          				title:value.titre,
+          				m4v:value.url,
+          				artist: artiste_album_annee_ajout
+          			});
+              }
+
+          });
+
+        }
+      });
     }
   );
 
-/*
-* Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
-* Cette fonction générera la nouvelle vidéo de la playlist par defaut.
-*/
-  var artiste_album_annee_ajout = new String();
-  var titre;
-  var url;
-  var genre;// var genre logo différent pour d'autre utilisation
-  $.ajax({
-    url: ajaxurl,
-    data:{
-      'action' : 'recuperer_nouvelle_video_player_page_principal'
-    },
-    dataType: 'JSON',
-    success: function(data) {
-      //console.log("data : "+ data);
-        $.each(data.data, function(index, value) {
-          genre = value.genre;
-          // si une video avec le genre logo forcer à la lire
-          if (genre === "Logo"){
-
-            titre = value.titre;
-            url = value.url;
-            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-          //Permet de générer la nouvelle video avec le logo.
-            myPlaylist.add({
-              title:value.titre,
-              m4v:value.url,
-              artist: artiste_album_annee_ajout,
-            }, true);
-
-        }
-
-          else{
-            titre= value.titre;
-            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-
-          //Permet de générer la nouvelle video.
-            myPlaylist.add({
-      				title:value.titre,
-      				m4v:value.url,
-      				artist: artiste_album_annee_ajout
-      			});
-          }
-      });
-    }
-  });
 
 });
 
