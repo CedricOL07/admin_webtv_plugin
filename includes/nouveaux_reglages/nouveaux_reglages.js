@@ -437,6 +437,92 @@ $(document).ready(function(){
             }
         );
     }
+	
+	
+/*------------------------------------- Gestion du calendrier / planning -------------------------------------------*/
+// doc : https://docs.dhtmlx.com/scheduler/how_to_start.html
+//////////////////////////////////////////////////////////////////////////
+	$('#scheduler_here').height($(document).width()*0.7);
+	$('#scheduler_here').width($(document).width()*0.7);
+	scheduler.init('scheduler_here', new Date(),"week");	
+var events = [
+{id:1, text:"Meeting",   start_date:"07/11/2017 14:00",end_date:"07/11/2017 17:00"},
+{id:2, text:"Conference",start_date:"07/15/2017 12:00",end_date:"07/18/2017 19:00"},
+{id:3, text:"Interview", start_date:"07/24/2017 09:00",end_date:"07/24/2017 10:00"}
+];
+	scheduler.parse(events, "json");//takes the name and format of the data source
+	
+	
+	
+/*
+YUI().use(
+	'aui-scheduler',
+	function(Y) {
+		var events = new Array;
+		
+		$.when(							// Permet d'attendre que la requête Ajax soit terminée
+			$.ajax({
+				url: ajaxurl,
+				data:{
+					'action':'get_playlist_content',
+				},	/////////////////// A adapter, cf: http://alloyui.com/examples/scheduler/real-world/    http://alloyui.com/tutorials/scheduler/   http://alloyui.com/api/files/alloy-ui_src_aui-scheduler_js_aui-scheduler-event-recorder.js.html
+				dataType: 'JSON',
+				success: function(data) {
+					
+					$.each(data.data, function(index, value) {
+						
+						var start_date = value.Debut;
+						var end_date = value.Fin;
+						var nom_event = value.nom;
+						
+						var date_time = start_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+						var date_now = date_time[0].split('/');
+						start_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
+						start_date = new Date(start_date);
+						
+						var date_time = end_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+						var date_now = date_time[0].split('/');
+						end_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
+						end_date = new Date(end_date);
+						
+						var ligne_playlist_enregistrees = new Y.SchedulerEvent({
+							content : nom_event, 
+							endDate : end_date,
+							startDate : start_date
+						});
+						
+						events.push(ligne_playlist_enregistrees);
+					});
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(xhr.status);
+					console.log(thrownError);
+				}
+			})
+		).then (function(){
+				
+			
+			var agendaView = new Y.SchedulerAgendaView();
+			var dayView = new Y.SchedulerDayView();
+			var weekView = new Y.SchedulerWeekView();
+			var monthView = new Y.SchedulerMonthView();
+
+			new Y.Scheduler(
+			{
+				boundingBox: '#calendar',
+				date: 'today',
+				items: events,
+				render: true,
+				views: [weekView, dayView, monthView, agendaView]
+				
+			});
+			console.log(SchedulerEvent());
+		});
+		
+	}
+);
+*/
+	
 
 /*------------------ Modification sur la mise en place du début et de la fin de la playlist ------------------*/
 

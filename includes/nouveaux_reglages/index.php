@@ -1,25 +1,15 @@
 <html>
     <head>
         <meta charset="utf-8">
+
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Utile pour le calendrier -->
+        <script src="http://cdn.alloyui.com/3.0.1/aui/aui-min.js"></script>
+        <link href="http://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>
         <title>WEBTVFIL</title>
-
-        <!--<style type="text/css">
-            div {
-                border : red 2px solid;
-            }
-
-
-        </style>-->
     </head>
-
-
-
-        <?php
-        do_action('pluginwebtv_eliminer_anciennes_playlists');
-        ?>
 
 
     <!--Pour modifier les emplacements des boxes il y a des commentaires laissé dans le code notamement dans la partie publicité-->
@@ -324,6 +314,8 @@
                                 <!-- Voir la programmation -->
 
                                 <div  class="row col-md-12 col-sm-12 box-header with-border" style="margin-top:10px"  > 
+                                    
+                                    <!--
                                     <div class="col-md-2 col-sm-2" >
                                         <input type="button" id="bouton_voir_programmation" value="Voir la programmation" class="btn btn-primary display" />
                                     </div>
@@ -333,14 +325,39 @@
                                     <div>
                                         <input type="button" name="cacher" id="cacher_programmation" value="cacher" class="hidden" >
                                     </div>
+                                    -->
                                 </div>
                             
                         </div>
                     </div>
 
-                    <!-- ******Bouton enregistrer et annulé***** -->
+                    <div class="row col-md-11 col-sm-11">
 
-                    <div class="col-md-6 col-sm-6 col-md-offset-8 col-sm-offset-8" id="boutons_div">
+                        <div id="scheduler_here" class="dhx_cal_container" >
+                            <div class="dhx_cal_navline">
+                                <div class="dhx_cal_prev_button">&nbsp;</div>
+                                <div class="dhx_cal_next_button">&nbsp;</div>
+                                <div class="dhx_cal_today_button"></div>
+                                <div class="dhx_cal_date"></div>
+                                <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                                <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                                <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                            </div>
+                            <div class="dhx_cal_header"></div>
+                            <div class="dhx_cal_data"></div>       
+                        </div>
+
+                        <!--
+                        <div id="wrapper">
+                            <div id="calendar"></div>
+                        </div>
+                        -->
+                    </div>
+
+
+                    <!-- ******Bouton enregistrer et annuler ***** -->
+
+                    <div class="row col-md-6 col-sm-6 col-md-offset-8 col-sm-offset-8" id="boutons_div">
                         <div  class="col-md-12 col-sm-12 " id="boutons"> <!----- boutons ----->
                             <div >
                                <!-- <a href="<?php //echo admin_url('admin.php?page=pagevalidation');?>">-->
