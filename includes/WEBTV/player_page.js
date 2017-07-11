@@ -85,54 +85,81 @@ generer_la_playlist();
 */
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
+  var current = myPlaylist.current;
+  var playlist = myPlaylist.playlist;
+  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
+  var genre_logo;
+  var artiste_album_annee_ajout = new String();
 
-  var taille = myPlaylist.playlist.length;
- $.ajax({
-    url: ajaxurl,
-    data:{
-      'action' : 'recuperer_nouvelle_video_player_page_principal',
-      'tailleplaylist': taille
+  $.post(
+    myAjax.ajaxurl,
+    {
+      'action': 'recup_genre_video_courante_logo',
+      'videocourante': titre_current_track
     },
-    dataType: 'JSON',
-    success: function(data) {
-      //console.log("data : "+ data);
-        $.each(data.data, function(index, value) {
-          genre = value.genre;
-          // si une video avec le genre logo forcer à la lire
-          if (genre === "Logo"){
+    function(response){
 
-            titre = value.titre;
-            url = value.url;
-            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-          //Permet de générer la nouvelle video avec le logo.
-            myPlaylist.add({
-              title:value.titre,
-              m4v:value.url,
-              artist: artiste_album_annee_ajout,
-            }, true);
+      genre_logo =response;
+      //console.log("GENRE : " + genre_logo +" fds");
+    // supprime la video de logo et on se remet en place
+    // ATTENTION le == ou === ne fonctionne pas.
+      if( genre_logo >= 1){
 
-            console.log("entré pour le logo : " + taille);
-        }
+        myPlaylist.remove(current);
+        myPlaylist.select(0);
+        myPlaylist.play(0);
+      }
 
-        // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
-          else if (taille<13){
-            titre2= value.titre;
-            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+      myPlaylist.remove(0);// efface le premier clip de la playlist du player.
+      /*
+      * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+      * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+      */
+      var taille = myPlaylist.playlist.length;
 
-          //Permet de générer la nouvelle video.
-            myPlaylist.add({
-              title:value.titre,
-              m4v:value.url,
-              artist: artiste_album_annee_ajout
+       $.ajax({
+          url: myAjax.ajaxurl,
+          data:{
+            'action' : 'recuperer_nouvelle_video_player_page_principal',
+          },
+          dataType: 'JSON',
+          success: function(data) {
+          //console.log("data : "+ data);
+            $.each(data.data, function(index, value) {
+              genre = value.genre;
+              // si une video avec le genre logo forcer à la lire
+              if (genre === "Logo"){
+
+                titre = value.titre;
+                url = value.url;
+                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+              //Permet de générer la nouvelle video avec le logo.
+                myPlaylist.add({
+                  title:value.titre,
+                  m4v:value.url,
+                  artist: artiste_album_annee_ajout,
+                }, true);
+
+                //console.log("entré pour le logo : " + taille);
+              }
+
+              // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+              else if (taille<13){
+                titre2= value.titre;
+                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+
+              //Permet de générer la nouvelle video.
+                myPlaylist.add({
+                  title:value.titre,
+                  m4v:value.url,
+                  artist: artiste_album_annee_ajout
+                });
+                //console.log("ajout dans le player : " + titre2);
+              }
             });
-            console.log("ajout dans le player : " + titre2);
           }
-
-      });
-
-    }
+        });
+      }
+    );
   });
-});
-
-
 });

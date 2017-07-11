@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
                                 <div class="jp-toggles">
-                                  <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                  <button class="jp-repeat" role="button" tabindex="0" style="display:none;">repeat</button>
                                 </div>
 
                      <div class="jp-toggles">

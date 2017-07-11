@@ -25,8 +25,6 @@ add_action('pluginwebtv_freq_logo', 'freq_logo');
 add_action('pluginwebtv_insertion_logo_dans_playlist_par_defaut', 'insertion_logo_dans_playlist_par_defaut',1,3);
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 
-
-
 function etat_live(){
     $etat_live;
     if(isset($_POST['data'])){
@@ -364,8 +362,6 @@ function recuperer_videos_player_page_principale() {
     global $wpdb;
     $max_id = 0;
 
-    if(isset($_POST['tailleplaylist'])){$taille_playlist=$_POST['tailleplaylist'];}
-
     //Phase obligatoire pour connaitre l'id de la nouvelle video car celui ci est générer automatiquement lors de l'insertion
     $query_recup_id_nouvelle_video = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin; ";
     $reponse_recup_id_nouvelle_video = $wpdb->get_results($query_recup_id_nouvelle_video);
@@ -456,6 +452,7 @@ function verif_et_effacer_video_courante_avant_passage_logo(){
       }
     }
 }
+
 
 
 ?>

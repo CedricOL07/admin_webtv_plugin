@@ -151,7 +151,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       			'videocouranteprevious': titre_previous_current_track
       		},
       		function(response){
-      			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+      			//console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 
           }
       	);
@@ -167,7 +167,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
         url: ajaxurl,
         data:{
           'action' : 'recuperer_nouvelle_video_player_page_principal',
-          'tailleplaylist': taille
         },
         dataType: 'JSON',
         success: function(data) {
@@ -187,32 +186,28 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
                   artist: artiste_album_annee_ajout,
                 }, true);
 
-                console.log("entré pour le logo : " + taille);
-            }
+                //console.log("entré pour le logo : " + taille);
+              }
 
-            // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+              // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
               else if (taille<13){
                 titre2= value.titre;
                 artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
 
-              //Permet de générer la nouvelle video.
+                //Permet de générer la nouvelle video.
                 myPlaylist.add({
           				title:value.titre,
           				m4v:value.url,
           				artist: artiste_album_annee_ajout
           			});
-                console.log("ajout dans le player : " + titre2);
+                //console.log("ajout dans le player : " + titre2);
               }
-
-          });
-
-        }
-      });
-    }
-  );
-
-
-});
+            });
+          }
+        });
+      }
+    );
+  });
 
 
 /*
@@ -221,9 +216,10 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 {
 
-	var current     = myPlaylist.current,
+	var current     = myPlaylist.current;
 	playlist        = myPlaylist.playlist;
-
+  var taile_playlist  = myPlaylist.playlist.length;
+  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
 	var nom_clip_courant = playlist[current].title,
 	artiste_clip_courant = playlist[current].artist,
 	url_clip_courant = playlist[current].m4v;
@@ -239,7 +235,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 			//console.log("Vidéo : " + artiste_clip_courant + " - " + nom_clip_courant + "\nDurée : " + response);
 		}
 	);
-
 
 });
 

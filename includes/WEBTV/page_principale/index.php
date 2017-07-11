@@ -146,9 +146,9 @@ desired effect
                                   <div class="jp-volume-bar-value"></div>
                                 </div>
                               </div>
-                              <div class="jp-toggles">
-                                <button class="jp-repeat" role="button" tabindex="0">repeat</button>
-                                <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
+                              <div class="jp-toggles" >
+                                <button class="jp-repeat" role="button" tabindex="0" style="display:none;">repeat</button>
+                                <button class="jp-shuffle" role="button" tabindex="0" style="display:none;">shuffle</button>
                                 <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
                               </div>
                             </div>
