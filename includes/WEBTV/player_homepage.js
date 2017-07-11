@@ -94,6 +94,7 @@ generer_la_playlist();
 /*
 * Fonction : Permet d'ajouter une nouvelle video du meme genre et dans la meme tranche d'année
 * que la video qui a été effacer dans le player.
+* Gère la gestion d'ajout et de suppression dans la bdd de la video logo.
 */
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
@@ -113,14 +114,14 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     function(response){
 
       genre_logo =response;
-      console.log("GENRE : " + genre_logo +" fds");
+      //console.log("GENRE : " + genre_logo +" fds");
     // supprime la video de logo et on se remet en place
+    // ATTENTION le == ou === ne fonctionne pas.
       if( genre_logo >= 1){
 
-          console.log("indique : " +genre_logo);
-          myPlaylist.remove(current);
-          myPlaylist.select(0);
-          myPlaylist.play(0);
+        myPlaylist.remove(current);
+        myPlaylist.select(0);
+        myPlaylist.play(0);
 
         //On efface le logo de la base de donnée également
         $.post(
@@ -129,7 +130,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             'action': 'supprimer_logo_de_playlist_par_defaut',
           },
           function(response){
-            console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+            //console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
           }
         );
       }
@@ -142,6 +143,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
         myPlaylist.remove(current-1);
       	//On efface le morceau de la base de donnée également
       	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+
         $.post(
       		ajaxurl,
       		{
@@ -149,7 +151,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       			'videocouranteprevious': titre_previous_current_track
       		},
       		function(response){
-      			//console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+      			console.log("video à ete ajouté : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
 
           }
       	);
@@ -159,11 +161,13 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
     * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
     */
+      var taille = myPlaylist.playlist.length;
 
-      $.ajax({
+     $.ajax({
         url: ajaxurl,
         data:{
-          'action' : 'recuperer_nouvelle_video_player_page_principal'
+          'action' : 'recuperer_nouvelle_video_player_page_principal',
+          'tailleplaylist': taille
         },
         dataType: 'JSON',
         success: function(data) {
@@ -172,7 +176,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
               genre = value.genre;
               // si une video avec le genre logo forcer à la lire
               if (genre === "Logo"){
-                //console.log("entré")
+
                 titre = value.titre;
                 url = value.url;
                 artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
@@ -183,10 +187,12 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
                   artist: artiste_album_annee_ajout,
                 }, true);
 
+                console.log("entré pour le logo : " + taille);
             }
 
-              else{
-                titre= value.titre;
+            // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+              else if (taille<13){
+                titre2= value.titre;
                 artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
 
               //Permet de générer la nouvelle video.
@@ -195,6 +201,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
           				m4v:value.url,
           				artist: artiste_album_annee_ajout
           			});
+                console.log("ajout dans le player : " + titre2);
               }
 
           });

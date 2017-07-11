@@ -364,6 +364,8 @@ function recuperer_videos_player_page_principale() {
     global $wpdb;
     $max_id = 0;
 
+    if(isset($_POST['tailleplaylist'])){$taille_playlist=$_POST['tailleplaylist'];}
+
     //Phase obligatoire pour connaitre l'id de la nouvelle video car celui ci est générer automatiquement lors de l'insertion
     $query_recup_id_nouvelle_video = "SELECT id FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin; ";
     $reponse_recup_id_nouvelle_video = $wpdb->get_results($query_recup_id_nouvelle_video);
@@ -374,11 +376,21 @@ function recuperer_videos_player_page_principale() {
         $max_id = $max_id ;
       }
     }
+    $query_recup_genre_nouvelle_video = "SELECT genre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+    $reponse_recup_genre_nouvelle_video = $wpdb->get_var($query_recup_genre_nouvelle_video);
 
-    $query_recup_titre_url_nouvelle_video = "SELECT titre, artiste, url, annee, album, genre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
-    $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
-    wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
+    if($reponse_recup_genre_nouvelle_video == "Logo"){
 
+      $max_id_vid = $max_id -1;// récupère la video précédent le logo
+      $query_recup_titre_url_nouvelle_video_et_logo = "SELECT titre, artiste, url, annee, album, genre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id IN ('$max_id','$max_id_vid');";
+      $reponse_recup_titre_url_nouvelle_video_et_logo = $wpdb->get_results($query_recup_titre_url_nouvelle_video_et_logo);
+      wp_send_json_success($reponse_recup_titre_url_nouvelle_video_et_logo);
+    }
+    else {
+      $query_recup_titre_url_nouvelle_video_ou_logo = "SELECT titre, artiste, url, annee, album, genre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$max_id' ; ";
+      $reponse_recup_titre_url_nouvelle_video_ou_logo = $wpdb->get_results($query_recup_titre_url_nouvelle_video_ou_logo);
+      wp_send_json_success($reponse_recup_titre_url_nouvelle_video_ou_logo);
+    }
 
 }
 

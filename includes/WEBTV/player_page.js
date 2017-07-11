@@ -85,36 +85,53 @@ generer_la_playlist();
 */
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-  var artiste_album_annee_ajout = new String();
 
-  myPlaylist.remove(0);// efface le premier clip de la playlist du player.
-
-  $.ajax({
-    url: myAjax.ajaxurl,
+  var taille = myPlaylist.playlist.length;
+ $.ajax({
+    url: ajaxurl,
     data:{
-      'action' : 'recuperer_nouvelle_video_player_page_principal'
+      'action' : 'recuperer_nouvelle_video_player_page_principal',
+      'tailleplaylist': taille
     },
     dataType: 'JSON',
     success: function(data) {
       //console.log("data : "+ data);
         $.each(data.data, function(index, value) {
-            titre= value.titre;
-            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+          genre = value.genre;
+          // si une video avec le genre logo forcer à la lire
+          if (genre === "Logo"){
 
+            titre = value.titre;
+            url = value.url;
+            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+          //Permet de générer la nouvelle video avec le logo.
+            myPlaylist.add({
+              title:value.titre,
+              m4v:value.url,
+              artist: artiste_album_annee_ajout,
+            }, true);
+
+            console.log("entré pour le logo : " + taille);
+        }
+
+        // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+          else if (taille<13){
+            titre2= value.titre;
+            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
 
           //Permet de générer la nouvelle video.
             myPlaylist.add({
-      				title:value.titre,
-      				m4v:value.url,
-      				artist: artiste_album_annee_ajout
-      			});
-		     });
+              title:value.titre,
+              m4v:value.url,
+              artist: artiste_album_annee_ajout
+            });
+            console.log("ajout dans le player : " + titre2);
+          }
 
-         //console.log("artiste" +artiste_album_annee_ajout);
-        console.log(titre);
+      });
+
     }
   });
-
 });
 
 
