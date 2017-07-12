@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // les add_action ('wp_ajax....', '...') permettes de déclarer les fonction PHP dans touts wordpress afin que les fonction ajax dans les fichiers javascript puissent les réutiliser
+add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 
 
 //do_action('pluginwebtv_maj_playlist_table');
