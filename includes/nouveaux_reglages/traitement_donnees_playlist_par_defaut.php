@@ -228,7 +228,7 @@ function freq_logo($frequence_logo){
   }
  else {
    echo '<script>alert(\"Il n\'y a pas de logo dans la base de données donc aucun logo n\'est insérer dans la playlist. \")</script>';
-   break;
+
  }
 }
 
@@ -244,8 +244,7 @@ function insertion_logo_dans_playlist_par_defaut($frequence_logo, $id_video_cour
   global $titre_nouvelle_video;
   $random = rand (0 , ($frequence_logo-1));// ce nombre permet de choisir un logo au hasard selon les logos définies dans le tableautab_logo_url
 
-  if ($frequence_logo == 0){break;}
-  else{
+  if ($frequence_logo != 0){
 
       // si le reste de la division entre l'id et la frequence du logo est égale à 0 alors on ajoute une pub à la suite.
     if ($id_video_courante % $frequence_logo == 0 && $random >= 0) {
