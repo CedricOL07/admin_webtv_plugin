@@ -64,9 +64,9 @@ $(document).ready(function(){
 	
     //Checkbox pour mettre par defaut ou non le réglage
     $('#checkbox_par_defaut').click(function(){
-
+	
+		$('#planning_playlist').toggle('fast');
         if(this.checked){
-
             $('#partie_highlight').hide();
             $('#partie_publicites').hide();
             $('#partie_diffusion').hide();

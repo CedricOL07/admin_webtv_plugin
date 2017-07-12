@@ -3,9 +3,9 @@
 function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
   // Variables de connexion avec la base de données
   $user="root"; //Nom d'utilisateur
-  $passwd="023Mugen";// Mot de passe de connexion à la base de données
+  $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="wpdatabase"; // Nom de la base de données
+  $bddname="wordpress"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -53,9 +53,9 @@ function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
 function vider_bdd(){
   // Variables de connexion avec la base de données
   $user="root"; //Nom d'utilisateur
-  $passwd="023Mugen";// Mot de passe de connexion à la base de données
+  $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="wpdatabase"; // Nom de la base de données
+  $bddname="wordpress"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -80,14 +80,14 @@ ajouter_video('I kissed a girl','Katy Perry','Katy','2015','http://localhost/wor
 ajouter_video('Poker Face','Lady Gaga','Fame','20080101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/5.mp4','Pop-rock','5');
 ajouter_video('Nothing Else Matters','Metallica','Black Album','19870101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/6.mp4','Hard-rock & Metal','5');
 ajouter_video('Amaranth','Nightwish','Dark Passion Play','20100101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/7.mp4','Hard-rock & Metal','5');
-ajouter_video('Elan logo','Nightwish','Endless Form Of Beautiful','20150101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Hard-rock & Metal','5');
+ajouter_video('Elan','Nightwish','Endless Form Of Beautiful','20150101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/8.mp4','Hard-rock & Metal','5');
 ajouter_video('Dont Speak','No Doubt','Gwen','2000','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/9.mp4','Pop-rock','5');
 ajouter_video('Snow','Red Hot Chilli Peppers','RHCP','20040101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/10.mp4','Pop-rock','5');
 ajouter_video('Papaoutai','Stromae','Maestro','20120101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/11.mp4','Musique du monde','5');
 ajouter_video('Chop Suey','System of a Down','SOAD','20020101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/12.mp4','Hard-rock & Metal','5');
-ajouter_video('The kids arent alright logo','The Offspring','Punk','20010101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/13.mp4','Pop-rock','5');
+ajouter_video('The kids arent alright','The Offspring','Punk','20010101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/13.mp4','Pop-rock','5');
 ajouter_video('Zombie','The Cranberries','Ireland','19960101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/14.mp4','Pop-rock','5');
 ajouter_video('Tous les cris les SOS','ZAZ','France','20160101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/15.mp4','Musique du monde','5');
-ajouter_video('logo Fil','','','','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/jingle.mp4','Logo','5');
+ajouter_video('Logo Fil','','','20160101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/jingle.mp4','Logo','5');
 
 ?>
