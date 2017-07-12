@@ -18,9 +18,6 @@ $(document).ready(function(){
 */
 
 
-
-
-
     /*
 * ---------------------------------- AFFICHAGE DYNAMIQUE BOUTONS (CLIQUABLE/NON CLIQUABLE)---------------------------------------
 */
@@ -39,22 +36,17 @@ $(document).ready(function(){
     });
 
     $('#bouton_choisir_date').click(function(){
-        $('#bouton_voir_programmation').hide();
         $('#bouton_choisir_date').hide();
         $('#trigger_choisir_date').toggleClass('hidden display');
         $('#bouton_voir_premiere_date_disponible').hide();
         $('#bouton_voir_premiere_date_disponible').attr("disabled", "disabled");
-        $('#calendrier_dates').hide();
-        $("#cacher_programmation").hide();
     });
 
 
     $('#annuler_choisir_date').click(function(){
-        $('#bouton_voir_programmation').show();
         $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
         $('#trigger_choisir_date').toggleClass('display hidden');
         $('#bouton_choisir_date').show();
-        $('#calendrier_dates').hide();
         $('#bouton_voir_premiere_date_disponible').show();
 
     });
@@ -69,39 +61,7 @@ $(document).ready(function(){
         $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
         $('#bouton_choisir_date').toggleClass('hidden display');
     });
-
-    $('#bouton_voir_programmation').click(function(){
-        $('#bouton_voir_programmation').hide();
-        $("#cacher_programmation").show();// montre le bouton
-        $("#cacher_programmation").html();//permet de l'écrire dans la page html
-        $('#calendrier_dates').show();
-        $('#calendrier_dates').html('');
-        afficher_programmation();
-
-    });
-
-    $('#bouton_voir_programmation_partie_choix_date').click(function(){
-        $('#bouton_voir_programmation_partie_choix_date').hide();
-        $("#cacher_programmation_partie_choix_date").show();// montre le bouton
-        $("#cacher_programmation_partie_choix_date").html();//permet de l'écrire dans la page html
-        $('#calendrier_dates_partie_choix_date').show();
-        $('#calendrier_dates_partie_choix_date').html('');
-        afficher_programmation_partie_choix_date();
-
-    });
-
-    $('#cacher_programmation').click(function(){
-        $('#calendrier_dates').hide();
-        $('#cacher_programmation').hide();
-        $('#bouton_voir_programmation').show();
-    });
-
-    $('#cacher_programmation_partie_choix_date').click(function(){
-        $('#calendrier_dates_partie_choix_date').hide();
-        $('#cacher_programmation_partie_choix_date').hide();
-        $('#bouton_voir_programmation_partie_choix_date').show();
-    });
-
+	
     //Checkbox pour mettre par defaut ou non le réglage
     $('#checkbox_par_defaut').click(function(){
 
@@ -305,61 +265,6 @@ $(document).ready(function(){
         );
 
     }
-    function afficher_programmation(){
-
-        $.post(
-            ajaxurl,
-            {
-                'action': 'recuperer_programmation'
-            },
-            function(response){
-                $('#calendrier_dates').append('<table id="table_cal" style="width:100%">');
-
-                $('#table_caltbody').append('<tr>');
-                $('#table_cal').append('<th>Réglage</th>');
-                $('#table_cal').append('<th>Debut</th>');
-                $('#table_cal').append('<th>Fin</th>');
-                $('#table_cal').append('</tr>');
-
-                $.each(response.data,function(key,value){
-                    if(value.Debut != '' && value.nom !=''){
-                        $('#table_cal').append('<tr><td>'+value.nom+'</td><td>'+value.Debut+'</td><td>'+value.Fin+'</td></tr>');
-
-                    }
-                });
-                $('#calendrier_dates').append('<style type="text/css">table, th, td {border: 1px solid black;}</style>');
-            }
-        );
-    }
-
-// création d'une fonction similaire à afficher_programmation à cause des doublons de classe car la l'affichge n'etais pas bon
-// avec le bouton voir la programmation_partie_choix_date.
-    function afficher_programmation_partie_choix_date(){
-
-        $.post(
-            ajaxurl,
-            {
-                'action': 'recuperer_programmation'
-            },
-            function(response){
-                $('#calendrier_dates_partie_choix_date').append('<table id="table_cal" style="width:100%">');
-
-                $('#table_caltbody').append('<tr>');
-                $('#table_cal').append('<th>Réglage</th>');
-                $('#table_cal').append('<th>Debut</th>');
-                $('#table_cal').append('<th>Fin</th>');
-                $('#table_cal').append('</tr>');
-
-                $.each(response.data,function(key,value){
-                    if(value.Debut != '' && value.nom !=''){
-                        $('#table_cal').append('<tr><td>'+value.nom+'</td><td>'+value.Debut+'</td><td>'+value.Fin+'</td></tr>');
-
-                    }
-                });
-                $('#calendrier_dates_partie_choix_date').append('<style type="text/css">table, th, td {border: 1px solid black;}</style>');
-            }
-        );
-    }
 
 
     function afficher_playlists_jour(datedebut){
@@ -441,20 +346,131 @@ $(document).ready(function(){
 	
 /*------------------------------------- Gestion du calendrier / planning -------------------------------------------*/
 // doc : https://docs.dhtmlx.com/scheduler/how_to_start.html
+// signaux: https://docs.dhtmlx.com/api__dhtmlxcalendar_onchange_event.html
+// 			https://docs.dhtmlx.com/scheduler/api__scheduler_oneventsave_event.html
 //////////////////////////////////////////////////////////////////////////
-	$('#scheduler_here').height($(document).width()*0.7);
+
+//Afficher/masquer le tableau
+  $('#bouton_voir_cacher_programmation').click(function(){
+    $('#planning_playlist').toggle('fast');
+	if ($('#bouton_voir_cacher_programmation').val() == "Cacher la programmation")
+	{
+		document.getElementById("bouton_voir_cacher_programmation").value = "Afficher la programmation";
+	} else{
+		document.getElementById("bouton_voir_cacher_programmation").value = "Cacher la programmation";
+	}
+  });
+  
+	$('#scheduler_here').height($(document).width()*0.5);
 	$('#scheduler_here').width($(document).width()*0.7);
-	scheduler.init('scheduler_here', new Date(),"week");	
-var events = [
-{id:1, text:"Meeting",   start_date:"07/11/2017 14:00",end_date:"07/11/2017 17:00"},
-{id:2, text:"Conference",start_date:"07/15/2017 12:00",end_date:"07/18/2017 19:00"},
-{id:3, text:"Interview", start_date:"07/24/2017 09:00",end_date:"07/24/2017 10:00"}
-];
-	scheduler.parse(events, "json");//takes the name and format of the data source
+	scheduler.init('scheduler_here', new Date(),"week");
+	
+	var events = []; 
+	var indice_event = 0;
+	$.when(							// Permet d'attendre que la requête Ajax soit terminée
+		$.ajax({
+			url: ajaxurl,
+			data:{
+				'action':'get_playlist_content',
+			},	/////////////////// A adapter, cf: http://alloyui.com/examples/scheduler/real-world/    http://alloyui.com/tutorials/scheduler/   http://alloyui.com/api/files/alloy-ui_src_aui-scheduler_js_aui-scheduler-event-recorder.js.html
+			dataType: 'JSON',
+			success: function(data) {
+				
+				$.each(data.data, function(index, value) {
+					
+					var startDate = value.Debut;
+					var endDate = value.Fin;
+					var nom_event = value.nom;
+					
+					var date_time = startDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+					var date_now = date_time[0].split('/');
+					startDate = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
+					startDate = new Date(startDate);
+					
+					var date_time = endDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+					var date_now = date_time[0].split('/');
+					endDate = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
+					endDate = new Date(endDate);
+					
+					var ligne_playlist_enregistrees = {
+						id			: indice_event,
+						text 		: nom_event, 
+						end_date 	: endDate,
+						start_date 	: startDate
+					};
+					indice_event++;
+					
+					events.push(ligne_playlist_enregistrees);
+				});
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status);
+				console.log(thrownError);
+			}
+		})
+	).then (function(){
+		
+		scheduler.attachEvent("onEventSave",function(id,ev,is_new){
+			if (!ev.text) {
+				alert("Text must not be empty");
+				return false;
+			} else
+			{
+				console.log(ev.text);
+			}
+			console.log("Texte a marché");
+			$.post(
+				ajaxurl,
+				{
+					'action': 'change_playlist_name',
+					'ancien_nom':ancien_nom,
+					'nouveau_nom':nouveau_nom
+				},
+				function(response){
+				   console.log("echo : "+ response);
+				}
+			);
+		});
+		
+		var dragged_event;
+		scheduler.attachEvent("onBeforeDrag", function (id, mode, e){
+			dragged_event=scheduler.getEvent(id); //use it to get the object of the dragged event
+			return true;
+		});
+		 
+		 
+		scheduler.attachEvent("onDragEnd", function(){
+			var event_obj = dragged_event;
+			var nouvelle_start_date = event_obj.start_date;
+			var nouvelle_end_date = event_obj.end_date;
+			var nom_event = event_obj.text
+			nouvelle_start_date = nouvelle_start_date.toISOString();
+			nouvelle_end_date = nouvelle_end_date.toISOString();
+			
+			nouvelle_start_date=nouvelle_start_date.replace("T", " ").replace("Z", "");
+			nouvelle_end_date=nouvelle_end_date.replace("T", " ").replace("Z", "");
+			
+			console.log(nouvelle_start_date);
+			$.post(
+				ajaxurl,
+				{
+					'action': 'change_playlist_date',
+					'nouvelle_start_date':nouvelle_start_date,
+					'nouvelle_end_date':nouvelle_end_date,
+					'nom_event':nom_event
+				},
+				function(response){
+				   console.log("echo : "+ response);
+				}
+			);
+		});
+		
+		scheduler.parse(events, "json");//takes the name and format of the data source
+	
+	});
 	
 	
-	
-/*
+/*	-------------------------------------------- Ancien scheduler ----------------------------------------------------
 YUI().use(
 	'aui-scheduler',
 	function(Y) {
@@ -543,7 +559,7 @@ YUI().use(
 
     // Il faut modifier le time format avec HH:ss pour pour pouvoir modifier les secondes sur la page
     $( "#from" ).datetimepicker({
-        defaultDate: "+1d",
+        defaultDate: "today",
         changeMonth: true,
         timeFormat: 'HH:mm',
         stepHour: 1,// permet de chosir le pas pour les heures
@@ -557,7 +573,7 @@ YUI().use(
         }
     });
     $( "#to" ).datetimepicker({
-        defaultDate: "+1d",
+        defaultDate: "today",
         changeMonth: true,
         timeFormat: 'HH:mm',
         stepHour: 1,// permet de chosir le pas pour les herues

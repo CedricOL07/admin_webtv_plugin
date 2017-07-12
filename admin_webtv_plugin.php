@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'MY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // les add_action ('wp_ajax....', '...') permettes de déclarer les fonction PHP dans touts wordpress afin que les fonction ajax dans les fichiers javascript puissent les réutiliser
-add_action( 'wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 
 
 //do_action('pluginwebtv_maj_playlist_table');
@@ -22,6 +21,7 @@ function php_includes(){
     include('includes/GenerationPlaylist_par_defaut.php');
     include('includes/GenerationPlaylist_clip.php');
     include('includes/WEBTV/traitement_duree_clips.php');
+    include('includes/nouveaux_reglages/traitement_planning.php');
     include('includes/nouveaux_reglages/traitement_donnees_playlist_par_defaut.php');
     include('includes/nouveaux_reglages/traitement_donnees_playlists_clips.php');
     include('includes/GestionBDD/gestionbdd-ajax.php');
@@ -99,8 +99,11 @@ function scripts_nouveaux_reglages(){
 
     wp_register_script( 'nouveaureglagejs', plugins_url('includes/nouveaux_reglages/nouveaux_reglages.js',__FILE__), array(), null, false );
     wp_enqueue_script('nouveaureglagejs');
+    wp_register_script( 'schedulerjs', plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.js',__FILE__), FALSE);
+    wp_enqueue_script('schedulerjs');
     wp_register_script( 'bootstrap_multiselectjs',plugins_url('assets/js/dist/bootstrap-multiselect.js',__FILE__),FALSE);
     wp_enqueue_script('bootstrap_multiselectjs');
+    wp_enqueue_style("schedulercss",plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.css',__FILE__) , FALSE);
     wp_enqueue_style("bootstrap_multiselectcss",plugins_url('assets/css/bootstrap-multiselect.css',__FILE__) , FALSE);
     wp_enqueue_style("nouveaureglagecustomcss",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
     wp_enqueue_style("timepickercss",plugins_url('assets/css/timepicker.css',__FILE__) , FALSE);
@@ -289,8 +292,8 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     `annee_max` date DEFAULT '1999-12-31',
     `annee_min` date DEFAULT '0001-01-01',
     `qualite_min` int(11) NOT NULL,
-    `Debut` varchar(255) DEFAULT '',    
-    `Fin` varchar(255) DEFAULT '',
+    `Debut` datetime NOT NULL,    
+    `Fin` datetime NOT NULL,
     `Freq_logo` int(11) NOT NULL,
     `ParDefaut` tinyint(1) NOT NULL DEFAULT '0',
     PRIMARY KEY (`nom`)
