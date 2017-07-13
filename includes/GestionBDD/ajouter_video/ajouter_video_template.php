@@ -70,15 +70,21 @@
 						<label for="titre">Titre :</label>
 					</div>
 					<div class="col-md-2">
-						<input type="text" class="form-control" name="titre" id="titre" placeholder="Titre" />
+						<input type="text" class="form-control" name="titre" id="titre" placeholder="Titre"/> 
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Titre du clip" > </span>
+					</div> 
 				<!-- album -->
-					<div class="col-md-offset-3 col-md-2">
+					<div class="col-md-offset-2 col-md-2">
 						<label for="album">Album :</label>
 					</div>
 					<div class="col-md-2">
 						<input type="text" class="form-control input" name="album" id="album" placeholder="Album" />
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Album ou 'Live'" > </span>
+					</div> 
 				</div>
 				<!-- Ligne 2 -->
 				<div class="row">
@@ -86,17 +92,21 @@
 						<label for="artiste"> Artiste :</label>
 					</div>
 					<div class="col-md-2">
-						<div class="input-group">
-							<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste" />
-						</div>
+						<input type="text" class="form-control" name="artiste" id="artiste" placeholder="Artiste" />
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Chanteur, groupe ou prestataire" > </span>
+					</div> 
 
-					<div class="col-md-offset-3 col-md-2">
-					<label for="annee_prod">Date de prestation :</label>
+					<div class="col-md-offset-2 col-md-2">
+					<label for="annee_prod">Date :</label>
 					</div>
 					<div class="col-md-2">
 	                 	<input type='text' class="form-control" name="annne_prod" id='annne_prod' placeholder="Date prestation" />
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Date au format jj/mm/aaaa" > </span>
+					</div> 
 				</div>
 				<!-- Ligne 3 -->
 				<div class="row">
@@ -118,9 +128,12 @@
 							<option value="Autre">Autre...</option>
 						</select>
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Genre musical, publicité ou logo du Fil" > </span>
+					</div> 
 
-					<div class="col-md-offset-3 col-md-2">
-					<label for="qualite"> Qualité du clip :</label>
+					<div class="col-md-offset-2 col-md-2">
+					<label for="qualite"> Qualité :</label>
 					</div>
 					<div class="col-md-2">
 						<select name="qualite" id="qualite" class="form-control">
@@ -131,24 +144,31 @@
 						   <option value="5">5</option>
 					   </select>
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Qualité de la vidéo" > </span>
+					</div> 
 				</div>
 
 				<!-- Ligne 4 -->
 				<div class="row">
 					<div class="col-md-2">
-						<label for="path">Chemin initial :</label>
+						<label for="path">Source :</label>
 					</div>
 					<div class="col-md-2">
-						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
+						<input type="text" class="form-control" name="path" id="path"  placeholder="Emplacement" onchange="changePath(this)">
 					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="Dossier de la vidéo à enregistrer
+Completer pour déverouiller le bouton 'Parcourir'" > </span>
+					</div> 
 				</div>
 
 				<!-- Ligne 5 -->
 				<div class="row">
 					<div class="col-md-2">
-						<label for="url">URL Vidéo :</label>
+						<label for="url">Vidéo :</label>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-7">
 						<div class="input-group">
 							<label class="input-group-btn">
 								<span class="btn btn-sm btn-primary">
@@ -162,11 +182,10 @@
 						<button class="btn btn-block btn-sm btn-secondary" id="bouton_modifier_url_par_defaut" type="button" onclick="unlockPath()"> Modifier URL par défaut
 						</button>
 					</div>
-
-					<div class="col-md-1" id="OS">
-						<input type="checkbox" checked data-toggle="toggle" data-size="small" data-onstyle="default" data-offstyle='default'
-								data-on="<i class='fa fa-linux' style='color:#0964CD'></i> - <i class='fa fa-apple' style='color:#0964CD'></i>" data-off="<i class='fa fa-windows' style='color:#0964CD'></i>">
-					</div>
+					<div class="col-md-1">
+						<span class="glyphicon glyphicon-question-sign" style='color:#0964CD; font-size:120%; padding-top: 15%;' title="- Parcourir: Selection de la vidéo à mettre en ligne 
+- URL par défaut: Domaine et dossier de destination lors de l'upload de la vidéo" > </span>
+					</div> 
 				</div>
 
 				<div class="form-group">

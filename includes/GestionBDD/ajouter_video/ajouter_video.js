@@ -25,6 +25,7 @@ $(document).ready(function(){
 	$( '#annne_prod' ).datepicker({
 		defaultDate: "-1w",
 		changeMonth: true,
+		changeYear: true,
 		format: 'dd/mm/yyyy',
 		language: 'fr'
 	});
@@ -58,7 +59,7 @@ $(document).ready(function(){
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		
 		
-		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
+		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '' && (genre!='Logo'|| genre!='Publicité Externe' || genre!='Publicité Interne'))
 		{	
 			$.post(
 				ajaxurl,
