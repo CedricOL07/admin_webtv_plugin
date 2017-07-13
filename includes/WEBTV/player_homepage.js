@@ -162,6 +162,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
     */
       var taille = myPlaylist.playlist.length;
+      setTimeout(doSomething, 100);
+      function doSomething() {
 
      $.ajax({
         url: ajaxurl,
@@ -205,6 +207,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             });
           }
         });
+        //do whatever you want here
+        }
       }
     );
   });
