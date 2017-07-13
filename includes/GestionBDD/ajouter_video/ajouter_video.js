@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-	
+
 	// Création du dictionnaire français pour le calendrier
 	$.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
 		closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
@@ -17,9 +17,9 @@ $(document).ready(function(){
 		dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 		dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 		dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
-		dateFormat: 'dd/mm/yy', firstDay: 0, 
+		dateFormat: 'dd/mm/yy', firstDay: 0,
 		initStatus: 'Choisir la date', isRTL: false};
-		
+
 	// Ouvre le calendrier lors de l'appui sur date
 	$.datepicker.setDefaults($.datepicker.regional['fr'])
 	$( '#annne_prod' ).datepicker({
@@ -34,16 +34,16 @@ $(document).ready(function(){
 	$("#OS").change(function(){
 		is_linux = !is_linux;
 		console.log(is_linux);
-	});		
+	});
 	*/
-	
+
     $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
-		 
-		
+
+
 		//console.log("Entrée dans le js");
-		
+
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
 		var artiste_video=$('#artiste').val();
@@ -54,13 +54,13 @@ $(document).ready(function(){
 		var finalfolder=$('#CHEMINARRIVE').val();
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
-		
+
 		//console.log(genre);
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
-		
-		
-		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '' && (genre!='Logo'|| genre!='Publicité Externe' || genre!='Publicité Interne'))
-		{	
+		//console.log("genre" +genre);
+
+		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
+		{
 			$.post(
 				ajaxurl,
 				{
@@ -83,16 +83,20 @@ $(document).ready(function(){
 				{
 					console.log(finalfolder);
 					console.log("existante :" + data);
+					var existante = data;
+					if ( existante >= 1){
+						alert ("Vidéo déjà enregistrée");
+					}
 					var newpath = document.location.toString();
 					var ind1 = newpath.indexOf('&filepath');
 					ind1>0 ? newpath = newpath.substr(0,ind1) : newpath = newpath; 	// Si il y a déja un filepath, on l'efface
 					document.location.href = newpath.substr(0, ind1);				// On actualise la page
 				}
 			);
-					
-			
+
+
 		}else{
-			
+
 			if(titre == ''){
 				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
 					console.log('PAS DE TITRE');
@@ -118,6 +122,6 @@ $(document).ready(function(){
 				}
 			}
 		}
-	
+
     });
 });
