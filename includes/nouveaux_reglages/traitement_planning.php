@@ -15,6 +15,7 @@ Appel des différentes fonctions du programme
 add_action( 'wp_ajax_get_playlist_content', 'get_playlist_content' );
 add_action( 'wp_ajax_change_playlist_date', 'change_playlist_date' );
 add_action( 'wp_ajax_change_playlist_name', 'change_playlist_name' );
+add_action( 'wp_ajax_delete_playlist', 'delete_playlist' );
 
 
 
@@ -70,7 +71,7 @@ Cette fonction change le nom de la playlist indiquée
     if(isset($_POST['nouveau_nom'])){ $nouveau_nom=$_POST['nouveau_nom']; }
 
     // Verification qu'il y ai une playlist de ce nom
-    $check_name="SELECT count(*) FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE 'nom' = ".$ancien_nom.";";
+    $check_name="SELECT count(*) FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom = '".$ancien_nom."';";
     $name=$wpdb->get_var($check_name);
     if ($name==0)
     {
@@ -79,9 +80,35 @@ Cette fonction change le nom de la playlist indiquée
     } else
     {
         // Si elle existe, on met son nom à jour
-        $update_name="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET 'nom'='$nouveau_nom' WHERE 'nom'='ancien_nom';"; 
+        $update_name="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET nom='$nouveau_nom' WHERE nom='$ancien_nom';"; 
         $wpdb->query($update_name);
         echo ($ancien_nom." correctement renommée en ".$nouveau_nom);
+    }
+}
+
+function delete_playlist(){
+
+/*
+Cette fonction supprime la playlist indiquée
+*/
+
+    global $wpdb;
+
+    if(isset($_POST['nom_event'])){ $nom_event=$_POST['nom_event']; }
+
+    // Verification qu'il y ai une playlist de ce nom
+    $check_name="SELECT count(*) FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom = '".$nom_event."';";
+    $name=$wpdb->get_var($check_name);
+    if ($name==0)
+    {
+        echo("Aucune playlist avec ce nom : ".$nom_event);
+        wp_die();
+    } else
+    {
+        // Si elle existe, on la supprime
+        $update_name="DELETE FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_event';"; 
+        $wpdb->query($update_name);
+        echo ($nom_event." correctement supprimé");
     }
 }
 

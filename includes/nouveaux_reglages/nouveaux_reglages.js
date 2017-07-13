@@ -376,7 +376,7 @@ $(document).ready(function(){
 			url: ajaxurl,
 			data:{
 				'action':'get_playlist_content',
-			},	/////////////////// A adapter, cf: http://alloyui.com/examples/scheduler/real-world/    http://alloyui.com/tutorials/scheduler/   http://alloyui.com/api/files/alloy-ui_src_aui-scheduler_js_aui-scheduler-event-recorder.js.html
+			},	
 			dataType: 'JSON',
 			success: function(data) {
 				
@@ -414,6 +414,18 @@ $(document).ready(function(){
 		})
 	).then (function(){
 		
+		// Lorsqu'un évènement est renommé
+		var changed_event_title;
+		var changed_event_startDate;
+		var changed_event_endDate;
+		
+		scheduler.attachEvent("onBeforeLightbox", function (id){
+			changed_event_title = scheduler.getEvent(id).text; //use it to get the object of the changed event
+			changed_event_startDate = scheduler.getEvent(id).start_date; //use it to get the object of the changed event
+			changed_event_endDate = scheduler.getEvent(id).end_date; //use it to get the object of the changed event
+			return true;
+		});
+		
 		scheduler.attachEvent("onEventSave",function(id,ev,is_new){
 			if (!ev.text) {
 				alert("Text must not be empty");
@@ -421,38 +433,45 @@ $(document).ready(function(){
 			} else
 			{
 				console.log(ev.text);
+				var ancien_nom = changed_event_title;
+				var nouveau_nom = ev.text;
+			
+				$.post(
+					ajaxurl,
+					{
+						'action': 'change_playlist_name',
+						'ancien_nom':ancien_nom,
+						'nouveau_nom':nouveau_nom
+					},
+					function(response){
+					   console.log("echo : "+ response);
+					}
+				);
+				ev.start_date = changed_event_startDate;
+				ev.end_date = changed_event_endDate;
+				return true;
 			}
-			console.log("Texte a marché");
-			$.post(
-				ajaxurl,
-				{
-					'action': 'change_playlist_name',
-					'ancien_nom':ancien_nom,
-					'nouveau_nom':nouveau_nom
-				},
-				function(response){
-				   console.log("echo : "+ response);
-				}
-			);
 		});
 		
+		// Lorsqu'un évènement est déplacé/étiré
 		var dragged_event;
 		scheduler.attachEvent("onBeforeDrag", function (id, mode, e){
 			dragged_event=scheduler.getEvent(id); //use it to get the object of the dragged event
 			return true;
 		});
-		 
-		 
+		
 		scheduler.attachEvent("onDragEnd", function(){
 			var event_obj = dragged_event;
 			var nouvelle_start_date = event_obj.start_date;
 			var nouvelle_end_date = event_obj.end_date;
-			var nom_event = event_obj.text
-			nouvelle_start_date = nouvelle_start_date.toISOString();
-			nouvelle_end_date = nouvelle_end_date.toISOString();
+			var nom_event = event_obj.text;
 			
-			nouvelle_start_date=nouvelle_start_date.replace("T", " ").replace("Z", "");
-			nouvelle_end_date=nouvelle_end_date.replace("T", " ").replace("Z", "");
+			var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds du fuseau horaire
+			nouvelle_start_date = (new Date(nouvelle_start_date - tzoffset)).toISOString().slice(0,-1);
+			nouvelle_end_date = (new Date(nouvelle_end_date - tzoffset)).toISOString().slice(0,-1);	// slice(0,-1) supprime le Z de fin (qui représente la Zulu timezone) 
+			
+			nouvelle_start_date=nouvelle_start_date.replace("T", " ");
+			nouvelle_end_date=nouvelle_end_date.replace("T", " ");
 			
 			console.log(nouvelle_start_date);
 			$.post(
@@ -462,6 +481,27 @@ $(document).ready(function(){
 					'nouvelle_start_date':nouvelle_start_date,
 					'nouvelle_end_date':nouvelle_end_date,
 					'nom_event':nom_event
+				},
+				function(response){
+				   console.log("echo : "+ response);
+				}
+			);
+		});
+		
+		// Lorsqu'un évenement est supprimé
+		var deleted_event_name;
+		scheduler.attachEvent("onBeforeEventDelete", function(id,e){
+			deleted_event_name = scheduler.getEvent(id).text;
+			return true;
+		});
+		scheduler.attachEvent("onEventDeleted", function(id){
+			var nom_event_supprime = deleted_event_name;
+			console.log (nom_event_supprime);
+			$.post(
+				ajaxurl,
+				{
+					'action': 'delete_playlist',
+					'nom_event':nom_event_supprime
 				},
 				function(response){
 				   console.log("echo : "+ response);
@@ -1064,7 +1104,16 @@ YUI().use(
                     //console.log('requeteajax');
                 if(duree_picked==true){
 					
-					console.log("Entrée dans le js-playlist-clip "+annee_max+annee_min+ " qualite_min : " +qualite_min);
+					var startDate = date_debut_selectionnee;
+					var endDate = date_fin_selectionnee;
+					
+					var date_time = startDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+					var date_now = date_time[0].split('/');
+					date_debut_selectionnee = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
+					
+					var date_time = endDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
+					var date_now = date_time[0].split('/');
+					date_fin_selectionnee = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 
                     $.post(
                         ajaxurl,							
@@ -1102,7 +1151,7 @@ YUI().use(
                         },
                         function(response){
 
-                                console.log("echo : "+artiste_mis_en_avant+" : "+response);
+                                console.log("echo : "+response);
 
                         }
                     );

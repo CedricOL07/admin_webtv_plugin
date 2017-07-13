@@ -287,13 +287,6 @@
                                         <!--<input type="button" id="confirmer_date" value="confirmer" class="btn btn-primary"/>-->
                                         <input type="button" id="annuler_choisir_date" value="annuler" class="btn btn-primary"/>
                                     </div>
-                                    <label id="label_warning_calendar" style="color:red;">
-                                    </label>
-                                    <div>
-                                        <input type="button" id="bouton_voir_programmation_partie_choix_date" value="Voir la programmation" class="btn btn-primary display" />
-                                    </div>
-                                    <div id="calendrier_dates_partie_choix_date">
-                                    </div>
                                     <div>
                                         <input type="button" name="cacher" id="cacher_programmation_partie_choix_date" value="cacher" class="hidden">
                                     </div>
@@ -304,17 +297,9 @@
                                     <input type="button" id="bouton_choisir_date" value="Choisir la date" class="btn btn-primary display"/>
                                 </div>
 
-                                <div class="col-md-2 col-sm-2">
-                                    <input type="button" id="bouton_voir_premiere_date_disponible" value="Passer la playlist dès que possible" class="btn btn-primary display"/>
-                                    <div id="trigger_premiere_date_dispo" class="hidden" >
-                                        <div id="text_prochain_passage"> </div>
-                                        <input type='button' class='btn btn-primary' id='annuler_date_dispo' value='Annuler' />
-                                    </div>
-                                </div>
-
                             <!-- Voir la programmation -->
                                 
-                                <div class="col-md-offset-6 col-md-2 col-sm-2" >
+                                <div class="col-md-offset-9 col-sm-offset-7 col-md-3 col-sm-5" >
                                     <input type="checkbox" id="bouton_voir_cacher_programmation" checked data-toggle="toggle" data-onstyle="default"
                                     data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> " 
                                     data-on="<i class='glyphicon glyphicon-upload' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "/>
@@ -339,35 +324,24 @@
                             <div class="dhx_cal_header"></div>
                             <div class="dhx_cal_data"></div>       
                         </div>
-
-                    <!-- // ancien calendrier //
-                    <div id="wrapper">
-                        <div id="calendar"></div>
                     </div>
-                    -->
-                    </div>
-
 
                     <!-- ******Bouton enregistrer et annuler ***** -->
 
-                    <div class="row col-md-6 col-sm-6 col-md-offset-8 col-sm-offset-8" id="boutons_div">
-                        <div  class="col-md-12 col-sm-12 " id="boutons"> <!----- boutons ----->
-                            <div >
-                               <!-- <a href="<?php //echo admin_url('admin.php?page=pagevalidation');?>">-->
+                    <div  class="row col-md-11 col-sm-11 " id="boutons">
+                        <div class="row col-md-3 col-sm-5 col-md-offset-9 col-sm-offset-7" id="boutons_div">
                             <button type="button" class="btn btn-default" id="bouton_enregistrer_reglage" >
                                     Enregistrer
                             </button>
-
                             <a href="index.php" >
-
                                 <button type="button" class="btn btn-default" id="bouton_annuler_reglage">
                                         Annuler
                                 </button>
                                 <div id="rafraichissement"></div>
-
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
