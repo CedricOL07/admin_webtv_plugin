@@ -163,7 +163,7 @@
 						</button>
 					</div>
 
-					<div class="col-md-1">
+					<div class="col-md-1" id="OS">
 						<input type="checkbox" checked data-toggle="toggle" data-size="small" data-onstyle="default" data-offstyle='default'
 								data-on="<i class='fa fa-linux' style='color:#0964CD'></i> - <i class='fa fa-apple' style='color:#0964CD'></i>" data-off="<i class='fa fa-windows' style='color:#0964CD'></i>">
 					</div>

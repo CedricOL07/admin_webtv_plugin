@@ -41,68 +41,58 @@ function ajouter_video(){
     $album = $_POST['myParams']['album'];
     $annee_prod = $_POST['myParams']['annee'];
     $qualite = $_POST['myParams']['qualite'];   
+    $is_linux = $_POST['myParams']['is_linux'];
     list($jj,$mm,$aaaa)=explode('/',$annee_prod);
     $annee_prod = $aaaa.$mm.$jj;       // Met la date au format aaaammjj
 
 
-    // Copie de la video 
-    $cheminArrive = $_POST['myParams']['finalfolder'];
-  	$path = $_POST['myParams']['filepath'];
-  	$fich = $_POST['myParams']['filename'];
-  	$cheminArrive = str_replace("/", "\\", $cheminArrive);
-    //$domaine = substr($cheminArrive, 0, strrpos($cheminArrive, '/'));
-  	//$path = str_replace("\\\\", "\\", $path);
-    $path = str_replace("\\", "/", $path);
-    $fich2 = str_replace(" ", "_", $fich);
-/*
-    $srcFile = $path;
-    $dstFile = str_replace($domaine, "", $cheminArrive);
+    if($is_linux) // si on est sous unix
+    {
+         // Copie de la video
+        $cheminArrive = $_POST['myParams']['finalfolder'];
+        $path = $_POST['myParams']['filepath'];
+        $fich = $_POST['myParams']['filename'];
+        //$cheminArrive = str_replace("/", "\\", $cheminArrive);
+        //$domaine = substr($cheminArrive, 0, strrpos($cheminArrive, '/'));
+        //$path = str_replace("\\\\", "\\", $path);
+        // attention au problème de droit sur une distribution linux !!!!!!!!!!
+        $path = str_replace("\\", "/", $path);
+        $fich2 = str_replace(" ", "_", $fich);
 
-    // Create connection the the remote host
-    $conn = ssh2_connect($domaine, 22);
 
-    // Create SFTP session
-    $sftp = ssh2_sftp($conn);
-    $sftpStream = @fopen('ssh2.sftp://'.$sftp.$dstFile, 'w');
 
-    try {
-
-        if (!$sftpStream) {
-            throw new Exception("Could not open remote file: $dstFile");
+        if($path && $fich)
+        {
+            if (!file_exists($cheminArrive)) {
+                mkdir($cheminArrive, 0777, true);
+            }
+            $depart=$path;
+            $arriver=$cheminArrive;
+            copy($depart."/".$fich, $arriver."/".$fich);
         }
-        
-        $data_to_send = @file_get_contents($srcFile);
-        
-        if ($data_to_send === false) {
-            throw new Exception("Could not open local file: $srcFile.");
-        }
-        
-        if (@fwrite($sftpStream, $data_to_send) === false) {
-            throw new Exception("Could not send data from file: $srcFile.");
-        }
-        
-        fclose($sftpStream);
-                        
-    } catch (Exception $e) {
-        error_log('Exception: ' . $e->getMessage());
-        fclose($sftpStream);
+    } 
+    else  // Si on est sous Windows
+    {
+        // Copie de la video 
+        $cheminArrive = $_POST['myParams']['finalfolder'];
+      	$path = $_POST['myParams']['filepath'];
+      	$fich = $_POST['myParams']['filename'];
+      	$cheminArrive = str_replace("/", "\\", $cheminArrive);
+
+        $path = str_replace("\\", "/", $path);
+        $fich2 = str_replace(" ", "_", $fich);
+
+
+
+      	if($path && $fich)
+      	{
+            if (!file_exists($cheminArrive)) {
+                mkdir($cheminArrive, 0777, true);
+            }
+            copy(realpath($path)."\\".$fich, realpath($cheminArrive)."\\".$fich);
+      	}
     }
-*/
 
-
-  	if($path && $fich)
-  	{
-        if (!file_exists($cheminArrive)) {
-            mkdir($cheminArrive, 0777, true);
-        }
-        copy(realpath($path)."\\".$fich, realpath($cheminArrive)."\\".$fich);
-  	}
-
-/* */				  	
-
-    //echo "Fonction ajouter_video";
-    /*$titre = $_POST['myParams']['titre'];
-    echo($titre); */
 
     $video_id=0;
     $artiste_id=0;
