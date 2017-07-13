@@ -5,6 +5,8 @@
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <!-- Utile pour le calendrier -->
         <script src="http://cdn.alloyui.com/3.0.1/aui/aui-min.js"></script>
         <link href="http://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>
@@ -149,9 +151,9 @@
                                     <div class=" box-header with-border">
                                         <h3 class="box-title"> Definir comme réglage par défaut</h3>
                                     </div>
-                                    <div class="checkbox" style="padding-bottom:1%;padding-left:1%;">
-                                        <label><input type="checkbox" name="checkbox_par_defaut" id="checkbox_par_defaut" value="">Faire de ce réglage le réglage par défaut</label>
-                                    </div>
+                                    <input type="checkbox" id="checkbox_par_defaut" data-toggle="toggle" data-onstyle="default"
+                                    data-on="<i class='glyphicon glyphicon-ok-sign' style='color:#2C4CB3'></i> Par défaut" 
+                                    data-off="Personnalisée"/>
                                 </div>
                             </div>
 
@@ -313,7 +315,9 @@
                             <!-- Voir la programmation -->
                                 
                                 <div class="col-md-offset-6 col-md-2 col-sm-2" >
-                                    <input type="button" id="bouton_voir_cacher_programmation" value="Cacher la programmation" class="btn btn-primary display" />
+                                    <input type="checkbox" id="bouton_voir_cacher_programmation" checked data-toggle="toggle" data-onstyle="default"
+                                    data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> " 
+                                    data-on="<i class='glyphicon glyphicon-upload' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "/>
                                 </div>
                             </div>
                         

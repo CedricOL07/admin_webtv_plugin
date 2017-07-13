@@ -62,19 +62,22 @@ $(document).ready(function(){
         $('#bouton_choisir_date').toggleClass('hidden display');
     });
 	
+	var is_pardefaut = false;
     //Checkbox pour mettre par defaut ou non le réglage
-    $('#checkbox_par_defaut').click(function(){
+    $('#checkbox_par_defaut').change(function(){
 	
         if(this.checked){
 			$('#planning_playlist').hide();
             $('#partie_highlight').hide();
             $('#partie_publicites').hide();
             $('#partie_diffusion').hide();
+			is_pardefaut = true;
         }else{
 			$('#planning_playlist').show();
             $('#partie_highlight').show();
             $('#partie_publicites').show();
             $('#partie_diffusion').show();
+			is_pardefaut = false;
         }
     });
 
@@ -352,7 +355,7 @@ $(document).ready(function(){
 //////////////////////////////////////////////////////////////////////////
 
 //Afficher/masquer le tableau
-  $('#bouton_voir_cacher_programmation').click(function(){
+  $('#bouton_voir_cacher_programmation').change(function(){
     $('#planning_playlist').toggle('fast');
 	if ($('#bouton_voir_cacher_programmation').val() == "Cacher la programmation")
 	{
@@ -1003,7 +1006,7 @@ YUI().use(
         }
         else{
 
-      			if($('input[name=checkbox_par_defaut]').is(':checked') ){
+      			if(is_pardefaut){
 
     /*  /!\--------------- Partie enregistrant les playlist par defaut!!!!!  --------------/!\   */
 				    pardefaut = 1;
