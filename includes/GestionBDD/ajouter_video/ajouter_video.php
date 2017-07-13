@@ -46,52 +46,30 @@ function ajouter_video(){
     $annee_prod = $aaaa.$mm.$jj;       // Met la date au format aaaammjj
 
 
-    if($is_linux) // si on est sous unix
+     // Copie de la video
+    $cheminArrive = $_POST['myParams']['finalfolder'];
+    $path = $_POST['myParams']['filepath'];
+    $fich = $_POST['myParams']['filename'];
+    //$cheminArrive = str_replace("/", "\\", $cheminArrive);
+    //$domaine = substr($cheminArrive, 0, strrpos($cheminArrive, '/'));
+    //$path = str_replace("\\\\", "\\", $path);
+    // attention au problème de droit sur une distribution linux !!!!!!!!!!
+    $path = str_replace("\\", "/", $path);
+    $fich2 = str_replace(" ", "_", $fich);
+
+
+
+    if($path && $fich)
     {
-         // Copie de la video
-        $cheminArrive = $_POST['myParams']['finalfolder'];
-        $path = $_POST['myParams']['filepath'];
-        $fich = $_POST['myParams']['filename'];
-        //$cheminArrive = str_replace("/", "\\", $cheminArrive);
-        //$domaine = substr($cheminArrive, 0, strrpos($cheminArrive, '/'));
-        //$path = str_replace("\\\\", "\\", $path);
-        // attention au problème de droit sur une distribution linux !!!!!!!!!!
-        $path = str_replace("\\", "/", $path);
-        $fich2 = str_replace(" ", "_", $fich);
-
-
-
-        if($path && $fich)
-        {
-            if (!file_exists($cheminArrive)) {
-                mkdir($cheminArrive, 0777, true);
-            }
-            $depart=$path;
-            $arriver=$cheminArrive;
-            copy($depart."/".$fich, $arriver."/".$fich);
+        if (!file_exists($cheminArrive)) {
+            mkdir($cheminArrive, 0777, true);
         }
-    } 
-    else  // Si on est sous Windows
-    {
-        // Copie de la video 
-        $cheminArrive = $_POST['myParams']['finalfolder'];
-      	$path = $_POST['myParams']['filepath'];
-      	$fich = $_POST['myParams']['filename'];
-      	$cheminArrive = str_replace("/", "\\", $cheminArrive);
-
-        $path = str_replace("\\", "/", $path);
-        $fich2 = str_replace(" ", "_", $fich);
-
-
-
-      	if($path && $fich)
-      	{
-            if (!file_exists($cheminArrive)) {
-                mkdir($cheminArrive, 0777, true);
-            }
-            copy(realpath($path)."\\".$fich, realpath($cheminArrive)."\\".$fich);
-      	}
+        $depart=$path;
+        $arriver=$cheminArrive;
+        copy($depart."/".$fich, $arriver."/".$fich);
     }
+    echo ("copie de : ".$depart."/".$fich."  ". $arriver."/".$fich);
+    wp_die();
 
 
     $video_id=0;
@@ -210,8 +188,6 @@ function ajouter_video(){
     
     //echo $titre." : ".$existante;
 
-    echo ("copie de : " .realpath($path)."\\".$fich . " - Dans - ". realpath($cheminArrive)."\\".$fich);
-    wp_die();
 }
 
 

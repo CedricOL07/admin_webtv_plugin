@@ -28,11 +28,14 @@ $(document).ready(function(){
 		format: 'dd/mm/yyyy',
 		language: 'fr'
 	});
+	/*
 	var is_linux = true;
 	$("#OS").change(function(){
 		is_linux = !is_linux;
 		console.log(is_linux);
 	});		
+	*/
+	
     $('#bouton_inserer_contenu').click(function(){
 
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
@@ -50,11 +53,9 @@ $(document).ready(function(){
 		var finalfolder=$('#CHEMINARRIVE').val();
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
-		var is_linux=$('#OS').val();
 		
 		//console.log(genre);
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
-		
 		
 		
 		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
@@ -65,7 +66,6 @@ $(document).ready(function(){
 					'action':'ajouter_video',
 					'myParams':
 					{
-						'is_linux':is_linux,
 						'titre':titre,
 						'url_video':url_video,
 						'artiste_video':artiste_video,
