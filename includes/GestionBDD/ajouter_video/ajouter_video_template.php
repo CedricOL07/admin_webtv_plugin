@@ -7,6 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://glyphsearch.com/bower_components/font-awesome/css/font-awesome.min.css">
+
 
 	    
       
@@ -107,6 +112,9 @@
 							<option value="Hard-rock & Metal">Métal & Hard-Rock</option>
 							<option value="Musique electronique">Electro</option>
 							<option value="Chanson française">Chanson Française</option>
+							<option value="Publicité Interne">Publicité Interne</option>
+							<option value="Publicité Externe">Publicité Externe</option>
+							<option value="Logo">Logo</option>
 							<option value="Autre">Autre...</option>
 						</select>
 					</div>
@@ -133,8 +141,6 @@
 					<div class="col-md-2">
 						<input type="text" class="form-control" name="path" id="path"  placeholder="Chemin" onchange="changePath(this)">
 					</div>
-
-					
 				</div>
 
 				<!-- Ligne 5 -->
@@ -142,7 +148,7 @@
 					<div class="col-md-2">
 						<label for="url">URL Vidéo :</label>
 					</div>
-					<div class="col-md-7">
+					<div class="col-md-6">
 						<div class="input-group">
 							<label class="input-group-btn">
 								<span class="btn btn-sm btn-primary">
@@ -155,6 +161,11 @@
 					<div class="col-md-2">
 						<button class="btn btn-block btn-sm btn-secondary" id="bouton_modifier_url_par_defaut" type="button" onclick="unlockPath()"> Modifier URL par défaut
 						</button>
+					</div>
+
+					<div class="col-md-1">
+						<input type="checkbox" checked data-toggle="toggle" data-size="small" data-onstyle="default" data-offstyle='default'
+								data-on="<i class='fa fa-linux' style='color:#0964CD'></i> - <i class='fa fa-apple' style='color:#0964CD'></i>" data-off="<i class='fa fa-windows' style='color:#0964CD'></i>">
 					</div>
 				</div>
 
