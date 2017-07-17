@@ -3,9 +3,9 @@
 function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
   // Variables de connexion avec la base de données
   $user="root"; //Nom d'utilisateur
-  $passwd="023Mugen";// Mot de passe de connexion à la base de données
+  $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="wpdatabase"; // Nom de la base de données
+  $bddname="wordpress"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -53,9 +53,9 @@ function ajouter_video($titre,$artiste,$album,$annee,$url,$genre,$qualite){
 function vider_bdd(){
   // Variables de connexion avec la base de données
   $user="root"; //Nom d'utilisateur
-  $passwd="023Mugen";// Mot de passe de connexion à la base de données
+  $passwd="";// Mot de passe de connexion à la base de données
   $host="localhost"; // Addresse de la base de données
-  $bddname="wpdatabase"; // Nom de la base de données
+  $bddname="wordpress"; // Nom de la base de données
 
 
   $mysqli=new mysqli($host,$user,$passwd,$bddname);
@@ -88,5 +88,6 @@ ajouter_video('Chop Suey','System of a Down','SOAD','20020101','http://localhost
 ajouter_video('The kids arent alright','The Offspring','Punk','20010101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/13.mp4','Pop-rock','5');
 ajouter_video('Zombie','The Cranberries','Ireland','19960101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/14.mp4','Pop-rock','5');
 ajouter_video('Tous les cris les SOS','ZAZ','France','20160101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/15.mp4','Musique du monde','5');
+ajouter_video('Logo Fil','','','20160101','http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/jingle.mp4','Logo','5');
 
 ?>
