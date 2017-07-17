@@ -68,14 +68,22 @@ function ajouter_video(){
             copy($depart."/".$fich, $arriver."/".$fich);
         }
 
+        echo("genre : " . $genre);
     	//Remplissage tableau videos_webtv_plugin
+      if ($genre == "Logo"){
+        $remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_logo_webtv_plugin(titre,url) VALUES('$titre','$url');";
+        $wpdb->query($remplir_table_videos);
 
-    	$remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
-    	$wpdb->query($remplir_table_videos);
+        $recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
+        $video_id=$wpdb->get_var($recup_video_id);
+      }
+      else{
+      	$remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
+      	$wpdb->query($remplir_table_videos);
 
-  		$recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
-  		$video_id=$wpdb->get_var($recup_video_id);
-
+    		$recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
+    		$video_id=$wpdb->get_var($recup_video_id);
+      }
 
   	// Album
     	$req_album="SELECT id FROM ".$wpdb->prefix."album_webtv_plugin WHERE album='".$album."' LIMIT 1;";

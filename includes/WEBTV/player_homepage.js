@@ -88,12 +88,12 @@ generer_la_playlist();
 
 /*--------------------------------------- Règles internes --------------------------------------------------*/
 
-
 /*
 * Fonction : Permet d'ajouter une nouvelle video du meme genre et dans la meme tranche d'année
 * que la video qui a été effacer dans le player.
 * Gère la gestion d'ajout et de suppression dans la bdd de la video logo.
 */
+var bdd_logo = false;
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
 	var current = myPlaylist.current;
@@ -101,7 +101,19 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
   var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
   var genre_logo;
 
-
+  console.log(bdd_logo);
+  if (bdd_logo == true){
+    $.post(
+      ajaxurl,
+      {
+        'action': 'supprimer_logo_de_playlist_par_defaut',
+      },
+      function(response){
+        //console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
+        bdd_logo = false;
+      }
+    );
+  }
   //console.log(titre_current_track);
   // Ce post permet de déterminer si la video courante est un logo alors la supprimer de la playlist du player
   $.post(
@@ -111,7 +123,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       'videocourante': titre_current_track
     },
     function(response){
-
+      console.log(response);
       genre_logo =response;
       //console.log("GENRE : " + genre_logo +" fds");
     // supprime la video de logo et on se remet en place
@@ -121,17 +133,9 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
         myPlaylist.remove(current);
         myPlaylist.select(0);
         myPlaylist.play(0);
-
+        bdd_logo = true;
         //On efface le logo de la base de donnée également
-        $.post(
-          ajaxurl,
-          {
-            'action': 'supprimer_logo_de_playlist_par_defaut',
-          },
-          function(response){
-            //console.log("video logo supprimé : " + response);// pour mettre la réponse il faut aller mettre un echo dans la fonction correspondante dans l'action
-          }
-        );
+
       }
       // sinon on supprime seulement la video précédement joué
       else{
@@ -176,7 +180,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             $.each(data.data, function(index, value) {
               genre = value.genre;
               // si une video avec le genre logo forcer à la lire
-              if (genre === "Logo"){
+              if (genre === "Logo" && bdd_logo == false){
 
                 titre = value.titre;
                 url = value.url;

@@ -85,6 +85,7 @@ generer_la_playlist();
 */
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
+  var bdd_logo = false;
   var current = myPlaylist.current;
   var playlist = myPlaylist.playlist;
   var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
@@ -106,13 +107,14 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     // ATTENTION le == ou === ne fonctionne pas.
       if( genre_logo >= 1){
 
-        //myPlaylist.remove(current);
+        myPlaylist.remove(current);
         myPlaylist.select(0);
         myPlaylist.play(0);
+        bdd_logo = true;
       }
-
+      else{
       myPlaylist.remove(0);// efface le premier clip de la playlist du player.
-      myPlaylist.remove(current);
+      }
       /*
       * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
       * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
@@ -130,7 +132,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
             $.each(data.data, function(index, value) {
               genre = value.genre;
               // si une video avec le genre logo forcer à la lire
-              if (genre === "Logo"){
+              if (genre === "Logo" && bdd_logo = true){
 
                 titre = value.titre;
                 url = value.url;
