@@ -1,5 +1,5 @@
 /* Fonction de ce fichier :
-*Il permet de gérer les interéaction avec le player coté product owner.
+*Il permet de gérer les interactions avec le player coté product owner.
 *Tous les contrôles du player de jplayer et l'implémentation des clips dans la  playlist du Player se font ici.
 * Tous les affichages et l'aspect visuel se font dans le fichier index.php dans le dossier page_principal
 */
@@ -50,13 +50,11 @@ $(document).ready(function(){
 
 
 function generer_la_playlist(){
-  var tableau_donnees= new Array();
-  var artiste;
   var artiste_album_annee_gener = new String();
   $.ajax({
     url: ajaxurl,
     data:{
-      'action':'recuperer_videos_player_page_principale',
+      'action':'recuperer_videos_player_page_principale_par_defaut',
     },
     dataType: 'JSON',
     success: function(data) {
@@ -105,6 +103,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 
 
   //console.log(titre_current_track);
+  // Ce post permet de déterminer si la video courante est un logo alors la supprimer de la playlist du player
   $.post(
     ajaxurl,
     {
@@ -144,6 +143,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
       	//On efface le morceau de la base de donnée également
       	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
 
+        // agit que sur la bdd
         $.post(
       		ajaxurl,
       		{

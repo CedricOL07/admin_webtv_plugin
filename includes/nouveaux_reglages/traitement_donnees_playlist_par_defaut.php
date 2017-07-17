@@ -18,7 +18,7 @@ add_action('wp_ajax_recup_genre_video_courante_logo', 'recup_genre_video_courant
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
 add_action('wp_ajax_etat_live','etat_live');
 add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
-add_action('wp_ajax_recuperer_videos_player_page_principale', 'recuperer_videos_player_page_principale' );
+add_action('wp_ajax_recuperer_videos_player_page_principale_par_defaut', 'recuperer_videos_player_page_principale_par_defaut' );
 add_action('wp_ajax_supprimer_logo_de_playlist_par_defaut', 'supprimer_logo_de_playlist_par_defaut');
 add_action('wp_ajax_verif_et_effacer_video_courante_avant_passage_logo','verif_et_effacer_video_courante_avant_passage_logo');
 add_action('pluginwebtv_freq_logo', 'freq_logo');
@@ -344,7 +344,7 @@ function supprimer_logo_de_playlist_par_defaut(){
 *
 */
 
-function recuperer_videos_player_page_principale() {
+function recuperer_videos_player_page_principale_par_defaut() {
     global $wpdb;
     $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";// plus de limite la playlist par default tournera indéfiniment
     $result=$wpdb->get_results($query);
@@ -389,6 +389,9 @@ function recuperer_videos_player_page_principale() {
 
 }
 
+/**
+* Fonction : permet de savoir s'il y a un logo dans la playlist et retourne un nombre 1 s'il y en a ou 0 s'il y en a un pas 
+*/
 function recup_genre_video_courante_logo(){
     global $wpdb;
     if(isset($_POST['videocourante'])){$videocourante = $_POST['videocourante'];}

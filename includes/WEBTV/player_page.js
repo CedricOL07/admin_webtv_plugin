@@ -50,7 +50,7 @@ function generer_la_playlist(){
   $.ajax({
     url: myAjax.ajaxurl,
     data:{
-      'action':'recuperer_videos_player_page_principale',
+      'action':'recuperer_videos_player_page_principale_par_defaut',
     },
     dataType: 'JSON',
     success: function(data) {
@@ -90,6 +90,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
   var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
   var genre_logo;
   var artiste_album_annee_ajout = new String();
+  var taille = myPlaylist.playlist.length;
 
   $.post(
     myAjax.ajaxurl,
@@ -105,17 +106,18 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
     // ATTENTION le == ou === ne fonctionne pas.
       if( genre_logo >= 1){
 
-        myPlaylist.remove(current);
+        //myPlaylist.remove(current);
         myPlaylist.select(0);
         myPlaylist.play(0);
       }
 
       myPlaylist.remove(0);// efface le premier clip de la playlist du player.
+      myPlaylist.remove(current);
       /*
       * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
       * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
       */
-      var taille = myPlaylist.playlist.length;
+
 
        $.ajax({
           url: myAjax.ajaxurl,

@@ -244,7 +244,7 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
     $video_courante= $_POST['videocouranteprevious'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
 
-
+    // Récup la fréquence logo de la playlist par defaut
     $query_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut = "SELECT Freq_logo FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=1;";
     $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut = $wpdb->get_var($query_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
 
