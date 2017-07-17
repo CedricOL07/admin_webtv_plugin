@@ -80,88 +80,118 @@ function generer_la_playlist(){
 generer_la_playlist();
 
 /*
-* Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
-* Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+* Fonction : Permet d'ajouter une nouvelle video du meme genre et dans la meme tranche d'année
+* que la video qui a été effacer dans le player.
+* Gère la gestion d'ajout et de suppression dans la bdd de la video logo.
 */
+var bool_video_logo = false;
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-  var current = myPlaylist.current;
-  var playlist = myPlaylist.playlist;
+	var current = myPlaylist.current;
+	var playlist = myPlaylist.playlist;
   var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
   var genre_logo;
   var artiste_album_annee_ajout = new String();
+  var titre;
+  var url;
+  var genre;// var genre logo différent pour d'autre utilisation
+
+	//On efface le morceau de la base de donnée également
+	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+  console.log(bool_video_logo);
+  if (bool_video_logo == true){
+    myPlaylist.remove(current);
+    myPlaylist.select(0);
+    myPlaylist.play(0);
+    bool_video_logo = false;
+  }
+  // agit que sur la bdd
+  else{
+    myPlaylist.remove(current-1);
+
+  }
+  /*
+  * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+  * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+  */
   var taille = myPlaylist.playlist.length;
+  setTimeout(doSomething, 100);
+  function doSomething() {
+    var freq_logo;
+    var id_video_courante;
+    //console.log("SUCCES");
 
   $.post(
-    myAjax.ajaxurl,
-    {
-      'action': 'recup_genre_video_courante_logo',
-      'videocourante': titre_current_track
-    },
-    function(response){
+     myAjax.ajaxurl,
+     {
+       'action' : 'recup_freq_logo',
+     },
+     function(response) {
 
-      genre_logo =response;
-      //console.log("GENRE : " + genre_logo +" fds");
-    // supprime la video de logo et on se remet en place
-    // ATTENTION le == ou === ne fonctionne pas.
-      if( genre_logo >= 1){
+         freq_logo = response;
+         //console.log(freq_logo);
+         $.post(
+            myAjax.ajaxurl,
+            {
+              'action' : 'recup_id_video_courante',
+              'videocourante': titre_current_track
+            },
+            function(response2) {
+                id_video_courante = response2;
+                console.log("id " +id_video_courante);
+                if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
+                  bool_video_logo = true;
+                  console.log(bool_video_logo);
+                  $.ajax({
+                     url: myAjax.ajaxurl,
+                     data:{
+                       'action' : 'insertion_logo',
+                     },
+                     dataType: 'JSON',
+                     success: function(data) {
+                       $.each(data.data, function(index, value) {
 
-        //myPlaylist.remove(current);
-        myPlaylist.select(0);
-        myPlaylist.play(0);
-      }
+                        // si une video avec le genre logo forcer à la lire
+                        // Permet de générer la nouvelle video avec le logo.
+                        myPlaylist.add({
+                          title:value.titre,
+                          m4v:value.url,
+                        }, true);
 
-      myPlaylist.remove(0);// efface le premier clip de la playlist du player.
-      myPlaylist.remove(current);
-      /*
-      * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
-      * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
-      */
-
-
-       $.ajax({
-          url: myAjax.ajaxurl,
-          data:{
-            'action' : 'recuperer_nouvelle_video_player_page_principal',
-          },
-          dataType: 'JSON',
-          success: function(data) {
-          //console.log("data : "+ data);
-            $.each(data.data, function(index, value) {
-              genre = value.genre;
-              // si une video avec le genre logo forcer à la lire
-              if (genre === "Logo"){
-
-                titre = value.titre;
-                url = value.url;
-                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-              //Permet de générer la nouvelle video avec le logo.
-                myPlaylist.add({
-                  title:value.titre,
-                  m4v:value.url,
-                  artist: artiste_album_annee_ajout,
-                }, true);
-
-                //console.log("entré pour le logo : " + taille);
+                      });
+                    }
+                  });
+                }
+                else{
+                 $.ajax({
+                    url: myAjax.ajaxurl,
+                    data:{
+                      'action' : 'recuperer_nouvelle_video_player_page_principal',
+                    },
+                    dataType: 'JSON',
+                    success: function(data) {
+                      //console.log("data : "+ data);
+                        $.each(data.data, function(index, value) {
+                          // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+                           if (taille<13){
+                            artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+                            //Permet de générer la nouvelle video.
+                            myPlaylist.add({
+                      				title:value.titre,
+                      				m4v:value.url,
+                      				artist: artiste_album_annee_ajout
+                      			});
+                            //console.log("ajout dans le player : " + titre2);
+                          }
+                        });
+                      }
+                    });
+                }
               }
-
-              // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
-              else if (taille<13){
-                titre2= value.titre;
-                artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-
-              //Permet de générer la nouvelle video.
-                myPlaylist.add({
-                  title:value.titre,
-                  m4v:value.url,
-                  artist: artiste_album_annee_ajout
-                });
-                //console.log("ajout dans le player : " + titre2);
-              }
-            });
+            );
           }
-        });
+        );
       }
-    );
+
   });
 });

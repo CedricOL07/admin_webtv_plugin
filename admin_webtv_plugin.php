@@ -345,12 +345,13 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
     `id` int(255) NOT NULL,
     `titre` varchar(255) NOT NULL,
     `url` varchar(255) NOT NULL,
+    `genre` varchar(255) NOT NULL,
     PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
     ";
 
     $alter_table_videos_logo="    ALTER TABLE `" . $wpdb->prefix . "videos_logo_webtv_plugin`
-    MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT;";
+    MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;";
 
   // Remplissage des tables genre et qualite
     $remplir_table_genre="INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES

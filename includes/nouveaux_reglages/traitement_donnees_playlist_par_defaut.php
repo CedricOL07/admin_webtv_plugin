@@ -16,7 +16,6 @@ add_action('wp_ajax_recuperer_programmation','recuperer_programmation');
 add_action('wp_ajax_recuperer_noms_reglages','recuperer_noms_reglages');
 add_action('wp_ajax_recup_genre_video_courante_logo', 'recup_genre_video_courante_logo');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
-add_action('wp_ajax_etat_live','etat_live');
 add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 add_action('wp_ajax_recuperer_videos_player_page_principale_par_defaut', 'recuperer_videos_player_page_principale_par_defaut' );
 add_action('wp_ajax_supprimer_logo_de_playlist_par_defaut', 'supprimer_logo_de_playlist_par_defaut');
@@ -24,14 +23,10 @@ add_action('wp_ajax_verif_et_effacer_video_courante_avant_passage_logo','verif_e
 add_action('pluginwebtv_freq_logo', 'freq_logo');
 add_action('pluginwebtv_insertion_logo_dans_playlist_par_defaut', 'insertion_logo_dans_playlist_par_defaut',1,3);
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
+add_action('wp_ajax_recup_freq_logo','recup_freq_logo');
+add_action('wp_ajax_insertion_logo','insertion_logo');
+add_action('wp_ajax_recup_id_video_courante','recup_id_video_courante');
 
-function etat_live(){
-    $etat_live;
-    if(isset($_POST['data'])){
-      $etat_live=$_POST['data'];
-      wp_send_json($etat_live);
-    }
-}
 
 function recuperer_id_playlist_par_defaut(){
       $query = "SELECT ParDefaut FROM" . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
@@ -177,6 +172,62 @@ function generer_la_playlist_par_defaut(){
 
 }
 /*
+* fonction  : permet de savoir si la video courante possède un genre logo
+*/
+
+function recup_bool_video_courante_logo(){
+  global $wpdb;
+  if(isset($_POST['videocourante'])){$videocourante = $_POST['videocourante'];}
+
+  $query_recup_logo_bdd = "SELECT genre FROM ". $wpdb->prefix ."videos_logo_webtv_plugin WHERE titre'$videocourante' LIMIT 1;";
+  $reponse_recup_logo_bdd = $wpdb->get_var($query_recup_logo_bdd);
+  if ($reponse_recup_logo_bdd == "Logo")
+  {
+    echo(1);
+  }
+  else {
+    echo (0);
+  }
+}
+/*
+* Fonction récupérer le titre et l'url du logo
+*
+*/
+function insertion_logo(){
+  global $wpdb;
+  $query_recup_logo_bdd = "SELECT titre,url FROM ". $wpdb->prefix ."videos_logo_webtv_plugin ORDER BY RAND() LIMIT 1;";
+  $reponse_recup_logo_bdd = $wpdb->get_results($query_recup_logo_bdd);
+  wp_send_json_success($reponse_recup_logo_bdd);
+}
+
+/*
+* Fonction recupère la fréquence logo
+*
+*/
+function recup_freq_logo(){
+  global $wpdb;
+  $query_recup_freq_logo_bdd = "SELECT Freq_logo FROM ". $wpdb->prefix ."playlistenregistrees_webtv_plugin WHERE ParDefaut=1 LIMIT 1;";
+  $reponse_recup_freq_logo_bdd = $wpdb->get_var($query_recup_freq_logo_bdd);
+  echo($reponse_recup_freq_logo_bdd);
+
+}
+/*
+* Fonction recupère l'id de la video courante
+*
+*/
+function recup_id_video_courante(){
+  global $wpdb;
+  if(isset($_POST['videocourante'])){$videocourante = $_POST['videocourante'];}
+
+  $query_recup_id_video_courante = "SELECT id FROM ". $wpdb->prefix ."playlist_par_defaut_webtv_plugin WHERE titre='$videocourante' LIMIT 1;";
+  $reponse_query_recup_id_video_courante = $wpdb->get_var($query_recup_id_video_courante);
+  echo ($reponse_query_recup_id_video_courante);
+}
+
+
+
+
+/*
 * fonction : Création des tableaux $tab_logo_titre et $tab_logo_url
 *  les doublons sont acceptés.
 */
@@ -231,6 +282,8 @@ function freq_logo($frequence_logo){
 
  }
 }
+
+
 
 
 /*
@@ -390,7 +443,7 @@ function recuperer_videos_player_page_principale_par_defaut() {
 }
 
 /**
-* Fonction : permet de savoir s'il y a un logo dans la playlist et retourne un nombre 1 s'il y en a ou 0 s'il y en a un pas 
+* Fonction : permet de savoir s'il y a un logo dans la playlist et retourne un nombre 1 s'il y en a ou 0 s'il y en a un pas
 */
 function recup_genre_video_courante_logo(){
     global $wpdb;
