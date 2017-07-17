@@ -70,11 +70,20 @@ function ajouter_video(){
 
     	//Remplissage tableau videos_webtv_plugin
 
-    	$remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
-    	$wpdb->query($remplir_table_videos);
+      if ($genre == "Logo"){
+      	$remplir_table_videos_logo="INSERT INTO " . $wpdb->prefix . "videos_logo_webtv_plugin(titre,url) VALUES('$titre','$url');";
+      	$wpdb->query($remplir_table_videos_logo);
 
-  		$recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
-  		$video_id=$wpdb->get_var($recup_video_id);
+    		$recup_video_id_logo="SELECT id FROM ".$wpdb->prefix."videos_logo_webtv_plugin WHERE url='$url';";
+    		$video_id=$wpdb->get_var($recup_video_id_logo);
+      }
+      else{
+        $remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
+        $wpdb->query($remplir_table_videos);
+
+        $recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
+        $video_id=$wpdb->get_var($recup_video_id);
+      }
 
 
   	// Album

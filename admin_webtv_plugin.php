@@ -337,12 +337,22 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
 ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 ";
 
-// Remplissage des tables genre et qualite
-
     $alter_table_videos="    ALTER TABLE `" . $wpdb->prefix . "videos_webtv_plugin`
-MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
+    MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
 
 
+    $creer_table_videos_logo="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "videos_logo_webtv_plugin` (
+    `id` int(255) NOT NULL,
+    `titre` varchar(255) NOT NULL,
+    `url` varchar(255) NOT NULL,
+    PRIMARY KEY  (`id`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+    ";
+
+    $alter_table_videos_logo="    ALTER TABLE `" . $wpdb->prefix . "videos_logo_webtv_plugin`
+    MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT;";
+
+  // Remplissage des tables genre et qualite
     $remplir_table_genre="INSERT INTO `" . $wpdb->prefix . "genre_webtv_plugin` (`id`, `Genre`) VALUES
     (33, ''),(12, 'Autre'),(8, 'Chanson française'),
     (2, 'Hard-rock & Metal'),
@@ -369,7 +379,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($creer_table_relation);
     $wpdb->query($creer_table_videos);
     $wpdb->query($creer_table_playlist_clip);
-
+    $wpdb->query($creer_table_videos_logo);
     $wpdb->query($remplir_table_genre);
     $wpdb->query($remplir_table_qualite);
 
@@ -384,6 +394,7 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;";
     $wpdb->query($alter_table_relation);
     $wpdb->query($alter_table_defaut_playlist);
     $wpdb->query($alter_table_playlist_clip);
+    $wpdb->query($alter_table_videos_logo);
 }
 
 
@@ -400,8 +411,9 @@ function pluginwebtv_supprimer_tables(){
     $effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
     $effacer_table_playlistclip="DROP TABLE " . $wpdb->prefix . "playlistclip_webtv_plugin;";
     $effacer_table_genre="DROP TABLE " . $wpdb->prefix . "genre_webtv_plugin;";
+    $effacer_table_videos_logo="DROP TABLE " . $wpdb->prefix . "videos_logo_webtv_plugin;";
 
-
+    $wpdb->query($effacer_table_videos_logo);
     $wpdb->query($effacer_table_playlistenregistres);
     $wpdb->query($effacer_table_album);
     $wpdb->query($effacer_table_annee);
