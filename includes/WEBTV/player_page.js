@@ -1,6 +1,8 @@
 /* Commentaire sur ce fichier !!!!
 * ATTENTION : le player_page.js est utile à afficher le player coté client.
 * Le problème rencontré si on veut le supprimer ces le chemin myAjax.ajaxurl dans la fonction générer a playlist
+* Les fonctions dans la rubrique action des fonction ajax sont dans les fichiers  includes/GenerationPlaylist_par_defaut.php et
+* includes/nouveaux_reglages/traitement_donnees_playlist_par_defaut.php
 */
 $(document).ready(function(){
     var index_bdd_precedent;
@@ -43,6 +45,10 @@ $(document).ready(function(){
 *
 */
 
+/*
+* fonction : Permet de génerer la playlist des 12 clips video à l'aide de la playlist par defaut de la bdd wordpress
+*
+*/
 function generer_la_playlist(){
   var tableau_donnees= new Array();
   var artiste;
@@ -80,35 +86,36 @@ function generer_la_playlist(){
 generer_la_playlist();
 
 /*
-* Fonction : Permet d'ajouter une nouvelle video du meme genre et dans la meme tranche d'année
+* Fonction :
+* _Permet d'ajouter une nouvelle video du meme genre
+* et dans la meme tranche d'année avec une qualité identique ou supérieur
 * que la video qui a été effacer dans le player.
-* Gère la gestion d'ajout et de suppression dans la bdd de la video logo.
+* _Ne gère absolument rien avec la bdd afin d'éviter les conflits s'il y a plusieurs utilisateur
+* _ toutes les actions sont font à la fin d'un clip.
 */
-var bool_video_logo = false;
+var bool_video_logo = false; // initilisation de cette variable en dehors de la fonction car elle ne doit se réinitialiser à chaque fois qu'un clip se termine
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-	var current = myPlaylist.current;
-	var playlist = myPlaylist.playlist;
-  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
+	var current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
+	var playlist = myPlaylist.playlist;// récupère la playlist du player sous forme de tableau
+  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;// récupère le titre du clip qui est entrain d'être joué
   var genre_logo;
   var artiste_album_annee_ajout = new String();
   var titre;
   var url;
-  var genre;// var genre logo différent pour d'autre utilisation
-
+  var genre;
+  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
 	//On efface le morceau de la base de donnée également
-	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
-  console.log(bool_video_logo);
+  // utile lorsque le player a fini de lire le logo cette condition permet de supprimé le logo de la playlist et de retourner au debut de la playlist
   if (bool_video_logo == true){
-    myPlaylist.remove(current);
-    myPlaylist.select(0);
-    myPlaylist.play(0);
+    myPlaylist.remove(current);// supprime la video courante
+    myPlaylist.select(0);// sélectionne le la première video
+    myPlaylist.play(0);// lit la première video
     bool_video_logo = false;
   }
   // agit que sur la bdd
   else{
-    myPlaylist.remove(current-1);
-
+    myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video execpté une video logo.
   }
   /*
   * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
@@ -119,26 +126,22 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
   function doSomething() {
     var freq_logo;
     var id_video_courante;
-    //console.log("SUCCES");
-
-  $.post(
-     myAjax.ajaxurl,
-     {
-       'action' : 'recup_freq_logo',
-     },
-     function(response) {
-
-         freq_logo = response;
-         //console.log(freq_logo);
-         $.post(
-            myAjax.ajaxurl,
-            {
-              'action' : 'recup_id_video_courante',
-              'videocourante': titre_current_track
-            },
-            function(response2) {
+    $.post(
+       myAjax.ajaxurl,
+       {
+         'action' : 'recup_freq_logo',
+       },
+       function(response) {
+           freq_logo = response;
+           $.post(
+              myAjax.ajaxurl,
+              {
+                'action' : 'recup_id_video_courante',
+                'videocourante': titre_current_track
+              },
+              function(response2) {
                 id_video_courante = response2;
-                console.log("id " +id_video_courante);
+                // condition de passage au logo ou pas
                 if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
                   bool_video_logo = true;
                   console.log(bool_video_logo);
@@ -150,14 +153,12 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
                      dataType: 'JSON',
                      success: function(data) {
                        $.each(data.data, function(index, value) {
-
                         // si une video avec le genre logo forcer à la lire
                         // Permet de générer la nouvelle video avec le logo.
                         myPlaylist.add({
                           title:value.titre,
                           m4v:value.url,
                         }, true);
-
                       });
                     }
                   });
@@ -170,7 +171,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
                     },
                     dataType: 'JSON',
                     success: function(data) {
-                      //console.log("data : "+ data);
                         $.each(data.data, function(index, value) {
                           // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
                            if (taille<13){
@@ -181,17 +181,15 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
                       				m4v:value.url,
                       				artist: artiste_album_annee_ajout
                       			});
-                            //console.log("ajout dans le player : " + titre2);
                           }
                         });
                       }
                     });
+                  }
                 }
-              }
-            );
-          }
-        );
+              );
+            }
+          );
       }
-
   });
 });

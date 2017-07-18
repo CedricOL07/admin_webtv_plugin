@@ -259,14 +259,7 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
 
     $query_genre_videocouranteprevious_dans_playlist_par_defaut = "SELECT genre FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE titre='$video_courante';";
     $reponse_genre_videocouranteprevious_dans_playlist_par_defaut = $wpdb->get_var($query_genre_videocouranteprevious_dans_playlist_par_defaut);
-    // Ajoute une pub si on arrive à la video de la playlist qui son id identique à la fréquence des logos.
-    /*if ($reponse_id_videocouranteprevious_dans_playlist_par_defaut % $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut == 0 && $reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut > 0 && $reponse_genre_videocouranteprevious_dans_playlist_par_defaut != 'Logo') {
 
-        do_action('pluginwebtv_freq_logo',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut);
-        do_action('pluginwebtv_insertion_logo_dans_playlist_par_defaut',$reponse_freq_logo_dans_playlist_enregistrees_choix_playlist_par_defaut, $reponse_id_videocouranteprevious_dans_playlist_par_defaut, $video_courante);
-    }
-    // s'l faut ajouter un nouveau clip dans la playslist par defaut.
-    else {*/
     //récupération de l'id de la video courante dans la table video_web_tv.
     $query_id_video_courante = "SELECT id FROM ". $wpdb->prefix . "videos_webtv_plugin WHERE titre='$video_courante' LIMIT 1;";
     $reponse_id_video_courante = $wpdb -> get_var($query_id_video_courante);
@@ -338,7 +331,6 @@ function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
       $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
       $wpdb->query($query_del_titre_video_courante);
 
-    //}
 }
 
 /*
