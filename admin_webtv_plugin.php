@@ -78,6 +78,9 @@ function scripts_page_principale(){
     wp_register_script( 'schedulerjs', plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.js',__FILE__), FALSE);
     wp_enqueue_script('schedulerjs');
     wp_enqueue_style("schedulercss",plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.css',__FILE__) , FALSE);
+    wp_register_script( 'datetimepickerjs',plugins_url('assets/js/dist/datetimepicker.js',__FILE__),FALSE);
+    wp_enqueue_script('datetimepickerjs');
+    wp_enqueue_style("timepickercss",plugins_url('assets/css/timepicker.css',__FILE__) , FALSE);
 }
 
 

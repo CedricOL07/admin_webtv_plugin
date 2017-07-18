@@ -6,11 +6,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html>
   <head>
     <meta charset="utf-8">
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <!-- Utile pour le calendrier -->
-    <script src="http://cdn.alloyui.com/3.0.1/aui/aui-min.js"></script>
-    <link href="http://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>
+
 
     <title>WEBTVFIL</title>
   </head>
@@ -46,45 +42,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="bootstrap-wpadmin">
               <div class="row">
                 <div class="col-md-12">
-
-                  <h3 class="text-center">
-                    WEB TV LIVE - Le Fil
-                  </h3>
                 </div>
                 <div class="col-md-12" style="height:5%;"></div>
                 <div class="col-md-6">
                   <h3>
-                    ON AIR
+                    Playlist - EXCLUSIF (durée de 1 Heure)
                   </h3>
-                  <div class="col-md-offset-9 col-sm-offset-7 col-md-3 col-sm-5" >
-                      <input type="checkbox" id="bouton_voir_cacher_programmation" checked data-toggle="toggle" data-onstyle="default"
-                      data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "
-                      data-on="<i class='glyphicon glyphicon-upload' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "/>
-                  </div>
-                  <div class="row col-md-6 col-sm-6" id="planning_playlist" >
+                  <div class="row col-md-6 col-sm-6">
 
-                      <div id="scheduler_here" class="dhx_cal_container" >
-                          <div class="dhx_cal_navline">
-                              <div class="dhx_cal_prev_button">&nbsp;</div>
-                              <div class="dhx_cal_next_button">&nbsp;</div>
-                              <div class="dhx_cal_today_button"></div>
-                              <div class="dhx_cal_date"></div>
-                              <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-                              <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-                              <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
-                          </div>
-                          <div class="dhx_cal_header"></div>
-                          <div class="dhx_cal_data"></div>
-                      </div>
+                    <button class="btn btn-primary btn-block" id="Pop-rock_btn">Pop-rock</button>
+                    <button class="btn btn-danger btn-block" id="Hip-Hop_et_Rap_btn">Hip-Hop et Rap</button>
+                    <button class="btn btn-warning btn-block" id="Jazz_et_Blues_btn">Jazz et Blues</button>
+                    <button class="btn btn-block" style="background-color:#00833D; color:#FEFEFE; " id="Musique_du_monde_et_Reggae_btn">Monde &  Reggae</button>
+                    <button class="btn btn-block" style="background-color:#750071; color:#FEFEFE;"  id="Hard_Rock_et_Metal_btn">Hard Rock et Métal</button>
+                    <button class="btn btn-info btn-block" id="Electro_btn">Electro</button>
+                    <button class="btn btn-block" style="background-color:#EA39A4; color:#FEFEFE; "id="Chanson_btn">Chanson</button>
+                    <button class="btn btn-success btn-block" style="margin-bottom: 20px;"  id="Autres_btn">Autres</button>
                   </div>
-                  <button class="btn btn-primary" id="live_btn">Lancer le LIVE</button>
                 </div>
                 <div class="col-md-4" style="margin-top:2%;">
                   <div class="row">
                     <div class="col-md-4" id="lecteur_video">
                       <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
+                        <button class="btn btn-block" style="background-color:#F90000; color:#FEFEFE;" id="Stop_playlist">Arrêter la playlist en cours</button>
                         <div class="jp-type-playlist">
                           <div id="player_video" class="jp-jplayer"></div>
+
                           <div class="jp-gui">
                             <div class="jp-video-play">
                               <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
@@ -139,6 +122,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </div>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <?php include( MY_PLUGIN_PATH . 'includes/WEBTV/page_principale/calendrier.php');?>
                 </div>
               </div>
             </div>
