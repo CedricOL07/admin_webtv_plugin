@@ -46,9 +46,19 @@ function supprimer_clips(){
       $titre=$valeurs['titre'];
       // Récuperation des id pour la suppression des valeurs dans la table de relations
       $video_id=$wpdb->get_var("SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre'",0,0);
-      //Suppression de la base de données
-      $wpdb->query("DELETE FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre';");
-      $wpdb->query("DELETE FROM ".$wpdb->prefix."relation_webtv_plugin WHERE video_id=$video_id;");
+      //récupération du genre de la video si c'est un logo on le supprime dans la table relation video id et la table logo
+      $genre_id=$wpdb->get_var("SELECT genre_id FROM ".$wpdb->prefix."relation_webtv_plugin WHERE video_id='$video_id'",0,0);
+
+        if ($genre_id == 13){
+          $wpdb->query("DELETE FROM ".$wpdb->prefix."videos_logo_webtv_plugin WHERE titre='$titre';");
+          $wpdb->query("DELETE FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre';");
+          $wpdb->query("DELETE FROM ".$wpdb->prefix."relation_webtv_plugin WHERE video_id=$video_id;");
+        }
+        else{
+        //Suppression de la base de données
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."videos_webtv_plugin WHERE titre='$titre';");
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."relation_webtv_plugin WHERE video_id=$video_id;");
+      }
     }
     echo "SUCCESS";
   }

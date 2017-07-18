@@ -76,6 +76,12 @@ function ajouter_video(){
 
     		$recup_video_id_logo="SELECT id FROM ".$wpdb->prefix."videos_logo_webtv_plugin WHERE url='$url';";
     		$video_id=$wpdb->get_var($recup_video_id_logo);
+
+        $remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
+        $wpdb->query($remplir_table_videos);
+
+        $recup_video_id="SELECT id FROM ".$wpdb->prefix."videos_webtv_plugin WHERE url='$url';";
+        $video_id=$wpdb->get_var($recup_video_id);
       }
       else{
         $remplir_table_videos="INSERT INTO " . $wpdb->prefix . "videos_webtv_plugin(titre,url) VALUES('$titre','$url');";
