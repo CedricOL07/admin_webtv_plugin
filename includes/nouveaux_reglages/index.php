@@ -152,7 +152,7 @@
                                         <h3 class="box-title"> Definir comme réglage par défaut</h3>
                                     </div>
                                     <input type="checkbox" id="checkbox_par_defaut" data-toggle="toggle" data-onstyle="default"
-                                    data-on="<i class='glyphicon glyphicon-ok-sign' style='color:#2C4CB3'></i> Par défaut" 
+                                    data-on="<i class='glyphicon glyphicon-ok-sign' style='color:#2C4CB3'></i> Par défaut"
                                     data-off="Personnalisée"/>
                                 </div>
                             </div>
@@ -298,14 +298,14 @@
                                 </div>
 
                             <!-- Voir la programmation -->
-                                
+
                                 <div class="col-md-offset-9 col-sm-offset-7 col-md-3 col-sm-5" >
                                     <input type="checkbox" id="bouton_voir_cacher_programmation" checked data-toggle="toggle" data-onstyle="default"
-                                    data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> " 
+                                    data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "
                                     data-on="<i class='glyphicon glyphicon-upload' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "/>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
 
@@ -322,7 +322,7 @@
                                 <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
                             </div>
                             <div class="dhx_cal_header"></div>
-                            <div class="dhx_cal_data"></div>       
+                            <div class="dhx_cal_data"></div>
                         </div>
                     </div>
 

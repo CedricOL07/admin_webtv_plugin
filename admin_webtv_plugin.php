@@ -67,13 +67,17 @@ function plugin_webtvfil(){
 add_action( 'admin_menu', 'plugin_webtvfil' );
 
 function scripts_page_principale(){
-    wp_enqueue_script("homepagejs",  plugins_url("includes/WEBTV/homepage.js", __FILE__), FALSE);
-	wp_enqueue_script("playerhompagejs",  plugins_url("includes/WEBTV/player_homepage.js", __FILE__), FALSE);
-	wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
-	wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
+    wp_register_script( 'nouveaureglagejs', plugins_url('includes/nouveaux_reglages/nouveaux_reglages.js',__FILE__), array(), null, false );
+    wp_enqueue_script('nouveaureglagejs');
+  	wp_enqueue_script("playerhompagejs",  plugins_url("includes/WEBTV/player_homepage.js", __FILE__), FALSE);
+  	wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
+  	wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
     wp_enqueue_script("jplayerplaylistjs",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
     wp_enqueue_script("jqueryjplayerjs",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
     wp_enqueue_style("nouveaureglagecustomcss",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
+    wp_register_script( 'schedulerjs', plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.js',__FILE__), FALSE);
+    wp_enqueue_script('schedulerjs');
+    wp_enqueue_style("schedulercss",plugins_url('includes/nouveaux_reglages/scheduler/codebase/dhtmlxscheduler.css',__FILE__) , FALSE);
 }
 
 
