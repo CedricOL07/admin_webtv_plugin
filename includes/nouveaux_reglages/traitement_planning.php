@@ -16,6 +16,7 @@ add_action( 'wp_ajax_get_playlist_content', 'get_playlist_content' );
 add_action( 'wp_ajax_change_playlist_date', 'change_playlist_date' );
 add_action( 'wp_ajax_change_playlist_name', 'change_playlist_name' );
 add_action( 'wp_ajax_delete_playlist', 'delete_playlist' );
+add_action( 'wp_ajax_gestion_une_playlist_a_la_fois', 'gestion_une_playlist_a_la_fois' );
 
 
 
@@ -94,7 +95,8 @@ Cette fonction supprime la playlist indiquée
 
     global $wpdb;
 
-    if(isset($_POST['nom_event'])){ $nom_event=$_POST['nom_event']; }
+    if(isset($_POST['nom_event'])){ $nom_event=$_POST['nom_event']; }               // appel depuis le js
+    else{if(isset($_SESSION['nom_event'])){ $nom_event=$_SESSION['nom_event']; } }  // appel depuis la fct php gestion_une_playlist_a_la_fois
 
     // Verification qu'il y ai une playlist de ce nom
     $check_name="SELECT count(*) FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom = '".$nom_event."';";
@@ -110,6 +112,75 @@ Cette fonction supprime la playlist indiquée
         $wpdb->query($update_name);
         echo ($nom_event." correctement supprimé");
     }
+}
+
+function gestion_une_playlist_a_la_fois(){
+
+/*
+Assure que deux playlists ne se chevauchent pas
+pour chaque playlist: date debut=pdd, date fin=pdf
+nouvelle playist:  date debut=dd, date fin=df
+si pdf>dd:
+                        oui--> pdd = df                        pdd> ---
+        oui--> pdd<df?  non--> rien à faire             dd ---------|-|---------------------------------------
+pdf>df?                                                             | | -- donnera --> 
+        non--> pdd<dd?  oui--> pdf = dd                 df ---------|-|-----------------pdd>-___--------------
+                        non--> supprimer playlist              pdf> ---                 pdf> ---
+
+*/
+
+    global $wpdb;
+
+    if(isset($_POST['nom_playlist'])){ $nom_playlist=$_POST['nom_playlist']; }  // appel depuis le js
+    if(isset($_POST['date_debut'])){ $dd=$_POST['date_debut']; }
+    if(isset($_POST['date_fin'])){ $df=$_POST['date_fin']; }
+
+    $dd = Date(DATE_ATOM, strtotime($dd));
+    $df = Date(DATE_ATOM, strtotime($df));
+
+    // Verification des playlist pas par défaut
+    $check_playlists="SELECT nom, Debut, Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=0 AND nom!='$nom_playlist';";
+    $playlists = $wpdb->get_results($check_playlists);
+    foreach ($playlists as $playlist_n) {
+        $nom_n = $playlist_n->nom;
+        $debut_n = $playlist_n->Debut;
+        $fin_n = $playlist_n->Fin;
+
+        $pdd = Date(DATE_ATOM, strtotime($debut_n));
+        $pdf = Date(DATE_ATOM, strtotime($fin_n));
+
+        $to_be_changed = 0;
+
+        if($pdf>$dd)
+        {
+            if ($pdf>$df)
+            {
+                if ($pdd<$df)
+                {
+                    $pdd = $df;
+                    $to_be_changed = 1;
+                }
+            } else
+            {
+                if ($pdd<$dd)
+                {
+                    $pdf = $dd;
+                    $to_be_changed = 1;
+                } else
+                {
+                    $_SESSION['nom_event'] = $nom_n;
+                    delete_playlist();
+                    $_SESSION['nom_event'] = "";
+                }
+            }
+        }
+        if($to_be_changed==1)
+        {
+            $update_date_query = "UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET Debut='$pdd', Fin='$pdf' WHERE nom='$nom_n';";
+            $wpdb->query($update_date_query);
+        }
+    }
+
 }
 
 

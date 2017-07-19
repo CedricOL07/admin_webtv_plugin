@@ -472,8 +472,8 @@ $(document).ready(function(){
 
 			nouvelle_start_date=nouvelle_start_date.replace("T", " ");
 			nouvelle_end_date=nouvelle_end_date.replace("T", " ");
-
-			console.log(nouvelle_start_date);
+			
+			console.log(nom_event+" : "+nouvelle_start_date+" - "+nouvelle_end_date);
 			$.post(
 				ajaxurl,
 				{
@@ -483,9 +483,20 @@ $(document).ready(function(){
 					'nom_event':nom_event
 				},
 				function(response){
-				   console.log("echo : "+ response);
 				}
 			);
+			$.post(
+				ajaxurl,
+				{
+					'action': 'gestion_une_playlist_a_la_fois',
+					'date_debut':nouvelle_start_date,
+					'date_fin':nouvelle_end_date,
+					'nom_playlist':nom_event
+				},
+				function(response){
+				}
+			);
+			
 		});
 
 		// Lorsqu'un évenement est supprimé
@@ -1498,7 +1509,7 @@ YUI().use(
                             'pourcentage_chanson':tableau_pourcentages.chanson,
                             'pourcentage_autres':tableau_pourcentages.autres,
                             'nom_reglage':nom_reglage,
-                            'freq_logo':freq_logo,
+                            'freq_logo':freq_logo
                         },
                         function(response){
                            console.log("echo : "+ response);
@@ -1568,7 +1579,7 @@ YUI().use(
                             'artistehighlight':artiste_mis_en_avant,
                             'date_debut':date_debut_selectionnee,
                             'date_fin':date_fin_selectionnee,
-                            'freq_logo':freq_logo,
+                            'freq_logo':freq_logo
 
                         },
                         function(response){
