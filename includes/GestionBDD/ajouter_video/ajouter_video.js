@@ -59,7 +59,7 @@ $(document).ready(function(){
 		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		//console.log("genre" +genre);
 
-		if(titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '')
+		if((titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '') || (genre=='Logo' && titre!='' && url_video!=''))
 		{
 			$.post(
 				ajaxurl,
