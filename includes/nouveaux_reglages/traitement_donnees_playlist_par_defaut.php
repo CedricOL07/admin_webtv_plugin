@@ -156,26 +156,6 @@ function generer_la_playlist_par_defaut(){
 
 }
 
-
-/*
-* fonction  : permet de savoir si la video courante possède un genre logo
-* pour le fichier js du player_homepage.js et player_page.js
-*/
-
-function recup_bool_video_courante_logo(){
-  global $wpdb;
-  if(isset($_POST['videocourante'])){$videocourante = $_POST['videocourante'];}
-
-  $query_recup_logo_bdd = "SELECT genre FROM ". $wpdb->prefix ."videos_logo_webtv_plugin WHERE titre'$videocourante' LIMIT 1;";
-  $reponse_recup_logo_bdd = $wpdb->get_var($query_recup_logo_bdd);
-  if ($reponse_recup_logo_bdd == "Logo")
-  {
-    echo(1);
-  }
-  else {
-    echo (0);
-  }
-}
 /*
 * Fonction récupérer le titre et l'url du logo pour le fichier js du player_homepage.js et player_page.js
 *

@@ -8,6 +8,7 @@
 
 $(document).ready(function(){
   var index_bdd_precedent;
+  var nom_playlist_clip;
   var myPlaylist = new jPlayerPlaylist({
     jPlayer: "#player_video",
     cssSelectorAncestor: "#container_jplayer"
@@ -54,40 +55,40 @@ $(document).ready(function(){
 * fonction : Permet de génerer la playlist des 12 clips video à l'aide de la playlist par defaut de la bdd wordpress
 *
 */
+var on_joue_la_playlist_par_defaut;
+var playlist_prete_a_etre_chargee;
 
 function generer_la_playlist(){
-  var artiste_album_annee_gener = new String();
-  $.ajax({
-    url: ajaxurl,
-    data:{
-      'action':'recuperer_videos_player_page_principale_par_defaut',
-    },
-    dataType: 'JSON',
-    success: function(data) {
-      //console.log("génération de la playlist: "+data);
-      $.each(data.data, function(index, value) {
-        //On va récupérer le nom de l'artiste pour chaque titre
-        artiste_album_annee_gener=  value.artiste + " - " + value.album  + " - " +value.annee;
-        var title=value.titre;
-        var url = value.url;
+	var artiste_album_annee_gener = new String();
 
-        myPlaylist.add({
-    			title:value.titre,
-    			m4v:value.url,
-    			artist:artiste_album_annee_gener
-        });
-        //console.log(value.url);
-        myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
-        //console.log(url);
-      });
-
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-      console.log(xhr.status);
-      console.log(thrownError);
-    }
-  });
+	// On vide d'abord la playlist si elle existe
+	myPlaylist.remove();
+	
+	
+	// On regarde si il faut charger la playlist par défaut où la playlist clip
+	$.when(
+		$.post(
+			ajaxurl,
+			{
+			  'action': 'chargement_page_quelle_playlist_charger',
+			  'demande': 'bool'
+			},
+			function(response){
+				playlist_a_lire = response;
+		})
+	).then(function(){
+		console.log("il existe une playlist = "+playlist_a_lire);
+		if(playlist_a_lire == false)
+		{
+			charger_playlist_par_defaut();
+		}
+		else
+		{
+			verifier_et_génerer_playlist_clip();
+		}
+	});
 }
+
 generer_la_playlist();
 
 
@@ -103,120 +104,453 @@ generer_la_playlist();
 * _Gère la gestion d'ajout et de suppression dans la bdd de la video logo.
 * _ toutes les actions sont font à la fin d'un clip.
 */
+
+
 var bool_video_logo = false;
+var current;
+var playlist;
+var titre_current_track;
+
+
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
-	var current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
-	var playlist = myPlaylist.playlist; // récupère la playlist du player sous forme de tableau
-  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title; // récupère le titre du clip qui est entrain d'être joué
-  var genre_logo;
-  var artiste_album_annee_ajout = new String(); // obligatoire pour former un string
-  var titre;
-  var url;
-  var genre;
-  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+	myPlaylist.pause();
+	
+	current = myPlaylist.current;
+	playlist = myPlaylist.playlist;
+	titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
+	
+	// On détermine si il faut lire dans la playlist par défaut ou playlist clip, et si il faut 
+	// la regénérer ou juste continuer la lecture
+	
+	console.log("on_joue_la_playlist_par_defaut = "+on_joue_la_playlist_par_defaut);
+	
+	//														 		--true-> 	generer+lancer cette playlist
+	//			--true-> 	existe une PC autour de cette heure?	--false-> 	continuer PPD
+	// prec=PPD?
+	//			--false-> 	heure de fin de cette PC > cette heure?	--true->	continuer PC
+	//																--false->	existe une autre PC autour de cette heure? 	--true->	generer+lancer cette playlist
+	//																														--false-> 	lancer PPD
+	
+	
+	if(on_joue_la_playlist_par_defaut)	// si précédente musique est une lecture de playlist par défaut
+	{
+		$.when(
+			$.post(
+				ajaxurl,
+				{
+				  'action': 'chargement_page_quelle_playlist_charger',
+				  'demande': 'bool'
+				},
+				function(response){
+					playlist_a_lire = response;
+				}
+			)
+		).then(function(){
+			if(playlist_a_lire==true)
+			{	// Si il existe une playlist clip à cet horaire, on lance la requête SQL de 
+				// génération dans la BDD, puis on recharge la playlist dans le player
+			
+				console.log("Il y a une playlist_a_lire");
+				verifier_et_génerer_playlist_clip();
+			} else
+			{
+				console.log("Aucune playlist_a_lire");
+				myPlaylist.play();
+				on_joue_la_playlist_par_defaut = true;
+				continuer_playlist_par_defaut();
+			}
+		});
+	}
+	else		// si précédente musique est une lecture de playlist clip
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$.post(			// On vérifie si la bonne playlist clip est chargée à partir des dates de début et de fin
+			ajaxurl,
+			{
+			  'action': 'verifier_playlist_clip_charger_dans_la_table'
+			},
+			function(response){	
+				console.log("playlist terminée? "+response);
+				if(response!=false)	// Si les dates coïncident (heure de fin pas encore arrivée et bonne playlist_clip chargée)
+				{
+					myPlaylist.play();
+					continuer_playlist_clip();
+				}
+				else
+				{
+					$.post(			// On vérifie si il existe une autre playlist clip à charger à cette heure
+						ajaxurl,
+						{
+						  'action': 'chargement_page_quelle_playlist_charger',
+						  'demande':'bool'
+						},
+						function(response2){
+							console.log("Une autre playlist a cette heure? "+response2);
+							if(response2==false)	// Si aucune autre playlist à cette heure
+							{
+								charger_playlist_par_defaut();
+								myPlaylist.play();
+							}else
+							{
+								verifier_et_génerer_playlist_clip();
+							}
+						}
+					);
+				}
+			}
+		);
+	}		
+		
+
+});
+
+
+/*
+* Fonction de chargement des musiques de playlist_par_defaut dans le player
+*/
+function charger_playlist_par_defaut()
+{
+	// On vide d'abord la playlist si elle existe
+	myPlaylist.remove();
+	// Si playlist par défaut
+	$.ajax({
+		url: ajaxurl,
+		data:{
+		  'action':'recuperer_videos_player_page_principale_par_defaut',
+		},
+		dataType: 'JSON',
+		success: function(data) {
+			$.each(data.data, function(index, value) {
+				//On va récupérer le nom de l'artiste pour chaque titre
+				artiste_album_annee_gener=  value.artiste + " - " + value.album  + " - " +value.annee;
+				var title=value.titre;
+				var url = value.url;
+
+				myPlaylist.add({
+						title:value.titre,
+						m4v:value.url,
+						artist:artiste_album_annee_gener
+				});
+				myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
+			});
+			on_joue_la_playlist_par_defaut = true; // première occurence au chargement de la page
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+		  console.log(xhr.status);
+		  console.log(thrownError);
+		}
+	});
+}
+
+/*
+* Fonction de chargement des musiques de playlistclip dans le player
+*/
+function verifier_et_génerer_playlist_clip()
+{
+	var nom_playlist_a_lire;
+	$.when(
+		$.post(			// On récupère le nom de la playlist
+			ajaxurl,
+			{
+			  'action': 'chargement_page_quelle_playlist_charger',
+			  'demande': 'nom'
+			},
+			function(response){
+				nom_playlist_a_lire = response;
+				console.log("a lire : "+nom_playlist_a_lire);
+			}
+		)
+	).then(function(){
+		$.post(			// On vérifie si la bonne playlist clip est chargée à partir des dates de début et de fin
+			ajaxurl,
+			{
+			  'action': 'verifier_playlist_clip_charger_dans_la_table'
+			},
+			function(response){	
+				console.log(response);
+				if(response==false)	// Si les dates ne coïncident pas avec la date actuelle
+				{
+					$.post(			// On la génère dans la bdd
+						ajaxurl,
+						{
+						  'action': 'generer_la_playlist_clips',
+						  'nom_playlist': nom_playlist_a_lire
+						},
+						function(is_success){
+							console.log(is_success);
+						}
+					);
+				}
+				nom_playlist_clip=nom_playlist_a_lire;
+			}
+		);
+		// Attend 1s avant de charger la nouvelle playlist dans le player
+		setTimeout(function(){ 
+			
+			myPlaylist.remove();
+			// Chargement clips dans la playlist par défaut
+			$.ajax({
+				url: ajaxurl,
+				data:{
+				  'action':'recuperer_videos_playlist_clip_player_page_principale',
+				},
+				dataType: 'JSON',
+				success: function(data) {
+					$.each(data.data, function(index, value) {
+						//On va récupérer le nom de l'artiste pour chaque titre
+						artiste_album_annee_gener =  value.artiste + " - " + value.album  + " - " +value.annee;
+						var title=value.titre;
+						var url = value.url;
+						myPlaylist.add({
+							title:value.titre,
+							m4v:value.url,
+							artist:artiste_album_annee_gener
+						});
+					});
+					myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
+					console.log("chargement clips");
+					on_joue_la_playlist_par_defaut = false; // première occurence au chargement de la page
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(xhr.status);
+					console.log(thrownError);
+				}
+			});
+		}, 1000);
+	});
+	
+}
+
+
+function continuer_playlist_par_defaut()
+{
+	
+	current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
+	playlist = myPlaylist.playlist; // récupère la playlist du player sous forme de tableau
+	titre_current_track=myPlaylist.playlist[myPlaylist.current].title; // récupère le titre du clip qui est entrain d'être joué
+	
+	var artiste_album_annee_ajout = new String(); // obligatoire pour former un string
+	var titre;
+	var url;
+	var genre;
+	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
 	//On efface le morceau de la base de donnée également
 
   // utile lorsque le player a fini de lire le logo cette condition permet de supprimé le logo de la playlist et de retourner au debut de la playlist
-  if (bool_video_logo == true){
-    myPlaylist.remove(current);// supprime la video courante
-    myPlaylist.select(0);// sélectionne le la première video
-    myPlaylist.play(0);// lit la première video
-    bool_video_logo = false;
-  }
-  // agit que sur la bdd en ajoutant ou en
-  else{
-    myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video execpté une video logo.
-    $.post(
-		ajaxurl,
-		{
-			'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
-			'videocouranteprevious': titre_previous_current_track
-		},
-		function(response){
+	if (bool_video_logo == true){
+		myPlaylist.remove(current);// supprime la video courante
+		myPlaylist.select(0);// sélectionne le la première video
+		myPlaylist.play(0);// lit la première video
+		bool_video_logo = false;
+	}
+	// agit que sur la bdd en ajoutant ou en
+	else{
+		myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video execpté une video logo.
+		$.post(
+			ajaxurl,
+			{
+				'action': 'effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin',
+				'videocouranteprevious': titre_previous_current_track
+			},
+			function(response){
+			}
+		);
+	}
+
+	/*
+	* Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
+	* Cette fonction générera la nouvelle vidéo de la playlist par defaut.
+	*/
+	var taille = myPlaylist.playlist.length;
+	setTimeout(doSomething, 100);
+	function doSomething() {
+		var freq_logo;
+		var id_video_courante;
+		$.post(
+			ajaxurl,
+			{
+				'action' : 'recup_freq_logo',
+			},
+			function(response) {
+				freq_logo = response;
+				$.post(
+					ajaxurl,
+					{
+						'action' : 'recup_id_video_courante',
+						'videocourante': titre_current_track
+					},
+					function(response2) {
+						id_video_courante = response2;
+						// condition de passage au logo ou pas
+						if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
+							bool_video_logo = true;
+							$.ajax({
+								url: ajaxurl,
+								data:{
+									'action' : 'insertion_logo',
+								},
+								dataType: 'JSON',
+								success: function(data) {
+									$.each(data.data, function(index, value) {
+									// si une video avec le genre logo  le true force à la lire
+									// Permet de générer la nouvelle video avec le logo.
+										myPlaylist.add({
+											title:value.titre,
+											m4v:value.url,
+										}, true);
+									});
+								}
+							});
+						}
+						else{
+							$.ajax({
+								url: ajaxurl,
+								data:{
+									'action' : 'recuperer_nouvelle_video_player_page_principal',
+								},
+								dataType: 'JSON',
+								success: function(data) {
+									$.each(data.data, function(index, value) {
+									// la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+										if (taille<13){
+											artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+											//Permet de générer la nouvelle video dans le player.
+											myPlaylist.add({
+												title:value.titre,
+												m4v:value.url,
+												artist: artiste_album_annee_ajout
+											});
+										}
+									});
+								}
+							});
+						}
+					}
+				);
+			}
+        );
     }
-	 );
-  }
+}
+
+
+
+
+function continuer_playlist_clip()
+{
+	current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
+	playlist = myPlaylist.playlist; // récupère la playlist du player sous forme de tableau
+	titre_current_track=myPlaylist.playlist[myPlaylist.current].title; // récupère le titre du clip qui est entrain d'être joué
+	
+	var artiste_album_annee_ajout = new String(); // obligatoire pour former un string
+	var titre;
+	var url;
+	var genre;
+	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
+	//On efface le morceau de la base de donnée également
+
+  // utile lorsque le player a fini de lire le logo cette condition permet de supprimé le logo de la playlist et de retourner au debut de la playlist
+	if (bool_video_logo == true){
+		myPlaylist.remove(current);// supprime la video courante
+		myPlaylist.select(0);// sélectionne la première video
+		myPlaylist.play(0);// lit la première video
+		bool_video_logo = false;
+	}
+	// agit que sur la bdd en ajoutant ou en
+	else{
+		myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video execpté une video logo.
+		$.post(
+			ajaxurl,
+			{
+				'action': 'effacer_et_ajouter_video_dans_table_playlist_clip_webtv_plugin',
+				'videocouranteprevious': titre_previous_current_track,
+				'nom_playlist':nom_playlist_clip
+			},
+			function(response){
+			}
+		);
+	}
 
   /*
   * Fonction : Permet d'actualiser le player à tout instant sans nécessecité d'actualisation de la page.
   * Cette fonction générera la nouvelle vidéo de la playlist par defaut.
   */
-  var taille = myPlaylist.playlist.length;
-  setTimeout(doSomething, 100);
-  function doSomething() {
-    var freq_logo;
-    var id_video_courante;
-    $.post(
-       ajaxurl,
-       {
-         'action' : 'recup_freq_logo',
-       },
-       function(response) {
-         freq_logo = response;
-         $.post(
-            ajaxurl,
-            {
-              'action' : 'recup_id_video_courante',
-              'videocourante': titre_current_track
-            },
-            function(response2) {
-                id_video_courante = response2;
-                // condition de passage au logo ou pas
-                if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
-                  bool_video_logo = true;
-                  $.ajax({
-                     url: ajaxurl,
-                     data:{
-                       'action' : 'insertion_logo',
-                     },
-                     dataType: 'JSON',
-                     success: function(data) {
-                       $.each(data.data, function(index, value) {
-                        // si une video avec le genre logo  le true force à la lire
-                        // Permet de générer la nouvelle video avec le logo.
-                        myPlaylist.add({
-                          title:value.titre,
-                          m4v:value.url,
-                        }, true);
-                      });
-                    }
-                  });
-                }
-                else{
-                 $.ajax({
-                    url: ajaxurl,
-                    data:{
-                      'action' : 'recuperer_nouvelle_video_player_page_principal',
-                    },
-                    dataType: 'JSON',
-                    success: function(data) {
-                      $.each(data.data, function(index, value) {
-                        // la taille est fixé à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
-                         if (taille<13){
-                          artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-                          //Permet de générer la nouvelle video dans le player.
-                          myPlaylist.add({
-                    				title:value.titre,
-                    				m4v:value.url,
-                    				artist: artiste_album_annee_ajout
-                    			});
-                        }
-                      });
-                    }
-                  });
-                }
-              }
-            );
-          }
+	var taille = myPlaylist.playlist.length;
+	setTimeout(doSomething, 100);
+	function doSomething() {
+		var freq_logo;
+		var id_video_courante;
+		$.post(
+			ajaxurl,
+			{
+				'action' : 'recup_freq_logo_playlist_clip',
+				'nom_playlist': nom_playlist_clip
+			},
+			function(response) {
+				freq_logo = response;
+				$.post(
+					ajaxurl,
+					{
+					  'action' : 'recup_id_video_courante_playlist_clip',
+					  'videocourante': titre_current_track
+					},
+					function(response2) {
+						id_video_courante = response2;
+						// condition de passage au logo ou pas
+						if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
+							bool_video_logo = true;
+							$.ajax({
+								url: ajaxurl,
+								data:{
+									'action' : 'insertion_logo' // Fonction dans traitement_donnees_playlist_par_defaut
+								},
+								dataType: 'JSON',
+								success: function(data) {
+									$.each(data.data, function(index, value) {
+										// si une video avec le genre logo  le true force à la lire
+										// Permet de générer la nouvelle video avec le logo.
+										myPlaylist.add({
+											title:value.titre,
+											m4v:value.url,
+										}, true);
+									});
+								}
+							});
+						}
+						else{
+							$.ajax({
+								url: ajaxurl,
+								data:{
+									'action' : 'recuperer_nouvelle_video_playlist_clip_player_page_principal',
+								},
+								dataType: 'JSON',
+								success: function(data) {
+									$.each(data.data, function(index, value) {
+									// la taille est fixée à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
+										if (taille<13){
+											artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+											//Permet de générer la nouvelle video dans le player.
+											myPlaylist.add({
+												title:value.titre,
+												m4v:value.url,
+												artist: artiste_album_annee_ajout
+											});
+										}
+									});
+								}
+							});
+						}
+					}
+				);
+			}
         );
     }
-});
-
+}
 
 /*
 * Fonction : Permet d'afficher la durée du clip en cours de lecture
 */
+/*
 jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 {
 
@@ -241,53 +575,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 	);
 
 });
+*/
 
 
-
-/*-------------------------------------- FIN Règles internes ---------------------------------------------*/
-/* REGLAGES DU LIVE */
-  /*var on_live=false;
-  $("#player_video").bind(jQuery.jPlayer.event.ended , function (event){
-    //console.log(on_live);
-    if(on_live==true ){
-      myPlaylist.remove();
-      myPlaylist.setPlaylist([{
-        title:"LIVE",
-        artist:"LE FIL",
-        m4v:"http://localhost/wordpress/wp-content/plugins/admin_webtv_plugin/mp4/liveTest.mp4"
-      }]);
-      myPlaylist.option("autoPlay",true);
-      myPlaylist.play();
-    }
-  });
-
-
-  $('#live_btn').click(function(){
-    if(on_live==false){
-      on_live=true;
-      $(this).html("Arreter le LIVE");
-      //$('#player_video').prop('title', 'live_on');
-      $.post(ajaxurl,{
-        'action' : 'etat_live',
-        'data' : on_live
-      },function(response){
-        //console.log(response);
-      })
-    }
-    else if(on_live=true){
-      on_live=false;
-      myPlaylist.pause();
-      myPlaylist.remove();
-      generer_la_playlist();
-      $(this).html("Lancer le LIVE");
-      //$('#player_video').prop('title', 'live_off');
-      $.post(ajaxurl,{
-        'action' : 'etat_live',
-        'data' : on_live
-      },function(response){
-       // console.log(response);
-      })
-    }
-  });*/
 
 });

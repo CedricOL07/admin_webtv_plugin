@@ -235,13 +235,13 @@ function recup_videos_playlist_par_defaut($genre,$limit,$annee_max,$annee_min,$q
 Nom : ajouter_video_dans_table_playlist_par_defaut_webtv_plugin()
 Fonction : Cette fonction permet de rajouter un clip video dans la table wp_playlist_par_defaut_webtv_plugin de la base de données.
 Ceci permet de faire une boucle des vidéos pour la playlist par défaut.
-ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des cotes  et non des guillemets sinon impossible d'obtenir la page!!
+ATTENTION Exemple :WHERE titre='$video_courante' bien mettre des quotes  et non des guillemets sinon impossible d'obtenir la page!!
 */
 
 function effacer_et_ajouter_video_dans_table_playlist_par_defaut_webtv_plugin(){
     global $wpdb;
     global $titre_nouvelle_video;
-    $reponse_titre_video_a_ajouter = $video_courante; // nécessaire pour entrer dans la boucle while ci dessous.
+
     $video_courante= $_POST['videocouranteprevious'];// récupérer dans le JSON dans la fonction post AJAX dans le fichier player_homepage.js
 
     // Récup la fréquence logo de la playlist par defaut

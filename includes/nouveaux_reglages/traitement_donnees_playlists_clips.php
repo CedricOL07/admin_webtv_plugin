@@ -7,9 +7,11 @@
 
 /*Les add_action permettant de déclarer les fonctions php dans dans tout le dossier Wordpress*/
 add_action('wp_ajax_enregistrement_playlist_clips_pourcentage', 'enregistrement_playlist_clips_pourcentage' );
-add_action('pluginwebtv_generer_la_playlist_clips','generer_la_playlist_clips');
+add_action('wp_ajax_generer_la_playlist_clips','generer_la_playlist_clips');
 add_action('wp_ajax_recuperer_nouvelle_video_playlist_clip_player_page_principal', 'recuperer_nouvelle_video_playlist_clip_player_page_principal');
 add_action('wp_ajax_recuperer_videos_playlist_clip_player_page_principale', 'recuperer_videos_playlist_clip_player_page_principale' );
+add_action('wp_ajax_recup_freq_logo_playlist_clip','recup_freq_logo_playlist_clip');
+add_action('wp_ajax_recup_id_video_courante_playlist_clip','recup_id_video_courante_playlist_clip');
 
 /*
 *Fonction : Permet de récupérer les paramètres de la playlist.
@@ -45,12 +47,10 @@ function enregistrement_playlist_clips_pourcentage(){
     $select = $wpdb->query($inserer_nouvelle_playlist);
 
   }
-
-  generer_la_playlist_clips($nom_reglage);
   
 }
 
-function generer_la_playlist_clips($nom_playlist){
+function generer_la_playlist_clips(){
 
     global $wpdb;
     global $tab_url_clip;
@@ -61,8 +61,14 @@ function generer_la_playlist_clips($nom_playlist){
     global $tab_albums_clip;
     global $max_clip;
 
-    $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
+    if(isset($_POST["nom_playlist"])){$nom_playlist = $_POST["nom_playlist"];}
+
+    $nom_playlist = explode("\n",$nom_playlist);
+    $nom_requete_playlist = end($nom_playlist);
+
+    $querydefaut="SELECT * FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_requete_playlist' LIMIT 1;";
     $resultdefaut=$wpdb->get_results($querydefaut);
+
     foreach($resultdefaut as $resdefaut){
         $nomdefaut =$resdefaut->nom;
         //NULL si case vide
@@ -85,16 +91,19 @@ function generer_la_playlist_clips($nom_playlist){
         $debut = $resdefaut->Debut;
         $fin = $resdefaut->Fin;
 
+
         do_action('pluginwebtv_generer_playlist_clips',$poprockdefaut,$hiphopdefaut,$jazzbluesdefaut,$musiquemondedefaut,$hardrockdefaut,$electrodefaut,$chansondefaut,$autresdefaut,$pubinternedefaut,$pubexternedefaut,$artistehighlightdefaut,$amax,$amin,$qmin,$debut,$fin);
 
 
       //  do_action('pluginwebtv_freq_logo',$frequence_logo); ///////////////////////////////// LOGO
+        /*
         $ppp = "\n".sizeof($tab_titres_clip)." - ".sizeof($tab_artistes_clip)." - ".$max_clip."\n";
         for ($i=0; $i<$max_clip; $i++)
         {
           $ppp = $ppp.("\n- ".$tab_artistes_clip[$i]." - ".$tab_titres_clip[$i]." - ".$tab_albums_clip[$i]);
         }
         echo ($ppp);
+        */
     }
 
 
@@ -105,7 +114,7 @@ function generer_la_playlist_clips($nom_playlist){
     $artistes=str_replace("'","''",$tab_artistes_clip);
     $genres=str_replace("'","''",$tab_genres_clip);
     $annees=str_replace("'","''",$tab_annees_clip);
-    $albums=str_replace("'","''",$tab_album);
+    $albums=str_replace("'","''",$tab_albums_clip);
 
         $wpdb->query("TRUNCATE TABLE " . $wpdb->prefix . "playlistclip_webtv_plugin");
     // permet de générer le nombre de clips à générer dans la table playlist_par_defaut_webtv_plugin
@@ -117,6 +126,9 @@ function generer_la_playlist_clips($nom_playlist){
         $wpdb->query($inserer);
     }
 
+    echo("Playlist clip ". $nom_requete_playlist." générée ! ");
+    wp_die();
+
 }
 
 
@@ -127,7 +139,7 @@ function generer_la_playlist_clips($nom_playlist){
 
 function recuperer_videos_playlist_clip_player_page_principale() {
     global $wpdb;
-    $query="SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlistclip_webtv_plugin;";
+    $query="SELECT titre, artiste, url, annee, album, Debut, Fin FROM " . $wpdb->prefix . "playlistclip_webtv_plugin;";
     $result=$wpdb->get_results($query);
     wp_send_json_success($result);
 }
@@ -136,7 +148,7 @@ function recuperer_videos_playlist_clip_player_page_principale() {
 /*
 *  Fonction : Permet de trouver le max id d'une video dans la table playlist clip.
 *  Très utile pour la fonction situé dans le player_homepage.js permettant d'ajouter
-*  lA dernier video ajouté dans la playlist.
+*  lA derniere video ajoutée dans la playlist.
 */
  function recuperer_nouvelle_video_playlist_clip_player_page_principal(){
     global $wpdb;
@@ -152,13 +164,47 @@ function recuperer_videos_playlist_clip_player_page_principale() {
         $max_id = $max_id ;
       }
     }
-    //echo ("max-id : ". $max_id);
+    $query_recup_genre_nouvelle_video = "SELECT genre FROM " . $wpdb->prefix . "playlistclip_webtv_plugin WHERE id='$max_id' ; ";
+    $reponse_recup_genre_nouvelle_video = $wpdb->get_var($query_recup_genre_nouvelle_video);
 
-    $query_recup_titre_url_nouvelle_video = "SELECT titre, artiste, url, annee, album FROM " . $wpdb->prefix . "playlistclip_webtv_plugin WHERE id='$max_id' ; ";
-    $reponse_recup_titre_url_nouvelle_video = $wpdb->get_results($query_recup_titre_url_nouvelle_video);
+    if($reponse_recup_genre_nouvelle_video == "Logo"){
 
-    wp_send_json_success($reponse_recup_titre_url_nouvelle_video);
+      $max_id_vid = $max_id -1;// récupère la video précédent le logo
+      $query_recup_titre_url_nouvelle_video_et_logo = "SELECT titre, artiste, url, annee, album, genre, Debut, Fin FROM " . $wpdb->prefix . "playlistclip_webtv_plugin WHERE id IN ('$max_id','$max_id_vid');";
+      $reponse_recup_titre_url_nouvelle_video_et_logo = $wpdb->get_results($query_recup_titre_url_nouvelle_video_et_logo);
+      wp_send_json_success($reponse_recup_titre_url_nouvelle_video_et_logo);
+    }
+    else {
+      $query_recup_titre_url_nouvelle_video_ou_logo = "SELECT titre, artiste, url, annee, album, genre, Debut, Fin FROM " . $wpdb->prefix . "playlistclip_webtv_plugin WHERE id='$max_id' ; ";
+      $reponse_recup_titre_url_nouvelle_video_ou_logo = $wpdb->get_results($query_recup_titre_url_nouvelle_video_ou_logo);
+      wp_send_json_success($reponse_recup_titre_url_nouvelle_video_ou_logo);
+    }
 
+}
+
+
+/*
+* Fonction recupère la fréquence logo pour le fichier js du player_homepage.js et player_page.js
+*
+*/
+function recup_freq_logo_playlist_clip(){
+  global $wpdb;
+  if(isset($_POST['nom_playlist'])){$nom_playlist = $_POST['nom_playlist'];}
+  $query_recup_freq_logo_bdd = "SELECT Freq_logo FROM ". $wpdb->prefix ."playlistenregistrees_webtv_plugin WHERE nom='nom_playlist' LIMIT 1;";
+  $reponse_recup_freq_logo_bdd = $wpdb->get_var($query_recup_freq_logo_bdd);
+  echo($reponse_recup_freq_logo_bdd);
+}
+/*
+* Fonction recupère l'id de la video courante utile pour le fichier js du player_homepage.js et player_page.js
+*
+*/
+function recup_id_video_courante_playlist_clip(){
+  global $wpdb;
+  if(isset($_POST['videocourante'])){$videocourante = $_POST['videocourante'];}
+
+  $query_recup_id_video_courante = "SELECT id FROM ". $wpdb->prefix ."playlistclip_webtv_plugin WHERE titre='$videocourante' LIMIT 1;";
+  $reponse_query_recup_id_video_courante = $wpdb->get_var($query_recup_id_video_courante);
+  echo ($reponse_query_recup_id_video_courante);
 }
 
 
