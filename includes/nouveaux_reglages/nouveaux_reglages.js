@@ -61,11 +61,11 @@ $(document).ready(function(){
         $('#bouton_voir_premiere_date_disponible').removeAttr("disabled");
         $('#bouton_choisir_date').toggleClass('hidden display');
     });
-	
+
 	var is_pardefaut = false;
     //Checkbox pour mettre par defaut ou non le réglage
     $('#checkbox_par_defaut').change(function(){
-	
+
         if(this.checked){
 			$('#planning_playlist').hide();
             $('#partie_highlight').hide();
@@ -81,13 +81,13 @@ $(document).ready(function(){
         }
     });
 
-    
+
     /*
     ***********Recupere et affiche l'artiste en highlight**********
     */
     var artiste_choisi; // permet de récupérer l'artiste choisi lors de l'enregistrement
 	var artiste_highlight;
-	
+
     $('#select_artiste_higlight').click(function(){
         artiste_highlight = null;
 		artiste_highlight = $('#classement_artistes_higlights').val();
@@ -120,7 +120,7 @@ $(document).ready(function(){
     */
     var pub_externe_choisie; // permet de récupérer l'artiste choisi lors de l'enregistrement
 	var pubs_externes;
-	
+
     $('#select_pubs_externes').click(function(){
         pubs_externes = null;
 		pubs_externes = $('#pubs_selector_externe').val();
@@ -153,7 +153,7 @@ $(document).ready(function(){
     */
     var pub_interne_choisie; // permet de récupérer l'artiste choisi lors de l'enregistrement
 	var pubs_internes;
-	
+
     $('#select_pubs_internes').click(function(){
         pubs_internes = null;
 		pubs_internes = $('#pubs_selector_interne').val();
@@ -320,9 +320,9 @@ $(document).ready(function(){
         ); */
 
     }
-	
+
 	var passer_des_que_possible_clicked = false;
-	
+
     function recuperer_creneau_dispo(){
         $.post(
             ajaxurl,
@@ -346,8 +346,8 @@ $(document).ready(function(){
             }
         );
     }
-	
-	
+
+
 /*------------------------------------- Gestion du calendrier / planning -------------------------------------------*/
 // doc : https://docs.dhtmlx.com/scheduler/how_to_start.html
 // signaux: https://docs.dhtmlx.com/api__dhtmlxcalendar_onchange_event.html
@@ -364,46 +364,46 @@ $(document).ready(function(){
 		document.getElementById("bouton_voir_cacher_programmation").value = "Cacher la programmation";
 	}
   });
-  
+
 	$('#scheduler_here').height($(document).width()*0.5);
 	$('#scheduler_here').width($(document).width()*0.7);
 	scheduler.init('scheduler_here', new Date(),"week");
-	
-	var events = []; 
+
+	var events = [];
 	var indice_event = 0;
 	$.when(							// Permet d'attendre que la requête Ajax soit terminée
 		$.ajax({
 			url: ajaxurl,
 			data:{
 				'action':'get_playlist_content',
-			},	
+			},
 			dataType: 'JSON',
 			success: function(data) {
-				
+
 				$.each(data.data, function(index, value) {
-					
+
 					var startDate = value.Debut;
 					var endDate = value.Fin;
 					var nom_event = value.nom;
-					
+
 					var date_time = startDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 					var date_now = date_time[0].split('/');
 					startDate = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 					startDate = new Date(startDate);
-					
+
 					var date_time = endDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 					var date_now = date_time[0].split('/');
 					endDate = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 					endDate = new Date(endDate);
-					
+
 					var ligne_playlist_enregistrees = {
 						id			: indice_event,
-						text 		: nom_event, 
+						text 		: nom_event,
 						end_date 	: endDate,
 						start_date 	: startDate
 					};
 					indice_event++;
-					
+
 					events.push(ligne_playlist_enregistrees);
 				});
 			},
@@ -413,19 +413,19 @@ $(document).ready(function(){
 			}
 		})
 	).then (function(){
-		
+
 		// Lorsqu'un évènement est renommé
 		var changed_event_title;
 		var changed_event_startDate;
 		var changed_event_endDate;
-		
+
 		scheduler.attachEvent("onBeforeLightbox", function (id){
 			changed_event_title = scheduler.getEvent(id).text; //use it to get the object of the changed event
 			changed_event_startDate = scheduler.getEvent(id).start_date; //use it to get the object of the changed event
 			changed_event_endDate = scheduler.getEvent(id).end_date; //use it to get the object of the changed event
 			return true;
 		});
-		
+
 		scheduler.attachEvent("onEventSave",function(id,ev,is_new){
 			if (!ev.text) {
 				alert("Text must not be empty");
@@ -435,7 +435,7 @@ $(document).ready(function(){
 				console.log(ev.text);
 				var ancien_nom = changed_event_title;
 				var nouveau_nom = ev.text;
-			
+
 				$.post(
 					ajaxurl,
 					{
@@ -452,27 +452,27 @@ $(document).ready(function(){
 				return true;
 			}
 		});
-		
+
 		// Lorsqu'un évènement est déplacé/étiré
 		var dragged_event;
 		scheduler.attachEvent("onBeforeDrag", function (id, mode, e){
 			dragged_event=scheduler.getEvent(id); //use it to get the object of the dragged event
 			return true;
 		});
-		
+
 		scheduler.attachEvent("onDragEnd", function(){
 			var event_obj = dragged_event;
 			var nouvelle_start_date = event_obj.start_date;
 			var nouvelle_end_date = event_obj.end_date;
 			var nom_event = event_obj.text;
-			
+
 			var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds du fuseau horaire
 			nouvelle_start_date = (new Date(nouvelle_start_date - tzoffset)).toISOString().slice(0,-1);
-			nouvelle_end_date = (new Date(nouvelle_end_date - tzoffset)).toISOString().slice(0,-1);	// slice(0,-1) supprime le Z de fin (qui représente la Zulu timezone) 
-			
+			nouvelle_end_date = (new Date(nouvelle_end_date - tzoffset)).toISOString().slice(0,-1);	// slice(0,-1) supprime le Z de fin (qui représente la Zulu timezone)
+
 			nouvelle_start_date=nouvelle_start_date.replace("T", " ");
 			nouvelle_end_date=nouvelle_end_date.replace("T", " ");
-			
+
 			console.log(nouvelle_start_date);
 			$.post(
 				ajaxurl,
@@ -487,7 +487,7 @@ $(document).ready(function(){
 				}
 			);
 		});
-		
+
 		// Lorsqu'un évenement est supprimé
 		var deleted_event_name;
 		scheduler.attachEvent("onBeforeEventDelete", function(id,e){
@@ -508,18 +508,18 @@ $(document).ready(function(){
 				}
 			);
 		});
-		
+
 		scheduler.parse(events, "json");//takes the name and format of the data source
-	
+
 	});
-	
-	
+
+
 /*	-------------------------------------------- Ancien scheduler ----------------------------------------------------
 YUI().use(
 	'aui-scheduler',
 	function(Y) {
 		var events = new Array;
-		
+
 		$.when(							// Permet d'attendre que la requête Ajax soit terminée
 			$.ajax({
 				url: ajaxurl,
@@ -528,29 +528,29 @@ YUI().use(
 				},	/////////////////// A adapter, cf: http://alloyui.com/examples/scheduler/real-world/    http://alloyui.com/tutorials/scheduler/   http://alloyui.com/api/files/alloy-ui_src_aui-scheduler_js_aui-scheduler-event-recorder.js.html
 				dataType: 'JSON',
 				success: function(data) {
-					
+
 					$.each(data.data, function(index, value) {
-						
+
 						var start_date = value.Debut;
 						var end_date = value.Fin;
 						var nom_event = value.nom;
-						
+
 						var date_time = start_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 						var date_now = date_time[0].split('/');
 						start_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 						start_date = new Date(start_date);
-						
+
 						var date_time = end_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 						var date_now = date_time[0].split('/');
 						end_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 						end_date = new Date(end_date);
-						
+
 						var ligne_playlist_enregistrees = new Y.SchedulerEvent({
-							content : nom_event, 
+							content : nom_event,
 							endDate : end_date,
 							startDate : start_date
 						});
-						
+
 						events.push(ligne_playlist_enregistrees);
 					});
 				},
@@ -560,8 +560,8 @@ YUI().use(
 				}
 			})
 		).then (function(){
-				
-			
+
+
 			var agendaView = new Y.SchedulerAgendaView();
 			var dayView = new Y.SchedulerDayView();
 			var weekView = new Y.SchedulerWeekView();
@@ -574,15 +574,15 @@ YUI().use(
 				items: events,
 				render: true,
 				views: [weekView, dayView, monthView, agendaView]
-				
+
 			});
 			console.log(SchedulerEvent());
 		});
-		
+
 	}
 );
 */
-	
+
 
 /*------------------ Modification sur la mise en place du début et de la fin de la playlist ------------------*/
 
@@ -1103,20 +1103,20 @@ YUI().use(
 					}
                     //console.log('requeteajax');
                 if(duree_picked==true){
-					
+
 					var startDate = date_debut_selectionnee;
 					var endDate = date_fin_selectionnee;
-					
+
 					var date_time = startDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 					var date_now = date_time[0].split('/');
 					date_debut_selectionnee = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
-					
+
 					var date_time = endDate.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
 					var date_now = date_time[0].split('/');
 					date_fin_selectionnee = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
 
                     $.post(
-                        ajaxurl,							
+                        ajaxurl,
                         {
 							'action': 'enregistrement_playlist_clips_pourcentage',
                             'pardefaut':pardefaut,

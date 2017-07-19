@@ -16,11 +16,13 @@
   <body>
     <div class="row col-md-12 col-sm-12" >
       <div class="col-md-3 col-sm-5">
+        <h2>Calendrier</h2>
           <input type="checkbox" id="bouton_voir_cacher_programmation" checked data-toggle="toggle" data-onstyle="default"
           data-off="<i class='glyphicon glyphicon-download' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "
           data-on="<i class='glyphicon glyphicon-upload' style='color:#2C4CB3'></i> <i class='glyphicon glyphicon-calendar' style='color:#2C4CB3'></i> "/>
       </div>
     </div>
+    <!-- La taille du calendrier est gérer dans le js nouveaux_réglages.js-->
     <div class="row col-md-6 col-sm-6" id="planning_playlist" >
 
         <div id="scheduler_here" class="dhx_cal_container" >

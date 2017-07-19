@@ -156,11 +156,11 @@ function creer_page_webtv(){
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
    // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
-    wp_enqueue_style("playerbluemondaycss1", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);// gère le css des boutons du player
-    wp_enqueue_style("allskincss1", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
-    wp_enqueue_script("jplayerplaylistjs1",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
-    wp_enqueue_script("jqueryjplayerjs1",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
-    wp_enqueue_style("nouveaureglagecustomcss1",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
+    wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
+    wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);
+    wp_enqueue_script("jplayerplaylistjs",  plugins_url("assets/js/dist/jplayer/jplayer.playlist.min.js", __FILE__), FALSE);
+    wp_enqueue_script("jqueryjplayerjs",  plugins_url("assets/js/dist/jplayer/jquery.jplayer.min.js", __FILE__), FALSE);
+    wp_enqueue_style("nouveaureglagecustomcss",plugins_url('assets/css/nouveau_reglage.css',__FILE__) , FALSE);
     require_once('includes/WEBTV/templates/webtv.template.php');
 
 }
