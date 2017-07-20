@@ -472,7 +472,7 @@ $(document).ready(function(){
 
 			nouvelle_start_date=nouvelle_start_date.replace("T", " ");
 			nouvelle_end_date=nouvelle_end_date.replace("T", " ");
-			
+
 			console.log(nom_event+" : "+nouvelle_start_date+" - "+nouvelle_end_date);
 			$.post(
 				ajaxurl,
@@ -496,7 +496,7 @@ $(document).ready(function(){
 				function(response){
 				}
 			);
-			
+
 		});
 
 		// Lorsqu'un évenement est supprimé
@@ -1039,8 +1039,10 @@ YUI().use(
 
                   console.log("echo : "+response);
 
+
           }
       );
+      location.reload();
     });
 
     $("#Hip-Hop_et_Rap_btn").click(function(){
@@ -1093,8 +1095,10 @@ YUI().use(
 
                   console.log("echo : "+response);
 
+
           }
       );
+      location.reload();
     });
 
     $("#Jazz_et_Blues_btn").click(function(){
@@ -1147,8 +1151,10 @@ YUI().use(
 
                   console.log("echo : "+response);
 
+
           }
       );
+      location.reload();
     });
 
     $("#Musique_du_monde_et_Reggae_btn").click(function(){
@@ -1203,6 +1209,7 @@ YUI().use(
 
           }
       );
+      location.reload();
     });
 
     $("#Electro_btn").click(function(){
@@ -1257,6 +1264,7 @@ YUI().use(
 
           }
       );
+      location.reload();
     });
 
     $("#Hard_Rock_et_Metal_btn").click(function(){
@@ -1312,6 +1320,7 @@ YUI().use(
 
           }
       );
+      location.reload();
     });
 
     $("#Chanson_btn").click(function(){
@@ -1366,6 +1375,7 @@ YUI().use(
 
           }
       );
+      location.reload();
     });
 
     $("#Autres_btn").click(function(){
@@ -1420,6 +1430,7 @@ YUI().use(
 
           }
       );
+      location.reload();
     });
 
     /*

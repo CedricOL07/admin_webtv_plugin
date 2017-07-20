@@ -63,8 +63,8 @@ function generer_la_playlist(){
 
 	// On vide d'abord la playlist si elle existe
 	myPlaylist.remove();
-	
-	
+
+
 	// On regarde si il faut charger la playlist par défaut où la playlist clip
 	$.when(
 		$.post(
@@ -115,24 +115,24 @@ var titre_current_track;
 jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 {
 	myPlaylist.pause();
-	
+
 	current = myPlaylist.current;
 	playlist = myPlaylist.playlist;
 	titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
-	
-	// On détermine si il faut lire dans la playlist par défaut ou playlist clip, et si il faut 
+
+	// On détermine si il faut lire dans la playlist par défaut ou playlist clip, et si il faut
 	// la regénérer ou juste continuer la lecture
-	
+
 	console.log("on_joue_la_playlist_par_defaut = "+on_joue_la_playlist_par_defaut);
-	
+
 	//														 		--true-> 	generer+lancer cette playlist
 	//			--true-> 	existe une PC autour de cette heure?	--false-> 	continuer PPD
 	// prec=PPD?
 	//			--false-> 	heure de fin de cette PC > cette heure?	--true->	continuer PC
 	//																--false->	existe une autre PC autour de cette heure? 	--true->	generer+lancer cette playlist
 	//																														--false-> 	lancer PPD
-	
-	
+
+
 	if(on_joue_la_playlist_par_defaut)	// si précédente musique est une lecture de playlist par défaut
 	{
 		$.when(
@@ -148,9 +148,9 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			)
 		).then(function(){
 			if(playlist_a_lire==true)
-			{	// Si il existe une playlist clip à cet horaire, on lance la requête SQL de 
+			{	// Si il existe une playlist clip à cet horaire, on lance la requête SQL de
 				// génération dans la BDD, puis on recharge la playlist dans le player
-			
+
 				console.log("Il y a une playlist_a_lire");
 				verifier_et_génerer_playlist_clip();
 			} else
@@ -170,7 +170,7 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			{
 			  'action': 'verifier_playlist_clip_charger_dans_la_table'
 			},
-			function(response){	
+			function(response){
 				console.log("playlist terminée? "+response);
 				if(response!=false)	// Si les dates coïncident (heure de fin pas encore arrivée et bonne playlist_clip chargée)
 				{
@@ -200,8 +200,8 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 				}
 			}
 		);
-	}		
-		
+	}
+
 
 });
 
@@ -267,7 +267,7 @@ function verifier_et_génerer_playlist_clip()
 			{
 			  'action': 'verifier_playlist_clip_charger_dans_la_table'
 			},
-			function(response){	
+			function(response){
 				console.log(response);
 				if(response==false)	// Si les dates ne coïncident pas avec la date actuelle
 				{
@@ -286,8 +286,8 @@ function verifier_et_génerer_playlist_clip()
 			}
 		);
 		// Attend 1s avant de charger la nouvelle playlist dans le player
-		setTimeout(function(){ 
-			
+		setTimeout(function(){
+
 			myPlaylist.remove();
 			// Chargement clips dans la playlist par défaut
 			$.ajax({
@@ -319,17 +319,17 @@ function verifier_et_génerer_playlist_clip()
 			});
 		}, 1000);
 	});
-	
+
 }
 
 
 function continuer_playlist_par_defaut()
 {
-	
+
 	current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
 	playlist = myPlaylist.playlist; // récupère la playlist du player sous forme de tableau
 	titre_current_track=myPlaylist.playlist[myPlaylist.current].title; // récupère le titre du clip qui est entrain d'être joué
-	
+
 	var artiste_album_annee_ajout = new String(); // obligatoire pour former un string
 	var titre;
 	var url;
@@ -431,6 +431,7 @@ function continuer_playlist_par_defaut()
 			}
         );
     }
+
 }
 
 
@@ -441,7 +442,7 @@ function continuer_playlist_clip()
 	current = myPlaylist.current;// récupère l'id de la video courante dans la playlist du player pas de la bdd
 	playlist = myPlaylist.playlist; // récupère la playlist du player sous forme de tableau
 	titre_current_track=myPlaylist.playlist[myPlaylist.current].title; // récupère le titre du clip qui est entrain d'être joué
-	
+
 	var artiste_album_annee_ajout = new String(); // obligatoire pour former un string
 	var titre;
 	var url;
@@ -548,34 +549,45 @@ function continuer_playlist_clip()
 }
 
 /*
-* Fonction : Permet d'afficher la durée du clip en cours de lecture
+* Fonction : Permet de gérer si le lien de la video mp4 à disparu de la playlist.
 */
-/*
+
 jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 {
 
 	var current     = myPlaylist.current;
 	playlist        = myPlaylist.playlist;
-  var taile_playlist  = myPlaylist.playlist.length;
-  var titre_current_track=myPlaylist.playlist[myPlaylist.current].title;
-	var nom_clip_courant = playlist[current].title,
-	artiste_clip_courant = playlist[current].artist,
-	url_clip_courant = playlist[current].m4v;
-
+	var url_clip_courant = playlist[current].m4v;
 	$.post(
 		ajaxurl,
 		{
-			'action': 'recuperer_duree_clip',
-			'nom_clip': nom_clip_courant,
+			'action': 'url_vid_exist',
 			'url_clip': url_clip_courant
 		},
 		function(response){
-			//console.log("Vidéo : " + artiste_clip_courant + " - " + nom_clip_courant + "\nDurée : " + response);
+			console.log("existe : " + response);
+        if (response >= 1){
+          setTimeout(doSomething2, 500);
+          function doSomething2() {
+          myPlaylist.remove(current);
+
+          myPlaylist.next();
+          //fonctionne correctement seulemet adapté la fonction afin qu'a la fin du clip on regénère une musique du même genre.
+
+          if(on_joue_la_playlist_par_defaut==false)
+          {
+            continuer_playlist_clip();// probleme de plusieur remove imbriqué
+          }else {
+            continuer_playlist_par_defaut();
+          }
+        }
+      }
 		}
 	);
 
+
 });
-*/
+
 
 
 

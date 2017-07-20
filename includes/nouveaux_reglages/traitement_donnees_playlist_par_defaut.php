@@ -20,6 +20,7 @@ add_action('wp_ajax_recup_freq_logo','recup_freq_logo');
 add_action('wp_ajax_insertion_logo','insertion_logo');
 add_action('wp_ajax_recup_id_video_courante','recup_id_video_courante');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
+add_action('wp_ajax_url_vid_exist','url_vid_exist');
 
 
 
@@ -242,7 +243,30 @@ function recuperer_videos_player_page_principale_par_defaut() {
 
 }
 
+/*
+* Fonction: qui permet de déterminer si le fichier video exist
+* La fonction détect le code http du lien avec la commande curl
+* si le lien à un code erreur 404 renvoie 1 et donc on supprime
+* la video de la playlist
+*
+*/
+function url_vid_exist(){
+  if(isset($_POST['url_clip'])){$url_clip = $_POST['url_clip'];}
+  $handle = curl_init($url_clip);
+  curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 
+  /* Get the HTML or whatever is linked in $url. */
+  $response = curl_exec($handle);
+
+  /* Check for 404 (file not found). */
+  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+  if($httpCode == 404) {
+    echo(1);  /* Handle 404 here. */
+  }else {
+    echo(0);
+  }
+
+}
 
 
 ?>
