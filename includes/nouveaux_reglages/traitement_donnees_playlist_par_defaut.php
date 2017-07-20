@@ -251,20 +251,36 @@ function recuperer_videos_player_page_principale_par_defaut() {
 *
 */
 function url_vid_exist(){
-  if(isset($_POST['url_clip'])){$url_clip = $_POST['url_clip'];}
-  $handle = curl_init($url_clip);
-  curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+  if(isset($_POST['url_clip_suivant'])){$url_clip_suivant = $_POST['url_clip_suivant'];}
+  if(isset($_POST['url_clip_courant'])){$url_clip_courant = $_POST['url_clip_courant'];}
+
+  // pour le clip suivant
+  $handle_suivant = curl_init($url_clip_suivant);
+  curl_setopt($handle_suivant,  CURLOPT_RETURNTRANSFER, TRUE);
 
   /* Get the HTML or whatever is linked in $url. */
-  $response = curl_exec($handle);
+  $response = curl_exec($handle_suivant);
 
   /* Check for 404 (file not found). */
-  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-  if($httpCode == 404) {
+  $httpCode_suivant = curl_getinfo($handle_suivant, CURLINFO_HTTP_CODE);
+
+  // pour le clip courant
+  $handle_courant = curl_init($url_clip_courant);
+  curl_setopt($handle_courant,  CURLOPT_RETURNTRANSFER, TRUE);
+
+  /* Get the HTML or whatever is linked in $url. */
+  $response = curl_exec($handle_courant);
+
+  /* Check for 404 (file not found). */
+  $httpCode_courant = curl_getinfo($handle_courant, CURLINFO_HTTP_CODE);
+
+  if($httpCode_suivant == 404 or $httpCode_courant == 404) {
     echo(1);  /* Handle 404 here. */
   }else {
     echo(0);
   }
+
+
 
 }
 

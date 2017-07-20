@@ -557,38 +557,31 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
 
 	var current     = myPlaylist.current;
 	playlist        = myPlaylist.playlist;
-	var url_clip_courant = playlist[current].m4v;
+  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
+	var url_clip_suivant = playlist[current+1].m4v;
+  var url_clip_courant = playlist[current].m4v;
+
 	$.post(
 		ajaxurl,
 		{
 			'action': 'url_vid_exist',
-			'url_clip': url_clip_courant
+			'url_clip_suivant': url_clip_suivant,
+      'url_clip_courant' :url_clip_courant
 		},
 		function(response){
 			console.log("existe : " + response);
-        if (response >= 1){
-          setTimeout(doSomething2, 500);
-          function doSomething2() {
-          myPlaylist.remove(current);
-
-          myPlaylist.next();
-          //fonctionne correctement seulemet adapté la fonction afin qu'a la fin du clip on regénère une musique du même genre.
-
-          if(on_joue_la_playlist_par_defaut==false)
-          {
-            continuer_playlist_clip();// probleme de plusieur remove imbriqué
-          }else {
-            continuer_playlist_par_defaut();
+      console.log("titre : " + titre_previous_current_track);
+        if (response >= 1 ){
+          if (current == 0){
+            myPlaylist.remove(current);
+            myPlaylist.next();
+          }
+          else{
+          console.log(current+1);
+          myPlaylist.remove(current+1);
           }
         }
       }
-		}
-	);
-
-
-});
-
-
-
-
+  	);
+  });
 });
