@@ -6,7 +6,7 @@
 **
 **  Fichier utile pour calculer la durée d'un clip (et par conséquent d'une playlist) (non utilisé pour la dernière version),
 **  Gère également les verifications si une playlist personnalisée est disponible ou s'il faut lire la playlist par défaut
-**  Fonctions appelées dans player_homepage et player_page       
+**  Fonctions appelées dans player_homepage et player_page
 **
 **
 *******************************************************************************************************************************/
@@ -17,8 +17,9 @@ Appel des différentes fonctions du programme
 //add_action( 'wp_ajax_traitement_infos_nouveaux_reglages', 'traitement_infos_nouveaux_reglages' );
 add_action('wp_ajax_vider_table_playlist_clip','vider_table_playlist_clip');
 add_action('wp_ajax_chargement_page_quelle_playlist_charger','chargement_page_quelle_playlist_charger');
+add_action('wp_ajax_nopriv_chargement_page_quelle_playlist_charger','chargement_page_quelle_playlist_charger');
 add_action('wp_ajax_verifier_playlist_clip_charger_dans_la_table','verifier_playlist_clip_charger_dans_la_table');
-
+add_action('wp_ajax_nopriv_verifier_playlist_clip_charger_dans_la_table','verifier_playlist_clip_charger_dans_la_table');
 
 function chargement_page_quelle_playlist_charger() {
 
@@ -38,7 +39,7 @@ function chargement_page_quelle_playlist_charger() {
     $playlist_a_lire_exist=false;
     $start_date;
     if(isset($_POST['demande'])){$demande=$_POST['demande'];}
-  
+
     $result = array();
     $date_debut;
     $date_fin;
@@ -50,7 +51,7 @@ function chargement_page_quelle_playlist_charger() {
         $query="SELECT nom, Debut, Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin where ParDefaut = 0;";
         $nom_playlists_clip=$wpdb->get_results($query);
         foreach($nom_playlists_clip as $playlist){
-        
+
             $nom = $playlist->nom;
             $debut = $playlist->Debut;
             $fin = $playlist->Fin;
@@ -81,13 +82,13 @@ function chargement_page_quelle_playlist_charger() {
             echo($nom_a_lire);
             wp_die();
         }
-    } 
+    }
 }
 
 
 function verifier_playlist_clip_charger_dans_la_table() {
     /*
-    * Fonction : Vérifie si les date de début et fin chargée dans la table playlistclip sont 
+    * Fonction : Vérifie si les date de début et fin chargée dans la table playlistclip sont
     * les mêmes qu'une playlist de la base de donnée. Si une playlist a été créée sur les mêmes
     * horaires que celle chargée dans playlistclip, la table playlistclip ne sera pas actualisée
     * même si les pourcentages sont différents entre les deux playlists. Il faudra donc vider
@@ -98,7 +99,7 @@ function verifier_playlist_clip_charger_dans_la_table() {
 
     date_default_timezone_set('Europe/Paris'); //offset du fuseau horaire
     $current_date = Date(DATE_ATOM);
-  
+
     $result = array();
     $date_debut;
     $date_fin;
@@ -111,7 +112,7 @@ function verifier_playlist_clip_charger_dans_la_table() {
     }
     $debut_table_clip = Date(DATE_ATOM, strtotime($debut_table_clip));
     $fin_table_clip = Date(DATE_ATOM, strtotime($fin_table_clip));
-    
+
     $query_compte="SELECT COUNT(*) FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin where ParDefaut = 0;";
     $nb_playlists_clip=$wpdb->get_var($query_compte);
     if($nb_playlists_clip>=1)
@@ -119,7 +120,7 @@ function verifier_playlist_clip_charger_dans_la_table() {
         $query="SELECT Debut, Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin where ParDefaut = 0;";
         $nom_playlists_clip=$wpdb->get_results($query);
         foreach($nom_playlists_clip as $playlist){
-        
+
             $debut = $playlist->Debut;
             $fin = $playlist->Fin;
 
@@ -153,6 +154,3 @@ function vider_table_playlist_clip(){
     $wpdb->query($effacer_playlistclip);
 
 }
-
-
-

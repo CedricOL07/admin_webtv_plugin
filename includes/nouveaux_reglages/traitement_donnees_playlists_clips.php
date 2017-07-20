@@ -8,10 +8,15 @@
 /*Les add_action permettant de déclarer les fonctions php dans dans tout le dossier Wordpress*/
 add_action('wp_ajax_enregistrement_playlist_clips_pourcentage', 'enregistrement_playlist_clips_pourcentage' );
 add_action('wp_ajax_generer_la_playlist_clips','generer_la_playlist_clips');
+add_action('wp_ajax_nopriv_generer_la_playlist_clips','generer_la_playlist_clips');
 add_action('wp_ajax_recuperer_nouvelle_video_playlist_clip_player_page_principal', 'recuperer_nouvelle_video_playlist_clip_player_page_principal');
+add_action('wp_ajax_nopriv_recuperer_nouvelle_video_playlist_clip_player_page_principal', 'recuperer_nouvelle_video_playlist_clip_player_page_principal');
 add_action('wp_ajax_recuperer_videos_playlist_clip_player_page_principale', 'recuperer_videos_playlist_clip_player_page_principale' );
+add_action('wp_ajax_nopriv_recuperer_videos_playlist_clip_player_page_principale', 'recuperer_videos_playlist_clip_player_page_principale' );
 add_action('wp_ajax_recup_freq_logo_playlist_clip','recup_freq_logo_playlist_clip');
+add_action('wp_ajax_nopriv_recup_freq_logo_playlist_clip','recup_freq_logo_playlist_clip');
 add_action('wp_ajax_recup_id_video_courante_playlist_clip','recup_id_video_courante_playlist_clip');
+add_action('wp_ajax_nopriv_recup_id_video_courante_playlist_clip','recup_id_video_courante_playlist_clip');
 
 /*
 *Fonction : Permet de récupérer les paramètres de la playlist.
@@ -47,7 +52,7 @@ function enregistrement_playlist_clips_pourcentage(){
     $select = $wpdb->query($inserer_nouvelle_playlist);
 
   }
-  
+
 }
 
 function generer_la_playlist_clips(){

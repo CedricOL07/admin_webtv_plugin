@@ -15,12 +15,18 @@ Appel des différentes fonctions du programme
 add_action('wp_ajax_recuperer_noms_reglages','recuperer_noms_reglages');
 add_action('wp_ajax_enregistrer_reglage_par_defaut','enregistrer_reglage_par_defaut');
 add_action('wp_ajax_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
+add_action('wp_ajax_nopriv_recuperer_nouvelle_video_player_page_principal', 'recuperer_nouvelle_video_player_page_principal');
 add_action('wp_ajax_recuperer_videos_player_page_principale_par_defaut', 'recuperer_videos_player_page_principale_par_defaut' );
+add_action('wp_ajax_nopriv_recuperer_videos_player_page_principale_par_defaut', 'recuperer_videos_player_page_principale_par_defaut' );
 add_action('wp_ajax_recup_freq_logo','recup_freq_logo');
+add_action('wp_ajax_nopriv_recup_freq_logo','recup_freq_logo');
 add_action('wp_ajax_insertion_logo','insertion_logo');
+add_action('wp_ajax_nopriv_insertion_logo','insertion_logo');
 add_action('wp_ajax_recup_id_video_courante','recup_id_video_courante');
+add_action('wp_ajax_nopriv_recup_id_video_courante','recup_id_video_courante');
 add_action('pluginwebtv_generer_la_playlist_par_defaut', 'generer_la_playlist_par_defaut');
 add_action('wp_ajax_url_vid_exist','url_vid_exist');
+add_action('wp_ajax_nopriv_url_vid_exist','url_vid_exist');
 
 
 

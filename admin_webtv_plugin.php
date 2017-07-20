@@ -154,7 +154,7 @@ do_action('pluginwebtv_eliminer_anciennes_playlists');
 function creer_page_webtv(){
     wp_enqueue_script("playerpagejs",  plugins_url("includes/WEBTV/player_page.js", __FILE__), FALSE);
     wp_localize_script( 'playerpagejs', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
-   // wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
+   //wp_enqueue_style("webtv_view",plugins_url('assets/css/webtv_view.css',__FILE__) , FALSE);
     wp_enqueue_style("fontapigoogle", 'http://fonts.googleapis.com/css?family=Fjalla+One', FALSE);
     wp_enqueue_style("playrebluemondaycss", plugins_url("assets/css/jplayer.blue.monday.min.css", __FILE__), FALSE);
     wp_enqueue_style("allskincss", plugins_url("assets/css/skins/_all-skins.min.css", __FILE__), FALSE);

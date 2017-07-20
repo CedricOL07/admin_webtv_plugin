@@ -63,7 +63,7 @@ function generer_la_playlist(){
 	var artiste_album_annee_gener = new String();
 	// On vide d'abord la playlist si elle existe
 	myPlaylist.remove();
-	
+
 	// On regarde si il faut charger la playlist par défaut où la playlist clip
 	$.when(
 		$.post(
@@ -568,8 +568,8 @@ function continuer_playlist_clip()
 			}
 		);
 	});
-  
 
-	
-	
+
+
+
 });
