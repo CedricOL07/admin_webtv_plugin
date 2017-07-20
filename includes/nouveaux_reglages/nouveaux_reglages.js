@@ -269,58 +269,7 @@ $(document).ready(function(){
         );
 
     }
-
-
-    function afficher_playlists_jour(datedebut){
-        /* $.post(
-            ajaxurl,
-            {
-                'action': 'recuperer_playlists_jour',
-                'date_debut':datedebut
-
-            },
-            function(response){
-                 var tmd;
-                $('#liste_playlists').html('');
-                $('#liste_playlists').append('<p><h4>Programmation du '+response.data[3]+'</h4></p>')
-               tmd=response.data[0];
-                for(var i=0;i<tmd.length;i++){
-                    var h=response.data[0][i].date.substr(11);
-                    var heure_debut=h.substr(0,5);
-                    var h1=response.data[1][i].date.substr(11);
-                    var heure_fin=h1.substr(0,5);
-                    $('#liste_playlists').append('<p>Playlist <strong>'+response.data[2][i]+'</strong> de '+heure_debut+' à '+heure_fin+'</p>')
-                }
-
-            }
-        ); */
-    }
-    function afficher_playlists_jour_fin(datefin){
-        /*$.post(
-            ajaxurl,
-            {
-                'action': 'recuperer_playlists_jour_fin',
-                'date_fin':datefin
-
-            },
-            function(response){
-                var tmd;
-                $('#liste_playlists_fin').html('');
-                $('#liste_playlists_fin').append('<p><h4>Programmation du '+response.data[3]+'</h4></p>')
-                tmd=response.data[0];
-                for(var i=0;i<tmd.length;i++){
-                    var h=response.data[0][i].date.substr(11);
-                    var heure_debut=h.substr(0,5);
-                    var h1=response.data[1][i].date.substr(11);
-                    var heure_fin=h1.substr(0,5);
-                    $('#liste_playlists_fin').append('<p>Playlist <strong>'+response.data[2][i]+'</strong> de '+heure_debut+' à '+heure_fin+'</p>')
-                }
-
-            }
-        ); */
-
-    }
-
+	
 	var passer_des_que_possible_clicked = false;
 
     function recuperer_creneau_dispo(){
@@ -622,8 +571,7 @@ YUI().use(
         onClose: function( selectedDate ) {
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
-            // afficher_playlists_jour(date_debut_selectionnee);
-
+            
 
         }
     });
@@ -635,7 +583,6 @@ YUI().use(
         stepMinute: 1,// permet de chosir le pas pour les minutes
         onClose: function( selectedDate ) {
             date_fin_selectionnee=selectedDate;
-            // afficher_playlists_jour_fin(date_fin_selectionnee);
         }
     });
 
@@ -985,453 +932,174 @@ YUI().use(
 *-------------generer_la_playlist_par_defaut-------------------------------------------   Boutons   ----------------------------------------------------------
 *
 */
+
+
     /*
     * --------------------------------------------- BOUTON PAGE PRINCIPALE GENERER 1 HEURE une PLAYLIST DU GENRE DESIRER ---------------------------------------------
     */
 
+	function bouton_1h(num_bouton_1h)
+	{
+		var nom_reglage ;
+		var pc_pr = 0; // % poprock
+		var pc_hh = 0; // % hip-hop
+		var pc_jb = 0; // % jazz-blues
+		var pc_mm = 0; // % musique du monde
+		var pc_el = 0; // % electro
+		var pc_hr = 0; // % hard rock
+		var pc_ch = 0; // % chanson
+		var pc_au = 0; // % autres
+		
+		switch (num_bouton_1h){
+			case 1: //Pop-rock
+				nom_reglage = "Pop-rock_1h";
+				pc_pr = 100;
+				break;
+			case 2: //hip-hop
+				nom_reglage = "Hip-Hop_et_Rap_1h";
+				pc_hh = 100;
+				break;
+			case 3: //jazz-blues
+				nom_reglage = "Jazz_et_Blues_1h";
+				pc_jb = 100;
+				break;
+			case 4: //musique du monde
+				nom_reglage = "Musique_du_monde_et_Reggae_1h";
+				pc_mm = 100;
+				break;
+			case 5: //electro
+				nom_reglage = "Electro_1h";
+				pc_el = 100;
+				break;
+			case 6: //hard rock
+				nom_reglage = "Hard_Rock_et_Metal_1h";
+				pc_hr = 100;
+				break;
+			case 7: //chanson
+				nom_reglage = "Chanson_1h";
+				pc_ch = 100;
+				break;
+			default: //autres
+				nom_reglage = "Autres_1h";
+				pc_au = 100;
+		}	
+			
+		var date = new Date;
+		var str_date;
+		var strY = date.getFullYear();
+		var strM = date.getMonth()+1;
+		var strD = date.getDate();
+		var strHMinDebut = date.getHours();
+		strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
+		// récupère la date actuelle
+		str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
+
+		// récupère la date actuelle et rajoute 1h
+		var strHMinFin = date.getHours()+1;
+		strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
+		str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
+
+		var pardefaut = 0;
+		var annee_max = '99991231';
+		var annee_min= '00010101';
+		var qualite_min = 1;
+		var date_debut_selectionnee = str_date_debut ;
+		var date_fin_selectionnee = str_date_Fin ;
+		var freq_logo = 6;
+		$.post(
+			ajaxurl,
+			{
+				'action': 'gestion_une_playlist_a_la_fois',
+				'date_debut':date_debut_selectionnee,
+				'date_fin':date_fin_selectionnee,
+				'nom_playlist':nom_reglage
+			},
+			function(response){
+			}
+		);
+		$.when(
+			$.post(
+				ajaxurl,
+				{
+					'action': 'delete_playlist',
+					'nom_event':nom_reglage
+				},
+				function(response){
+				}
+			)
+		).then(
+			$.post(
+				ajaxurl,
+				{
+					'action': 'enregistrement_playlist_clips_pourcentage',
+					'pardefaut':pardefaut,
+					'annee_max':annee_max,
+					'annee_min':annee_min,
+					'qualite_min':qualite_min,
+					'pourcentage_poprock':pc_pr,
+					'pourcentage_hiphop':pc_hh,
+					'pourcentage_jazzblues':pc_jb,
+					'pourcentage_musiquemonde':pc_mm,
+					'pourcentage_electro':pc_el,
+					'pourcentage_hardrock':pc_hr,
+					'pourcentage_chanson':pc_ch,
+					'pourcentage_autres':pc_au,
+					'nom_reglage':nom_reglage,
+					'date_debut':date_debut_selectionnee,
+					'date_fin':date_fin_selectionnee,
+					'freq_logo':freq_logo,
+				},
+				function(response){
+					$.post(
+						ajaxurl,
+						{
+							'action': 'vider_table_playlist_clip'
+						},
+						function(response){
+							console.log(response);
+						}
+					)
+				}
+			)
+		);
+		
+		
+		location.reload();
+	}
+	
+	
     $("#Pop-rock_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Pop-rock_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':100,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-
-          }
-      );
-      location.reload();
+		bouton_1h(1);
     });
 
     $("#Hip-Hop_et_Rap_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Hip-Hop_et_Rap_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':100,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-
-          }
-      );
-      location.reload();
+		bouton_1h(2);
     });
 
-    $("#Jazz_et_Blues_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Jazz_et_Blues_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':100,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-
-          }
-      );
-      location.reload();
+	$("#Jazz_et_Blues_btn").click(function(){
+		bouton_1h(3);
     });
-
+	
     $("#Musique_du_monde_et_Reggae_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Musique_du_monde_et_Reggae_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':100,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-          }
-      );
-      location.reload();
+		bouton_1h(4);
+    });
+	
+	$("#Electro_btn").click(function(){
+		bouton_1h(5);
+    });
+	
+	$("#Hard_Rock_et_Metal_btn").click(function(){
+		bouton_1h(6);
+    });
+	
+	$("#Chanson_btn").click(function(){
+		bouton_1h(7);
+    });
+	
+	$("#Autres_btn").click(function(){
+		bouton_1h(8);
     });
 
-    $("#Electro_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Electro_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':100,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-          }
-      );
-      location.reload();
-    });
-
-    $("#Hard_Rock_et_Metal_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Hard_Rock_et_Metal_1h";
-       console.log(date_fin_selectionnee);
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':100,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-          }
-      );
-      location.reload();
-    });
-
-    $("#Chanson_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Chanson_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':100,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':100,
-              'pourcentage_autres':0,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-          }
-      );
-      location.reload();
-    });
-
-    $("#Autres_btn").click(function(){
-      var date = new Date;
-      var str_date;
-      var strY = date.getFullYear();
-      var strM = date.getMonth()+1;
-      var strD = date.getDate();
-      var strHMinDebut = date.getHours();
-      strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      // récupère la date actuelle
-      str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
-
-      // récupère la date actuelle et rajoute 1h
-      var strHMinFin = date.getHours()+1;
-      strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-      str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
-
-      var pardefaut = 0;
-      var annee_max = '99991231';
-      var annee_min= '00010101';
-      var qualite_min = 1;
-      var date_debut_selectionnee = str_date_debut ;
-      var date_fin_selectionnee = str_date_Fin ;
-      var freq_logo = 6;
-      var nom_reglage = "Autres_1h";
-      $.post(
-          ajaxurl,
-          {
-              'action': 'enregistrement_playlist_clips_pourcentage',
-              'pardefaut':pardefaut,
-              'annee_max':annee_max,
-              'annee_min':annee_min,
-              'qualite_min':qualite_min,
-              'pourcentage_poprock':0,
-              'pourcentage_hiphop':0,
-              'pourcentage_jazzblues':0,
-              'pourcentage_musiquemonde':0,
-              'pourcentage_electro':0,
-              'pourcentage_hardrock':0,
-              'pourcentage_chanson':0,
-              'pourcentage_autres':100,
-              'nom_reglage':nom_reglage,
-              'date_debut':date_debut_selectionnee,
-              'date_fin':date_fin_selectionnee,
-              'freq_logo':freq_logo,
-
-          },
-          function(response){
-
-                  console.log("echo : "+response);
-
-          }
-      );
-      location.reload();
-    });
 
     /*
     * --------------------------------------------- BOUTON ENREGISTRER REGLAGE ---------------------------------------------

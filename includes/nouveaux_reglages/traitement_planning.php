@@ -170,7 +170,7 @@ pdf>df?                                                             | | -- donne
                 {
                     $_SESSION['nom_event'] = $nom_n;
                     delete_playlist();
-                    $_SESSION['nom_event'] = "";
+                    unset($_SESSION['nom_event']);
                 }
             }
         }

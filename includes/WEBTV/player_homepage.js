@@ -552,45 +552,92 @@ function continuer_playlist_clip()
   * Fonction : Permet de gérer si le lien de la video mp4 à disparu de la playlist.
   */
 
-  jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
-  {
+	jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
+	{
 
-  	var current     = myPlaylist.current;
-  	playlist        = myPlaylist.playlist;
-    var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
-  	var url_clip_suivant = playlist[current+1].m4v;
-    var url_clip_courant = playlist[current].m4v;
+		var current     = myPlaylist.current;
+		playlist        = myPlaylist.playlist;
+		var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
+		var url_clip_suivant = playlist[current+1].m4v;
+		var url_clip_courant = playlist[current].m4v;
 
-  	$.post(
-  		ajaxurl,
-  		{
-  			'action': 'url_vid_exist',
-  			'url_clip_suivant': url_clip_suivant,
-        'url_clip_courant' :url_clip_courant
-  		},
-  		function(response){
-  			//console.log("reponse: " + response);
-        var reponse = response;
-        console.log("reponse " +reponse);
-        switch (reponse) {
-          case 'a':
-            break;
-
-          case 'b':
-          console.log("entrée dans b : ");
-            myPlaylist.remove(current+1);
-            break;
-
-          case 'c':
-              console.log("entrée dans c : ");
-              myPlaylist.remove(current);
-              myPlaylist.next();
-            break;
-          default:
-          console.log("aucun pb rencontrés");
-
-        }
-      }
-    );
-  });
+		$.post(
+			ajaxurl,
+			{
+				'action': 'url_vid_exist',
+				'url_clip_suivant': url_clip_suivant,
+				'url_clip_courant' :url_clip_courant
+			},
+			function(response){
+				//console.log("reponse: " + response);
+				var reponse = response;
+				console.log("reponse " +reponse);
+				switch (reponse) {
+					case 'a':
+						break;
+					case 'b':
+						console.log("entrée dans b : ");
+						myPlaylist.remove(current+1);
+						break;
+					case 'c':
+						console.log("entrée dans c : ");
+						myPlaylist.remove(current);
+						myPlaylist.next();
+						break;
+					default:
+						console.log("aucun pb rencontrés");
+				}
+			}
+		);
+	});
+  
+  
+  
+	/*
+	* ----------------------------------------- BOUTON ARRÊTER LA PLAYLIST EN COURS -----------------------------------------
+	*/
+	
+	$("#Stop_playlist").click(function(){
+		
+		// On regarde si il y a une playlist clip à supprimer
+		var playlist_stop_nom;
+		$.when(	
+			$.post(
+				ajaxurl,
+				{
+				  'action': 'chargement_page_quelle_playlist_charger',
+				  'demande': 'nom'
+				},
+				function(response){
+					playlist_stop_nom = response;
+					console.log("Stop et efface : "+playlist_stop_nom);
+				}
+			)
+		).then( function(){
+			if (playlist_stop_nom != "")	// Si il y a une playlist clip
+			{
+				$.post( 			// On vide la table playlistclip
+					ajaxurl,
+					{
+						'action': 'vider_table_playlist_clip'
+					},
+					function(response){
+					}
+				);
+				$.post(
+					ajaxurl,
+					{
+						'action': 'delete_playlist',
+						'nom_event':playlist_stop_nom
+					},
+					function(response3){
+					}
+				);
+			}
+		});			
+		location.reload();
+    });
+	
+	
+	
 });
