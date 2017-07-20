@@ -253,7 +253,6 @@ function recuperer_videos_player_page_principale_par_defaut() {
 function url_vid_exist(){
   if(isset($_POST['url_clip_suivant'])){$url_clip_suivant = $_POST['url_clip_suivant'];}
   if(isset($_POST['url_clip_courant'])){$url_clip_courant = $_POST['url_clip_courant'];}
-
   // pour le clip suivant
   $handle_suivant = curl_init($url_clip_suivant);
   curl_setopt($handle_suivant,  CURLOPT_RETURNTRANSFER, TRUE);
@@ -274,12 +273,16 @@ function url_vid_exist(){
   /* Check for 404 (file not found). */
   $httpCode_courant = curl_getinfo($handle_courant, CURLINFO_HTTP_CODE);
 
-  if($httpCode_suivant == 404 or $httpCode_courant == 404) {
-    echo(1);  /* Handle 404 here. */
-  }else {
-    echo(0);
+  if($httpCode_suivant == 404 ) {
+    echo('b');  /* Handle 404 here. */
   }
-
+  else if ( $httpCode_courant == 404){
+    echo('c');
+  }
+  else{
+    echo('a');
+  }
+  wp_die();
 
 
 }

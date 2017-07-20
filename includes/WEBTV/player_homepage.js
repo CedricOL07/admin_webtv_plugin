@@ -548,40 +548,49 @@ function continuer_playlist_clip()
     }
 }
 
-/*
-* Fonction : Permet de gérer si le lien de la video mp4 à disparu de la playlist.
-*/
+  /*
+  * Fonction : Permet de gérer si le lien de la video mp4 à disparu de la playlist.
+  */
 
-jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
-{
+  jQuery("#player_video").bind(jQuery.jPlayer.event.play, function (event)
+  {
 
-	var current     = myPlaylist.current;
-	playlist        = myPlaylist.playlist;
-  var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
-	var url_clip_suivant = playlist[current+1].m4v;
-  var url_clip_courant = playlist[current].m4v;
+  	var current     = myPlaylist.current;
+  	playlist        = myPlaylist.playlist;
+    var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
+  	var url_clip_suivant = playlist[current+1].m4v;
+    var url_clip_courant = playlist[current].m4v;
 
-	$.post(
-		ajaxurl,
-		{
-			'action': 'url_vid_exist',
-			'url_clip_suivant': url_clip_suivant,
-      'url_clip_courant' :url_clip_courant
-		},
-		function(response){
-			console.log("existe : " + response);
-      console.log("titre : " + titre_previous_current_track);
-        if (response >= 1 ){
-          if (current == 0){
-            myPlaylist.remove(current);
-            myPlaylist.next();
-          }
-          else{
-          console.log(current+1);
-          myPlaylist.remove(current+1);
-          }
+  	$.post(
+  		ajaxurl,
+  		{
+  			'action': 'url_vid_exist',
+  			'url_clip_suivant': url_clip_suivant,
+        'url_clip_courant' :url_clip_courant
+  		},
+  		function(response){
+  			//console.log("reponse: " + response);
+        var reponse = response;
+        console.log("reponse " +reponse);
+        switch (reponse) {
+          case 'a':
+            break;
+
+          case 'b':
+          console.log("entrée dans b : ");
+            myPlaylist.remove(current+1);
+            break;
+
+          case 'c':
+              console.log("entrée dans c : ");
+              myPlaylist.remove(current);
+              myPlaylist.next();
+            break;
+          default:
+          console.log("aucun pb rencontrés");
+
         }
       }
-  	);
+    );
   });
 });
