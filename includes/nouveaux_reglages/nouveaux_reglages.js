@@ -269,7 +269,7 @@ $(document).ready(function(){
         );
 
     }
-	
+
 	var passer_des_que_possible_clicked = false;
 
     function recuperer_creneau_dispo(){
@@ -571,7 +571,7 @@ YUI().use(
         onClose: function( selectedDate ) {
             $( "#to" ).datepicker( "option", "minDate", selectedDate );
             date_debut_selectionnee=selectedDate;
-            
+
 
         }
     });
@@ -941,6 +941,7 @@ YUI().use(
 	function bouton_1h(num_bouton_1h)
 	{
 		var nom_reglage ;
+    var plage_horaire_playlist_exclusif = $("#plage_horaire_playlist_exclusif").val();
 		var pc_pr = 0; // % poprock
 		var pc_hh = 0; // % hip-hop
 		var pc_jb = 0; // % jazz-blues
@@ -949,7 +950,7 @@ YUI().use(
 		var pc_hr = 0; // % hard rock
 		var pc_ch = 0; // % chanson
 		var pc_au = 0; // % autres
-		
+
 		switch (num_bouton_1h){
 			case 1: //Pop-rock
 				nom_reglage = "Pop-rock_1h";
@@ -982,29 +983,28 @@ YUI().use(
 			default: //autres
 				nom_reglage = "Autres_1h";
 				pc_au = 100;
-		}	
-			
-		var date = new Date;
-		var str_date;
-		var strY = date.getFullYear();
-		var strM = date.getMonth()+1;
-		var strD = date.getDate();
-		var strHMinDebut = date.getHours();
-		strHMinDebut += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
+		}
+    /////////////////////////////////////////////////////////////////////////
+    Date.prototype.addHours = function(h) {
+       this.setTime(this.getTime() + (h*60*60*1000));
+       return this;
+    }
+    /////////////////////////////////////////////////////////////////////////
+		var date = new Date();
+    str_date_debut = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
+    console.log("Debut :" +str_date_debut);
 		// récupère la date actuelle
-		str_date_debut = strY + "-"+  strM + "-" + strD + " " + strHMinDebut;//aaaa-mm-jj hh:mm
 
-		// récupère la date actuelle et rajoute 1h
-		var strHMinFin = date.getHours()+1;
-		strHMinFin += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
-		str_date_Fin = strY + "-"+  strM + "-" + strD + " " + strHMinFin;//aaaa-mm-jj hh:mm
+    date.addHours(plage_horaire_playlist_exclusif);
+    str_date_fin = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
+    console.log("Fin :" +str_date_fin);
 
 		var pardefaut = 0;
 		var annee_max = '99991231';
 		var annee_min= '00010101';
 		var qualite_min = 1;
-		var date_debut_selectionnee = str_date_debut ;
-		var date_fin_selectionnee = str_date_Fin ;
+		var date_debut_selectionnee = str_date_debut;
+		var date_fin_selectionnee = str_date_fin;
 		var freq_logo = 6;
 		$.post(
 			ajaxurl,
@@ -1062,12 +1062,12 @@ YUI().use(
 				}
 			)
 		);
-		
-		
+
+
 		location.reload();
 	}
-	
-	
+
+
     $("#Pop-rock_btn").click(function(){
 		bouton_1h(1);
     });
@@ -1079,23 +1079,23 @@ YUI().use(
 	$("#Jazz_et_Blues_btn").click(function(){
 		bouton_1h(3);
     });
-	
+
     $("#Musique_du_monde_et_Reggae_btn").click(function(){
 		bouton_1h(4);
     });
-	
+
 	$("#Electro_btn").click(function(){
 		bouton_1h(5);
     });
-	
+
 	$("#Hard_Rock_et_Metal_btn").click(function(){
 		bouton_1h(6);
     });
-	
+
 	$("#Chanson_btn").click(function(){
 		bouton_1h(7);
     });
-	
+
 	$("#Autres_btn").click(function(){
 		bouton_1h(8);
     });

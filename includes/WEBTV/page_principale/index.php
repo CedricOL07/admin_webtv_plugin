@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <head>
     <meta charset="utf-8">
 
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>WEBTVFIL</title>
   </head>
   <body class="hold-transition skin-black sidebar-mini">
@@ -42,9 +42,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="bootstrap-wpadmin">
                 <div class="row col-md-12 col-sm-12" >
                   <h2>
-                    Playlist - EXCLUSIF (durée de 1 Heure)
+                    Playlist - EXCLUSIF
+
                   </h2>
-                    <div class="col-md-3 col-sm-3">
+                  <div class="col-md-3 col-sm-3">
+                    <select name="plage_horaire_playlist_exclusif" id="plage_horaire_playlist_exclusif" value="Choisir la durée de passage de la playlist" style="margin-bottom:10px;">
+                      <option >--durée de passage de la playlist--</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="24">24</option>
+                    </select>
                     <button class="btn btn-primary btn-block" id="Pop-rock_btn">Pop-rock</button>
                     <button class="btn btn-danger btn-block" id="Hip-Hop_et_Rap_btn">Hip-Hop et Rap</button>
                     <button class="btn btn-warning btn-block" id="Jazz_et_Blues_btn">Jazz et Blues</button>
@@ -54,6 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <button class="btn btn-block" style="background-color:#EA39A4; color:#FEFEFE; "id="Chanson_btn">Chanson</button>
                     <button class="btn btn-success btn-block" style="margin-bottom: 20px;"  id="Autres_btn">Autres</button>
                   </div>
+
                   <div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2" id="lecteur_video">
                     <div id="container_jplayer" class="jp-video jp-video-270p" role="application" aria-label="media player">
                       <button class="btn btn-block" style="background-color:#F90000; color:#FEFEFE;" id="Stop_playlist">Arrêter la playlist en cours</button>
