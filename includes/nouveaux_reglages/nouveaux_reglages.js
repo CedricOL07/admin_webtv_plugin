@@ -991,12 +991,12 @@ YUI().use(
     }
     /////////////////////////////////////////////////////////////////////////
 		var date = new Date();
-    str_date_debut = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
+    var str_date_debut = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
     console.log("Debut :" +str_date_debut);
 		// récupère la date actuelle
 
     date.addHours(plage_horaire_playlist_exclusif);
-    str_date_fin = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
+    var str_date_fin = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
     console.log("Fin :" +str_date_fin);
 
 		var pardefaut = 0;
@@ -1055,8 +1055,8 @@ YUI().use(
 						{
 							'action': 'vider_table_playlist_clip'
 						},
-						function(response){
-							console.log(response);
+						function(response2){
+							console.log(response2);
 						}
 					)
 				}

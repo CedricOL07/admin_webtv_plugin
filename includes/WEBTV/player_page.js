@@ -73,7 +73,7 @@ function generer_la_playlist(){
         });
         //console.log(value.url);
         myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
-        console.log(title);
+        console.log(title+"ertyuio");
       });
 
     },
