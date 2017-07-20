@@ -125,7 +125,8 @@ si pdf>dd:
         oui--> pdd<df?  non--> rien à faire             dd ---------|-|---------------------------------------
 pdf>df?                                                             | | -- donnera --> 
         non--> pdd<dd?  oui--> pdf = dd                 df ---------|-|-----------------pdd>-___--------------
-                        non--> supprimer playlist              pdf> ---                 pdf> ---
+                        non--> supprimer playlist                   | |                      | |
+                                                               pdf> ---                 pdf> ---
 
 */
 
