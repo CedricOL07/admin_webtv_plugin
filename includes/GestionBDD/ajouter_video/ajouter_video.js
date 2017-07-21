@@ -55,11 +55,11 @@ $(document).ready(function(){
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
 
-		////console.log(genre);
+		//console.log(genre);
 		////console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
 		////console.log("genre" +genre);
 
-		if((titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '') || (genre=='Logo' && titre!='' && url_video!=''))
+		if((titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '') || ((genre=='Logo' || genre=='Publicité Interne' || genre=='Publicité Externe') && titre!='' && url_video!=''))
 		{
 			$.post(
 				ajaxurl,

@@ -326,15 +326,16 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
     PRIMARY KEY (`video_id`,`artiste_id`,`genre_id`,`album_id`,`annee_id`,`qualite_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
+/*
     $alter_table_relation=" ALTER TABLE `" . $wpdb->prefix . "relation_webtv_plugin`
 
-    ADD CONSTRAINT `relation_ibfk_1` FOREIGN KEY (`video_id`) REFERENCES `" . $wpdb->prefix . "videos_webtv_plugin` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `relation_ibfk_1` FOREIGN KEY (`video_id`) REFERENCES `" . $wpdb->prefix . "videos_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_2` FOREIGN KEY (artiste_id) REFERENCES `" . $wpdb->prefix . "artiste_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_3` FOREIGN KEY (`genre_id`) REFERENCES `" . $wpdb->prefix . "genre_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_4` FOREIGN KEY (`album_id`) REFERENCES `" . $wpdb->prefix . "album_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_5` FOREIGN KEY (`annee_id`) REFERENCES `" . $wpdb->prefix . "annee_webtv_plugin` (`id`) ON DELETE CASCADE,
 ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpdb->prefix . "qualite_webtv_plugin` (`valeur`) ON DELETE CASCADE;";
-
+*/
 
     $creer_table_videos="CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "videos_webtv_plugin` (
     `id` int(255) NOT NULL,
@@ -399,7 +400,7 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
     $wpdb->query($alter_table_genre);
     $wpdb->query($alter_table_qualite);
     $wpdb->query($alter_table_videos);
-    $wpdb->query($alter_table_relation);
+    //$wpdb->query($alter_table_relation);
     $wpdb->query($alter_table_defaut_playlist);
     $wpdb->query($alter_table_playlist_clip);
     $wpdb->query($alter_table_videos_logo);
@@ -410,28 +411,28 @@ ADD CONSTRAINT `relation_ibfk_6` FOREIGN KEY (`qualite_id`) REFERENCES `" . $wpd
 function pluginwebtv_supprimer_tables(){
     global $wpdb;
     $effacer_table_playlistenregistres="DROP TABLE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin;";
-    $effacer_table_album="DROP TABLE " . $wpdb->prefix . "album_webtv_plugin;";
-    $effacer_table_annee="DROP TABLE " . $wpdb->prefix . "annee_webtv_plugin;";
-    $effacer_table_artiste="DROP TABLE " . $wpdb->prefix . "artiste_webtv_plugin;";
+    //$effacer_table_album="DROP TABLE " . $wpdb->prefix . "album_webtv_plugin;";
+    //$effacer_table_annee="DROP TABLE " . $wpdb->prefix . "annee_webtv_plugin;";
+    //$effacer_table_artiste="DROP TABLE " . $wpdb->prefix . "artiste_webtv_plugin;";
     $effacer_table_playlist="DROP TABLE " . $wpdb->prefix . "playlist_par_defaut_webtv_plugin;";
-    $effacer_table_videos="DROP TABLE " . $wpdb->prefix . "videos_webtv_plugin;";
-    $effacer_table_qualite="DROP TABLE " . $wpdb->prefix . "qualite_webtv_plugin;";
-    $effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
+    //$effacer_table_videos="DROP TABLE " . $wpdb->prefix . "videos_webtv_plugin;";
+    //$effacer_table_relation="DROP TABLE " . $wpdb->prefix . "relation_webtv_plugin;";
     $effacer_table_playlistclip="DROP TABLE " . $wpdb->prefix . "playlistclip_webtv_plugin;";
-    $effacer_table_genre="DROP TABLE " . $wpdb->prefix . "genre_webtv_plugin;";
-    $effacer_table_videos_logo="DROP TABLE " . $wpdb->prefix . "videos_logo_webtv_plugin;";
+    //$effacer_table_genre="DROP TABLE " . $wpdb->prefix . "genre_webtv_plugin;";
+    //$effacer_table_videos_logo="DROP TABLE " . $wpdb->prefix . "videos_logo_webtv_plugin;";
 
-    $wpdb->query($effacer_table_videos_logo);
     $wpdb->query($effacer_table_playlistenregistres);
+    $wpdb->query($effacer_table_playlist);
+    $wpdb->query($effacer_table_playlistclip);
+    /*
+    $wpdb->query($effacer_table_videos_logo);
     $wpdb->query($effacer_table_album);
     $wpdb->query($effacer_table_annee);
     $wpdb->query($effacer_table_artiste);
-    $wpdb->query($effacer_table_playlist);
-    $wpdb->query($effacer_table_playlistclip);
-    $wpdb->query($effacer_table_videos);
     $wpdb->query($effacer_table_relation);
     $wpdb->query($effacer_table_videos);
     $wpdb->query($effacer_table_genre);
+    */
 
 }
 

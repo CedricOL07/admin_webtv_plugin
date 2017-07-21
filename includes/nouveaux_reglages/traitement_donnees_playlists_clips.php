@@ -34,8 +34,8 @@ function enregistrement_playlist_clips_pourcentage(){
   if(isset($_POST['pourcentage_electro'])){ $pourcentage_electro=$_POST['pourcentage_electro'];}
   if(isset($_POST['pourcentage_chanson'])){ $pourcentage_chanson=$_POST['pourcentage_chanson'];}
   if(isset($_POST['pourcentage_autres'])){ $pourcentage_autres=$_POST['pourcentage_autres'];}
-  if(isset($_POST['pubs_internes'])){ $pubs_internes = $_POST['pubs_internes'];} else { $pubs_internes = "no_pub_int"; }
-  if(isset($_POST['pubs_externes'])){ $pubs_externes = $_POST['pubs_externes'];} else { $pubs_externes = "no_pub_ext"; }
+  if(isset($_POST['pubs_internes'])){ $pubs_internes = $_POST['pubs_internes'][0];} else { $pubs_internes = "no_pub_int"; }
+  if(isset($_POST['pubs_externes'])){ $pubs_externes = $_POST['pubs_externes'][0];} else { $pubs_externes = "no_pub_ext"; }
   if(isset($_POST['artistehighlight'])){ $artiste_en_highlight=$_POST['artistehighlight'];} else { $artiste_en_highlight = "no_highlight"; }
   if(isset($_POST['annee_min'])){ $annee_min=$_POST['annee_min'];}
   if(isset($_POST['annee_max'])){ $annee_max=$_POST['annee_max'];}
@@ -45,9 +45,11 @@ function enregistrement_playlist_clips_pourcentage(){
   if(isset($_POST['pardefaut'])){ $par_defaut=$_POST['pardefaut'];}
   if(isset($_POST['freq_logo'])){$freq_logo = $_POST['freq_logo'];}
 
+echo $freq_logo;
+wp_die();
   if ($par_defaut == 0){  /////////////////////////////////////////////////////////////////////////////////////////// AJOUTER LES LOGO DANS LA REQUETE QUAND ILS SERONT FONCTIONNELS
 
-    $inserer_nouvelle_playlist="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde, pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,publicites_internes,publicites_externes,artiste_highlight,annee_max,annee_min,qualite_min,Debut,Fin,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues', '$pourcentage_musiquemonde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$pubs_internes','$pubs_externes','$artiste_en_highlight','$annee_max','$annee_min','$qualite_min','$debut','$fin','$par_defaut');";
+    $inserer_nouvelle_playlist="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde, pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,publicites_internes,publicites_externes,artiste_highlight,annee_max,annee_min,qualite_min,Debut,Fin,Freq_logo,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues', '$pourcentage_musiquemonde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$pubs_internes','$pubs_externes','$artiste_en_highlight','$annee_max','$annee_min','$qualite_min','$debut','$fin','$freq_logo','$par_defaut');";
 
     $select = $wpdb->query($inserer_nouvelle_playlist);
 
@@ -112,6 +114,7 @@ function generer_la_playlist_clips(){
     }
 
 
+
     //$tab_glob1=array();
     //On met tout ca dans la table Playlist
     $titres=str_replace("'","''",$tab_titres_clip);
@@ -131,9 +134,8 @@ function generer_la_playlist_clips(){
         $wpdb->query($inserer);
     }
 
-    echo("Playlist clip ". $nom_requete_playlist." générée ! ");
+    print_r($tab_url_clip);
     wp_die();
-
 }
 
 

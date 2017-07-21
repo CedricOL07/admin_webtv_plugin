@@ -575,12 +575,8 @@ $(document).ready(function(){
             success: function(data){
 
                 $.each(data.data,function(key,value){
-
-                    $('#pubs_selector_externe').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-                    //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+                    $('#pubs_selector_externe').append('<option value="'+value+'">'+ value +'</option>');
                 });
-
-                //$("#hightlight-selector").multiselect('rebuild');
 
 
             },
@@ -610,12 +606,8 @@ $(document).ready(function(){
             success: function(data){
 
                 $.each(data.data,function(key,value){
-
-                $('#pubs_selector_interne').append('<option value="'+value.nom+'">'+ value.nom +'</option>');
-                //$('#pubs_selector_externe').append('<option value="exemple> exemple </option>');
+					$('#pubs_selector_interne').append('<option value="'+value+'">'+ value +'</option>');
                 });
-                 //$('#pubs_selector_interne').append('<option value="exemple>exemple </option>');
-                //$("#hightlight-selector").multiselect('rebuild');
 
 
             },
@@ -1037,7 +1029,6 @@ $(document).ready(function(){
     */
     $("#bouton_enregistrer_reglage").click(function(){
 
-
         var pardefaut = 0;
 		var annee_max = $("#annee_max").val();
 		var annee_min = $("#annee_min").val();
@@ -1194,7 +1185,7 @@ $(document).ready(function(){
                         },
                         function(response){
 
-                                //console.log("echo : "+response);
+                            //console.log("echo : "+response);
 
                         }
                     );
