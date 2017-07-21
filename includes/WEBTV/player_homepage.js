@@ -576,11 +576,11 @@ function continuer_playlist_clip()
 					case 'a':
 						break;
 					case 'b':
-						//console.log("entrée dans b : ");
+						console.log("entrée dans b : ");
 						myPlaylist.remove(current+1);
 						break;
 					case 'c':
-						//console.log("entrée dans c : ");
+					 console.log("entrée dans c : ");
 						myPlaylist.remove(current);
 						myPlaylist.next();
 						break;

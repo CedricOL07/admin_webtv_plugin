@@ -281,9 +281,27 @@ function url_vid_exist(){
 
   if($httpCode_suivant == 404 ) {
     echo('b');  /* Handle 404 here. */
+      // 1 : on ouvre le fichier
+      $monfichier2 = fopen(MY_PLUGIN_PATH .'Rapport_erreur_lien_mort_video.txt', 'a+');
+      // 2 : on lit la première ligne du fichier
+      $ligne = fputs($monfichier2, "\nCe lien n'est plus actif : " . $url_clip_suivant );
+
+      fseek($monfichier2, 0);
+      // 3 : quand on a fini de l'utiliser, on ferme le fichier
+      fclose($monfichier2);
+
   }
   else if ( $httpCode_courant == 404){
     echo('c');
+    // 1 : on ouvre le fichier
+    $monfichier = fopen(MY_PLUGIN_PATH .'Rapport_erreur_lien_mort_video.txt', 'a+');
+
+    // 2 : on lit la première ligne du fichier
+    $ligne = fputs($monfichier, "\nCe lien n'est plus actif : " . $url_clip_courant );
+
+    // 3 : quand on a fini de l'utiliser, on ferme le fichier
+    fclose($monfichier);
+
   }
   else{
     echo('a');
