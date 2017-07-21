@@ -173,19 +173,18 @@ function generer_playlist_clips($pourcentagepoprock, $pourcentagehiphop, $pource
 
     $max_clip = 12;
 
+    if($pint != "no_pub_int"){
+        do_action('pluginwebtv_ajouter_pubs_internes',$pint);
+        $max_clip++;
+    }
+
     if($highlight != "no_highlight"){
         do_action('pluginwebtv_ajouter_highlight',$highlight);
         $max_clip++;
     }
 
-    if($pint != "no_pub_int"){
-        do_action('pluginwebtv_ajouter_pubs_internes',$pint);
-        $max_clip++;
-
-    }
-    //ajouter_pubs($pubsinternes,$pubsexternes);
     if($pext != "no_pub_ext"){
-        do_action('pluginwebtv_ajouter_pubs_externe',$pext);
+        do_action('pluginwebtv_ajouter_pubs_externes',$pext);
         $max_clip++;
     }
 
@@ -227,25 +226,27 @@ function ajouter_highlight($artiste){
     }
 
     $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
-    $tab_donnees_genre = $wpdb->get_var($query_genre);
-        $tab_genres_clip[$max_clip] = $tab_donnees_genre;    
+    $tab_donnees_genre = $wpdb->get_var($query_genre);    
 
     $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
     $tab_donnees_annees = (string)$wpdb->get_var($query_annees);
-        $tab_annees_clip[$max_clip] = $tab_donnees_annees;
 
     $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
     $tab_donnees_albums = $wpdb->get_var($query_albums);
-        $tab_albums_clip[$max_clip] = $tab_donnees_albums;
 
     $query="SELECT url,titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video' LIMIT 1;";
     $tab_donnees_titre_url=$wpdb->get_results($query);
     foreach($tab_donnees_titre_url as $id){
-        $tab_url_clip[$max_clip]=$id->url;
-        $tab_titres_clip[$max_clip]=$id->titre; 
+        $uurl = $id->url;
+        $ttitre = $id->titre;
     }
 
-    $tab_artistes_clip[$max_clip] = $nom_artiste; 
+        array_splice($tab_url_clip, 13, 0, $uurl); //insert à la 6e position 
+        array_splice($tab_titres_clip, 13, 0, $ttitre); //insert à la 6e position 
+        array_splice($tab_genres_clip, 13, 0, $tab_donnees_genre); //insert à la 6e position 
+        array_splice($tab_artistes_clip, 13, 0, $nom_artiste); //insert à la 6e position 
+        array_splice($tab_annees_clip, 13, 0, $tab_donnees_annees); //insert à la 6e position 
+        array_splice($tab_albums_clip, 13, 0, $tab_donnees_albums); //insert à la 6e position 
 
 
 }
@@ -263,20 +264,21 @@ function ajouter_pubs_externes($pubsexternes){
     $id_genres;
     $id_annees;
     $id_albums;
-
+    
     $recup_externes="SELECT titre, url FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE titre='$pubsexternes' LIMIT 1; ";
     $res1=$wpdb->get_results($recup_externes);
     foreach($res1 as $id){
-        
-        $tab_url_clip[$max_clip]=$id->url;
-        $tab_titres_clip[$max_clip]=$id->titre; 
+        $uurl = $id->url;
+        $ttitre = $id->titre;
+
     }
 
-    $tab_genres_clip[$max_clip] = 'Publicité Externe';    
-    $tab_artistes_clip[$max_clip] = ' ';    
-    $tab_annees_clip[$max_clip] = '0001-01-01-01:01';
-    $tab_albums_clip[$max_clip] = ' ';
-    
+        array_splice($tab_url_clip, 14, 0, $uurl); //insert à la 6e position 
+        array_splice($tab_titres_clip, 14, 0, $ttitre); //insert à la 6e position 
+        array_splice($tab_genres_clip, 14, 0, 'Publicité Interne'); //insert à la 6e position 
+        array_splice($tab_artistes_clip, 14, 0, ' '); //insert à la 6e position 
+        array_splice($tab_annees_clip, 14, 0, '0001-01-01-01:01'); //insert à la 6e position 
+        array_splice($tab_albums_clip, 14, 0, ' '); //insert à la 6e position 
 }
 //Ajouter les pubs internes sélectionnées par l'utilisateur dans la page nouveaux réglages
 function ajouter_pubs_internes($pubsinternes){
@@ -301,21 +303,9 @@ function ajouter_pubs_internes($pubsinternes){
 
         array_splice($tab_url_clip, 6, 0, $uurl); //insert à la 6e position 
         array_splice($tab_titres_clip, 6, 0, $ttitre); //insert à la 6e position 
-
-    $query_genre = "SELECT Genre FROM " . $wpdb->prefix . "genre_webtv_plugin WHERE id='$id_genres' LIMIT 1;";
-    $tab_donnees_genre = $wpdb->get_var($query_genre);
-        array_splice($tab_genres_clip, 6, 0, 'Publicité Interne'); //insert à la 6e position    
-
-    $query_artistes = "SELECT nom FROM " . $wpdb->prefix . "artiste_webtv_plugin WHERE id='$id_artistes';";
-    $tab_donnees_artistes = $wpdb->get_var($query_artistes);
+        array_splice($tab_genres_clip, 6, 0, 'Publicité Interne'); //insert à la 6e position 
         array_splice($tab_artistes_clip, 6, 0, ' '); //insert à la 6e position 
-
-    $query_annees = "SELECT annee FROM " . $wpdb->prefix . "annee_webtv_plugin WHERE id='$id_annees' LIMIT 1;";
-    $tab_donnees_annees = (string)$wpdb->get_var($query_annees);
         array_splice($tab_annees_clip, 6, 0, '0001-01-01-01:01'); //insert à la 6e position 
-
-    $query_albums = "SELECT album FROM " . $wpdb->prefix . "album_webtv_plugin WHERE id='$id_albums' LIMIT 1;";
-    $tab_donnees_albums = $wpdb->get_var($query_albums);
         array_splice($tab_albums_clip, 6, 0, ' '); //insert à la 6e position 
 
 
@@ -431,14 +421,28 @@ function effacer_et_ajouter_video_dans_table_playlist_clip_webtv_plugin(){
     $query_qualite_min = "SELECT qualite_min FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
     $reponse_qualite_min = $wpdb->get_var($query_qualite_min);
 
+    $query_artiste_highlight = "SELECT artiste_highlight FROM ". $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
+    $reponse_artiste_highlight = $wpdb->get_var($query_artiste_highlight);
+    $query_id_artiste_highlight = "SELECT id FROM ". $wpdb->prefix . "artiste_webtv_plugin WHERE nom='$reponse_artiste_highlight' LIMIT 1;";
+    $reponse_id_artiste_highlight = $wpdb->get_var($query_id_artiste_highlight);
 
-    //Récupération de l'id du genre de la vidéo courante
-    $query_id_genre_video_courante = "SELECT genre_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_courante' LIMIT 1;";
-    $reponse_id_genre_video_courante = $wpdb -> get_var($query_id_genre_video_courante);
 
+
+    //Récupération de l'id du genre et de l'artiste de la vidéo courante
+    $query_id_genre_video_courante = "SELECT genre_id, artiste_id FROM ". $wpdb->prefix . "relation_webtv_plugin WHERE video_id='$reponse_id_video_courante' LIMIT 1;";
+    $reponse_id_genre_video_courante = $wpdb -> get_var($query_id_genre_video_courante, 0,0);
+    $reponse_id_artiste_video_courante = $wpdb -> get_var($query_id_genre_video_courante, 1,0);
+
+    echo($reponse_id_artiste_highlight." + ".$reponse_id_artiste_video_courante);
+
+    if($reponse_id_artiste_highlight == $reponse_id_artiste_video_courante) // Si on passe l'artiste highlight
+    {
+        nouvelle_video_comparaison_playlist_clip_highlight($reponse_id_artiste_video_courante, $video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min );
+    }else
+    {
             //-------Video à ajouter ------//
-    nouvelle_video_comparaison_playlist_clip($reponse_id_genre_video_courante, $video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min );
-
+        nouvelle_video_comparaison_playlist_clip($reponse_id_genre_video_courante, $video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min );
+    }
 
 
     //Récupère information url et id de la nouvelle video
@@ -485,7 +489,7 @@ function effacer_et_ajouter_video_dans_table_playlist_clip_webtv_plugin(){
       $reponse_select_min_id_de_video_courante = $wpdb->get_var($query_select_min_id_de_video_courante);
 
 
-      //Requete qui supprime la video courante en fonction de son id de la playlist par defaut.
+      //Requete qui supprime la video courante en fonction de son id de la playlist clip.
       $query_del_titre_video_courante="DELETE FROM " . $wpdb->prefix . "playlistclip_webtv_plugin WHERE id='$reponse_select_min_id_de_video_courante' ";
       $wpdb->query($query_del_titre_video_courante);
 
@@ -503,6 +507,58 @@ function nouvelle_video_comparaison_playlist_clip($genre_videocouranteprevious, 
 
     // --- Fabrication d'un tableau avec les titres des videos ayant le même genre que la vidéo courante --//
     $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE genre_id='$genre_videocouranteprevious' AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$reponse_annee_min' AND annee <= '$reponse_annee_max' )
+        AND qualite_id >= $reponse_qualite_min ORDER BY RAND();";
+    $reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = $wpdb->get_results(  $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante);
+
+    foreach ($reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante as $results) {
+      $id_video_meme_genre_video_courante = $results->video_id;
+      $query_titre_video_meme_genre_video_courante = "SELECT titre FROM " . $wpdb->prefix . "videos_webtv_plugin WHERE id='$id_video_meme_genre_video_courante';";
+      $reponse_titre_video_meme_genre_video_courante = $wpdb->get_results($query_titre_video_meme_genre_video_courante);
+
+      foreach ($reponse_titre_video_meme_genre_video_courante as $results) {
+        $tab_titre_video_meme_genre_video_courante[] = $results->titre;
+      }
+    }
+
+      //-------Tableau des titres de la playlist par defaut chargé ------
+
+    //fabrication du tableau des 15 clips vidéos de la playlist clip
+    $query_titre_video_playlist_clip="SELECT titre FROM " . $wpdb->prefix . "playlistclip_webtv_plugin LIMIT  15;";
+    $reponse_titre_video_playlist_clip = $wpdb -> get_results($query_titre_video_playlist_clip);//requête
+    foreach ($reponse_titre_video_playlist_clip as $results){
+      $tab_titres_playlist_clip[] = $results->titre;
+    }
+    // comparaison
+    foreach ($tab_titre_video_meme_genre_video_courante as $key_tab_titre_video_meme_genre_video_courante) {
+      foreach ($tab_titres_playlist_clip as $key_titre_pl_clip) {
+
+        if( $key_tab_titre_video_meme_genre_video_courante != $key_titre_pl_clip && $key_tab_titre_video_meme_genre_video_courante != $titre_video_courante)
+          //Mise à jour de la table playlist_clip_webtv_plugin avec un clips video du même genre que la video courante supprimé
+          $titre_nouvelle_video = $key_tab_titre_video_meme_genre_video_courante;
+          break;
+        }
+    }
+    //Si il n'y a aucune correspondance on renouvelle la musique.
+    if ($titre_nouvelle_video == NULL){
+      $titre_nouvelle_video = $titre_video_courante;
+    }
+
+    unset($tab_titre_video_meme_genre_video_courante);// supprime le tableau des videos ayant le meme genre afin de le réinitialiser à chaque fois.
+    unset($tab_titres_playlist_clip);// supprime le tableau des 15 clips de la playlist clip afin de le réinitialiser à chaque fois.
+
+}
+
+
+/*
+* Fonction : Permet de comparer les différents titres de vidéo du même artiste si c'est l'artiste highlight
+* Utilité dans la fonction effacer_et_ajouter_video_dans_table_playlist_clip_webtv_plugin
+*/
+function nouvelle_video_comparaison_playlist_clip_highlight($highlight_videocouranteprevious, $titre_video_courante, $reponse_annee_min, $reponse_annee_max, $reponse_qualite_min){
+    global $wpdb;
+    global $titre_nouvelle_video;
+
+    // --- Fabrication d'un tableau avec les titres des videos ayant le même genre que la vidéo courante --//
+    $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = "SELECT video_id FROM " . $wpdb->prefix . "relation_webtv_plugin WHERE artiste_id='$highlight_videocouranteprevious' AND annee_id IN (SELECT id FROM `wp_annee_webtv_plugin` WHERE annee >= '$reponse_annee_min' AND annee <= '$reponse_annee_max' )
         AND qualite_id >= $reponse_qualite_min ORDER BY RAND();";
     $reponse_id_video_meme_genre_tranche_annee_meme_qualite_video_courante = $wpdb->get_results(  $query_id_video_meme_genre_tranche_annee_meme_qualite_video_courante);
 

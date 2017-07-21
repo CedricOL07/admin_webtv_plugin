@@ -257,8 +257,8 @@ function recuperer_videos_player_page_principale_par_defaut() {
 *
 */
 function url_vid_exist(){
-  if(isset($_POST['url_clip_suivant'])){$url_clip_suivant = $_POST['url_clip_suivant'];}
-  if(isset($_POST['url_clip_courant'])){$url_clip_courant = $_POST['url_clip_courant'];}
+  if(isset($_POST['url_clip_suivant'])){$url_clip_suivant = $_POST['url_clip_suivant'];} else{ echo ("pas de clip suivant"); wp_die();}
+  if(isset($_POST['url_clip_courant'])){$url_clip_courant = $_POST['url_clip_courant'];} else{ echo ("pas de clip courant"); wp_die();}
   // pour le clip suivant
   $handle_suivant = curl_init($url_clip_suivant);
   curl_setopt($handle_suivant,  CURLOPT_RETURNTRANSFER, TRUE);
@@ -284,7 +284,7 @@ function url_vid_exist(){
       // 1 : on ouvre le fichier
       $monfichier2 = fopen(MY_PLUGIN_PATH .'Rapport_erreur_lien_mort_video.txt', 'a+');
       // 2 : on lit la première ligne du fichier
-      $ligne = fputs($monfichier2, "\nCe lien n'est plus actif : " . $url_clip_suivant );
+      $ligne = fputs($monfichier2, " \nCe lien n'est plus actif : " . $url_clip_suivant );
 
       fseek($monfichier2, 0);
       // 3 : quand on a fini de l'utiliser, on ferme le fichier
@@ -297,7 +297,7 @@ function url_vid_exist(){
     $monfichier = fopen(MY_PLUGIN_PATH .'Rapport_erreur_lien_mort_video.txt', 'a+');
 
     // 2 : on lit la première ligne du fichier
-    $ligne = fputs($monfichier, "\nCe lien n'est plus actif : " . $url_clip_courant );
+    $ligne = fputs($monfichier, " \nCe lien n'est plus actif : " . $url_clip_courant );
 
     // 3 : quand on a fini de l'utiliser, on ferme le fichier
     fclose($monfichier);

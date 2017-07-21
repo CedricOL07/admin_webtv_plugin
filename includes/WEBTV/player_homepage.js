@@ -278,7 +278,7 @@ function verifier_et_génerer_playlist_clip()
 						  'nom_playlist': nom_playlist_a_lire
 						},
 						function(is_success){
-							//console.log(is_success);
+							console.log(is_success);
 						}
 					);
 				}
@@ -435,7 +435,7 @@ function continuer_playlist_par_defaut()
 }
 
 
-
+var current_avant_logo;
 
 function continuer_playlist_clip()
 {
@@ -450,16 +450,16 @@ function continuer_playlist_clip()
 	var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current-1].title;// le -1 permet de récupérer la vidéo précédente.
 	//On efface le morceau de la base de donnée également
 
-  // utile lorsque le player a fini de lire le logo cette condition permet de supprimé le logo de la playlist et de retourner au debut de la playlist
+  // utile lorsque le player a fini de lire le logo cette condition permet de supprimer le logo de la playlist et de retourner au debut de la playlist
 	if (bool_video_logo == true){
 		myPlaylist.remove(current);// supprime la video courante
-		myPlaylist.select(0);// sélectionne la première video
-		myPlaylist.play(0);// lit la première video
+		myPlaylist.select(current_avant_logo);// sélectionne la première video
+		myPlaylist.play(current_avant_logo);// lit la première video
 		bool_video_logo = false;
 	}
 	// agit que sur la bdd en ajoutant ou en
 	else{
-		myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video execpté une video logo.
+		myPlaylist.remove(current-1);// enlève la video précédente lorsque le payer lit la prochaine video excepté une video logo.
 		$.post(
 			ajaxurl,
 			{
@@ -468,6 +468,7 @@ function continuer_playlist_clip()
 				'nom_playlist':nom_playlist_clip
 			},
 			function(response){
+				console.log("echo : "+response);
 			}
 		);
 	}
@@ -500,6 +501,7 @@ function continuer_playlist_clip()
 						// condition de passage au logo ou pas
 						if (id_video_courante % freq_logo == 0  && freq_logo != 0 && bool_video_logo== false && id_video_courante!=0 ){
 							bool_video_logo = true;
+							current_avant_logo = current-1;
 							$.ajax({
 								url: ajaxurl,
 								data:{
@@ -528,15 +530,13 @@ function continuer_playlist_clip()
 								success: function(data) {
 									$.each(data.data, function(index, value) {
 									// la taille est fixée à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
-										if (taille<13){
-											artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-											//Permet de générer la nouvelle video dans le player.
-											myPlaylist.add({
-												title:value.titre,
-												m4v:value.url,
-												artist: artiste_album_annee_ajout
-											});
-										}
+										artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+										//Permet de générer la nouvelle video dans le player.
+										myPlaylist.add({
+											title:value.titre,
+											m4v:value.url,
+											artist: artiste_album_annee_ajout
+										});
 									});
 								}
 							});
@@ -558,8 +558,8 @@ function continuer_playlist_clip()
 		var current     = myPlaylist.current;
 		playlist        = myPlaylist.playlist;
 		var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
-		var url_clip_suivant = playlist[current+1].m4v;
-		var url_clip_courant = playlist[current].m4v;
+		if(typeof playlist[current+1] !== 'undefined') {var url_clip_suivant = playlist[current+1].m4v; }
+		if(typeof playlist[current] !== 'undefined') {var url_clip_courant = playlist[current].m4v; }
 
 		$.post(
 			ajaxurl,

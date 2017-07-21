@@ -500,15 +500,13 @@ function continuer_playlist_clip()
 								success: function(data) {
 									$.each(data.data, function(index, value) {
 									// la taille est fixée à la limite du nombre de clips dans la playlist ain d'éviter l'erreur de répétition de clip après la suppression du logo.
-										if (taille<13){
-											artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
-											//Permet de générer la nouvelle video dans le player.
-											myPlaylist.add({
-												title:value.titre,
-												m4v:value.url,
-												artist: artiste_album_annee_ajout
-											});
-										}
+										artiste_album_annee_ajout =  value.artiste + " - " + value.album  + " - " +value.annee;
+										//Permet de générer la nouvelle video dans le player.
+										myPlaylist.add({
+											title:value.titre,
+											m4v:value.url,
+											artist: artiste_album_annee_ajout
+										});
 									});
 								}
 							});
@@ -530,8 +528,8 @@ function continuer_playlist_clip()
 		var current     = myPlaylist.current;
 		playlist        = myPlaylist.playlist;
 		var titre_previous_current_track=myPlaylist.playlist[myPlaylist.current].title;
-		var url_clip_suivant = playlist[current+1].m4v;
-		var url_clip_courant = playlist[current].m4v;
+		if(typeof playlist[current+1] !== 'undefined') {var url_clip_suivant = playlist[current+1].m4v; }
+		if(typeof playlist[current] !== 'undefined') {var url_clip_courant = playlist[current].m4v; }
 
 		$.post(
 			myAjax.ajaxurl,

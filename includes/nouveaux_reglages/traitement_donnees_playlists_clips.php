@@ -45,8 +45,6 @@ function enregistrement_playlist_clips_pourcentage(){
   if(isset($_POST['pardefaut'])){ $par_defaut=$_POST['pardefaut'];}
   if(isset($_POST['freq_logo'])){$freq_logo = $_POST['freq_logo'];}
 
-echo $freq_logo;
-wp_die();
   if ($par_defaut == 0){  /////////////////////////////////////////////////////////////////////////////////////////// AJOUTER LES LOGO DANS LA REQUETE QUAND ILS SERONT FONCTIONNELS
 
     $inserer_nouvelle_playlist="INSERT INTO " . $wpdb->prefix . "playlistenregistrees_webtv_plugin(nom,pourcentage_poprock,pourcentage_rap,pourcentage_jazzblues,pourcentage_musiquemonde, pourcentage_hardrock,pourcentage_electro,pourcentage_chanson,pourcentage_autres,publicites_internes,publicites_externes,artiste_highlight,annee_max,annee_min,qualite_min,Debut,Fin,Freq_logo,ParDefaut) VALUES('$nom_reglage','$pourcentage_poprock','$pourcentage_hiphop','$pourcentage_jazzblues', '$pourcentage_musiquemonde','$pourcentage_hardrock','$pourcentage_electro','$pourcentage_chanson','$pourcentage_autres','$pubs_internes','$pubs_externes','$artiste_en_highlight','$annee_max','$annee_min','$qualite_min','$debut','$fin','$freq_logo','$par_defaut');";
@@ -134,7 +132,7 @@ function generer_la_playlist_clips(){
         $wpdb->query($inserer);
     }
 
-    print_r($tab_url_clip);
+    print_r($titres);
     wp_die();
 }
 
@@ -197,7 +195,7 @@ function recuperer_videos_playlist_clip_player_page_principale() {
 function recup_freq_logo_playlist_clip(){
   global $wpdb;
   if(isset($_POST['nom_playlist'])){$nom_playlist = $_POST['nom_playlist'];}
-  $query_recup_freq_logo_bdd = "SELECT Freq_logo FROM ". $wpdb->prefix ."playlistenregistrees_webtv_plugin WHERE nom='nom_playlist' LIMIT 1;";
+  $query_recup_freq_logo_bdd = "SELECT Freq_logo FROM ". $wpdb->prefix ."playlistenregistrees_webtv_plugin WHERE nom='$nom_playlist' LIMIT 1;";
   $reponse_recup_freq_logo_bdd = $wpdb->get_var($query_recup_freq_logo_bdd);
   echo($reponse_recup_freq_logo_bdd);
 }

@@ -138,7 +138,6 @@ pdf>df?                                                             | | -- donne
 
     $dd = Date(DATE_ATOM, strtotime($dd));
     $df = Date(DATE_ATOM, strtotime($df));
-
     // Verification des playlist pas par défaut
     $check_playlists="SELECT nom, Debut, Fin FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE ParDefaut=0 AND nom!='$nom_playlist';";
     $playlists = $wpdb->get_results($check_playlists);

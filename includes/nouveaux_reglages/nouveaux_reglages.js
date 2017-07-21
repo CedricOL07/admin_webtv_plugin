@@ -912,10 +912,14 @@ $(document).ready(function(){
        this.setTime(this.getTime() + (h*60*60*1000));
        return this;
     }
-    /////////////////////////////////////////////////////////////////////////
-		var date = new Date();
+    /////////////////////////////////////////////////////////////////////////	
+	var offset = (new Date()).getTimezoneOffset()*60000;
+	var date = new Date(Date.now() - offset);
+	
+	console.log(date);
+	
     var str_date_debut = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
-    //console.log("Debut :" +str_date_debut);
+    console.log("Debut :" +str_date_debut);
 		// récupère la date actuelle
 
     date.addHours(plage_horaire_playlist_exclusif);
@@ -938,6 +942,7 @@ $(document).ready(function(){
 				'nom_playlist':nom_reglage
 			},
 			function(response){
+				console.log(response);
 			}
 		);
 		$.when(
