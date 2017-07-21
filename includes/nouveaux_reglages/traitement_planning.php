@@ -51,7 +51,7 @@ Cette fonction change les dates de début et fin de la playlist indiquée
     $name=$wpdb->get_var($check_name);
     if ($name!=0)
     {
-        $update_date="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET Debut='".$nouvelle_start_date."', Fin='".$nouvelle_end_date."' WHERE nom='".$nom_event."';"; 
+        $update_date="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET Debut='".$nouvelle_start_date."', Fin='".$nouvelle_end_date."' WHERE nom='".$nom_event."';";
         $wpdb->query($update_date);
         echo($nom_event." définie du ".$nouvelle_start_date." au ".$nouvelle_end_date);
     } else
@@ -81,7 +81,7 @@ Cette fonction change le nom de la playlist indiquée
     } else
     {
         // Si elle existe, on met son nom à jour
-        $update_name="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET nom='$nouveau_nom' WHERE nom='$ancien_nom';"; 
+        $update_name="UPDATE " . $wpdb->prefix . "playlistenregistrees_webtv_plugin SET nom='$nouveau_nom' WHERE nom='$ancien_nom';";
         $wpdb->query($update_name);
         echo ($ancien_nom." correctement renommée en ".$nouveau_nom);
     }
@@ -108,7 +108,7 @@ Cette fonction supprime la playlist indiquée
     } else
     {
         // Si elle existe, on la supprime
-        $update_name="DELETE FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_event';"; 
+        $update_name="DELETE FROM " . $wpdb->prefix . "playlistenregistrees_webtv_plugin WHERE nom='$nom_event';";
         $wpdb->query($update_name);
         echo ($nom_event." correctement supprimé");
     }
@@ -123,7 +123,7 @@ nouvelle playist:  date debut=dd, date fin=df
 si pdf>dd:
                         oui--> pdd = df                        pdd> ---
         oui--> pdd<df?  non--> rien à faire             dd ---------|-|---------------------------------------
-pdf>df?                                                             | | -- donnera --> 
+pdf>df?                                                             | | -- donnera -->
         non--> pdd<dd?  oui--> pdf = dd                 df ---------|-|-----------------pdd>-___--------------
                         non--> supprimer playlist                   | |                      | |
                                                                pdf> ---                 pdf> ---

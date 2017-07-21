@@ -99,7 +99,7 @@ $(document).ready(function(){
             $('#select_artiste_higlight').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
             $('#affichage_artiste_higlight').append('<div id="ah"> '+artiste_highlight+' </div>'); // crée le texte avec l'artiste highlight
 			artiste_choisi = artiste_highlight;
-			//console.log(artiste_choisi);
+			////console.log(artiste_choisi);
         }
     });
     //supprimer l'affichage de l'artiste highlight avec la selection dans le multiple (encadrer blanc où il y a les artistes de la BDD)
@@ -131,7 +131,7 @@ $(document).ready(function(){
             $('#select_pubs_externes').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
             $('#affichage_pubs_externes').append('<div id="pe"> '+pubs_externes+' </div>'); // crée le texte avec la pub externe
 			pub_externe_choisie = pubs_externes;
-			//console.log(artiste_choisi);
+			////console.log(artiste_choisi);
         }
     });
     //supprimer l'affichage de la pub externe
@@ -164,7 +164,7 @@ $(document).ready(function(){
             $('#select_pubs_internes').attr("disabled", "disabled"); // on sélectionne qu'un seul artiste donc on bloque sélectionner si 1 artistes est sélectionné.
             $('#affichage_pubs_internes').append('<div id="pe"> '+pubs_internes+' </div>'); // crée le texte avec la pub interne
 			pub_interne_choisie = pubs_internes;
-			//console.log(artiste_choisi);
+			////console.log(artiste_choisi);
         }
     });
     //supprimer l'affichage de la pub interne
@@ -218,7 +218,7 @@ $(document).ready(function(){
 			date = date_now[2]+'-'+date_now[1]+'-' + date_now[0];       // Met la date au format aaaa-mm-jj
 			time = (new Date(date)).getTime()
 			$("#annee_max").datepicker( "option", "minDate", new Date( time + msecsInADay));
-			console.log(new Date( time+ msecsInADay));
+			//console.log(new Date( time+ msecsInADay));
 		}
 	});
 	$( '#annee_max' ).datepicker({
@@ -238,7 +238,7 @@ $(document).ready(function(){
                 'date_debut':date
             },
             function(response){
-                //console.log(response);
+                ////console.log(response);
                 if(response=='occupe'){
                     $('#label_warning_calendar').text('Une playlist est déjà prévue à cette heure, choisissez un autre créneau');
                     $('#from').datetimepicker('setDate', null);
@@ -258,7 +258,7 @@ $(document).ready(function(){
                 'date_fin': datefin
             },
             function(response){
-                // console.log(response);
+                // //console.log(response);
                 if(response=='occupe'){
                     $('#label_warning_calendar').text('Une playlist est déjà prévue à cette heure, choisissez un autre créneau');
 
@@ -279,7 +279,7 @@ $(document).ready(function(){
                 'action': 'trouver_creneau_dispo'
             },
             function(response){
-              //  console.log(response);
+              //  //console.log(response);
                 var heuredeb =response.data[0]['date'];
                 var heure_debut=(heuredeb.substr(11)).substr(0,5);;
 
@@ -381,7 +381,7 @@ $(document).ready(function(){
 				return false;
 			} else
 			{
-				console.log(ev.text);
+				//console.log(ev.text);
 				var ancien_nom = changed_event_title;
 				var nouveau_nom = ev.text;
 
@@ -393,7 +393,7 @@ $(document).ready(function(){
 						'nouveau_nom':nouveau_nom
 					},
 					function(response){
-					   console.log("echo : "+ response);
+					   //console.log("echo : "+ response);
 					}
 				);
 				ev.start_date = changed_event_startDate;
@@ -422,7 +422,7 @@ $(document).ready(function(){
 			nouvelle_start_date=nouvelle_start_date.replace("T", " ");
 			nouvelle_end_date=nouvelle_end_date.replace("T", " ");
 
-			console.log(nom_event+" : "+nouvelle_start_date+" - "+nouvelle_end_date);
+			//console.log(nom_event+" : "+nouvelle_start_date+" - "+nouvelle_end_date);
 			$.post(
 				ajaxurl,
 				{
@@ -456,7 +456,7 @@ $(document).ready(function(){
 		});
 		scheduler.attachEvent("onEventDeleted", function(id){
 			var nom_event_supprime = deleted_event_name;
-			console.log (nom_event_supprime);
+			//console.log (nom_event_supprime);
 			$.post(
 				ajaxurl,
 				{
@@ -464,7 +464,7 @@ $(document).ready(function(){
 					'nom_event':nom_event_supprime
 				},
 				function(response){
-				   console.log("echo : "+ response);
+				   //console.log("echo : "+ response);
 				}
 			);
 		});
@@ -473,75 +473,6 @@ $(document).ready(function(){
 
 	});
 
-
-/*	-------------------------------------------- Ancien scheduler ----------------------------------------------------
-YUI().use(
-	'aui-scheduler',
-	function(Y) {
-		var events = new Array;
-
-		$.when(							// Permet d'attendre que la requête Ajax soit terminée
-			$.ajax({
-				url: ajaxurl,
-				data:{
-					'action':'get_playlist_content',
-				},	/////////////////// A adapter, cf: http://alloyui.com/examples/scheduler/real-world/    http://alloyui.com/tutorials/scheduler/   http://alloyui.com/api/files/alloy-ui_src_aui-scheduler_js_aui-scheduler-event-recorder.js.html
-				dataType: 'JSON',
-				success: function(data) {
-
-					$.each(data.data, function(index, value) {
-
-						var start_date = value.Debut;
-						var end_date = value.Fin;
-						var nom_event = value.nom;
-
-						var date_time = start_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
-						var date_now = date_time[0].split('/');
-						start_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
-						start_date = new Date(start_date);
-
-						var date_time = end_date.split(' ');				// {date jj/mm/aaaa , heure hh:mm)
-						var date_now = date_time[0].split('/');
-						end_date = date_now[2]+'-'+date_now[1]+'-'+date_now[0]+' '+date_time[1];   	// Met la date au format aaaa-mm-jj hh:mm
-						end_date = new Date(end_date);
-
-						var ligne_playlist_enregistrees = new Y.SchedulerEvent({
-							content : nom_event,
-							endDate : end_date,
-							startDate : start_date
-						});
-
-						events.push(ligne_playlist_enregistrees);
-					});
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					console.log(xhr.status);
-					console.log(thrownError);
-				}
-			})
-		).then (function(){
-
-
-			var agendaView = new Y.SchedulerAgendaView();
-			var dayView = new Y.SchedulerDayView();
-			var weekView = new Y.SchedulerWeekView();
-			var monthView = new Y.SchedulerMonthView();
-
-			new Y.Scheduler(
-			{
-				boundingBox: '#calendar',
-				date: 'today',
-				items: events,
-				render: true,
-				views: [weekView, dayView, monthView, agendaView]
-
-			});
-			console.log(SchedulerEvent());
-		});
-
-	}
-);
-*/
 
 
 /*------------------ Modification sur la mise en place du début et de la fin de la playlist ------------------*/
@@ -992,12 +923,12 @@ YUI().use(
     /////////////////////////////////////////////////////////////////////////
 		var date = new Date();
     var str_date_debut = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
-    console.log("Debut :" +str_date_debut);
+    //console.log("Debut :" +str_date_debut);
 		// récupère la date actuelle
 
     date.addHours(plage_horaire_playlist_exclusif);
     var str_date_fin = (date.toISOString().slice(0,10)+" "+date.toISOString().slice(11,16));
-    console.log("Fin :" +str_date_fin);
+    //console.log("Fin :" +str_date_fin);
 
 		var pardefaut = 0;
 		var annee_max = '99991231';
@@ -1056,7 +987,7 @@ YUI().use(
 							'action': 'vider_table_playlist_clip'
 						},
 						function(response2){
-							console.log(response2);
+							//console.log(response2);
 						}
 					)
 				}
@@ -1131,7 +1062,7 @@ YUI().use(
 		{
 			var date_now = annee_max.split('/');
 			annee_max = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaammjj
-			console.log(annee_max);
+			//console.log(annee_max);
 		} else
 		{
 			annee_max = "99991231";
@@ -1140,7 +1071,7 @@ YUI().use(
 		{
 			var date_now = annee_min.split('/');
 			annee_min = date_now[2]+date_now[1] + date_now[0];       // Met la date au format aaaammjj
-			console.log(annee_min);
+			//console.log(annee_min);
 		} else
 		{
 			annee_min = "00010101"; // 01/01/0001
@@ -1191,14 +1122,14 @@ YUI().use(
                             'freq_logo':freq_logo
                         },
                         function(response){
-                           console.log("echo : "+ response);
+                           //console.log("echo : "+ response);
                         }
                     );
                // return false;
 				} else {
 
             /*  /!\------ Partie enregistrant les playlist clips !!!!!  ------/!\*/
-                    //console.log("affichage");
+                    ////console.log("affichage");
                     pardefaut = 0;
                     var duree_picked=false;
                 // On recupere nom + pourcentages + artiste hightlight + pubs + date
@@ -1217,11 +1148,11 @@ YUI().use(
                     if(date_debut_selectionnee && date_fin_selectionnee && passer_des_que_possible_clicked==false){
                         passer_des_que_possible=true;
                         duree_picked=true;
-						console.log("Duree picked = true");
+						//console.log("Duree picked = true");
                     } else{
-						console.log("Duree picked = false");
+						//console.log("Duree picked = false");
 					}
-                    //console.log('requeteajax');
+                    ////console.log('requeteajax');
                 if(duree_picked==true){
 
 					var startDate = date_debut_selectionnee;
@@ -1263,7 +1194,7 @@ YUI().use(
                         },
                         function(response){
 
-                                console.log("echo : "+response);
+                                //console.log("echo : "+response);
 
                         }
                     );

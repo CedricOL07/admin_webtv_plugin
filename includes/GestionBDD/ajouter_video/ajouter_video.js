@@ -33,7 +33,7 @@ $(document).ready(function(){
 	var is_linux = true;
 	$("#OS").change(function(){
 		is_linux = !is_linux;
-		console.log(is_linux);
+		//console.log(is_linux);
 	});
 	*/
 
@@ -42,7 +42,7 @@ $(document).ready(function(){
 	// Appel d'une fonction php pour insérer du contenu dynamiquement
 
 
-		//console.log("Entrée dans le js");
+		////console.log("Entrée dans le js");
 
 		var titre=$('#titre').val();
 		var url_video=$('#url').val();
@@ -55,9 +55,9 @@ $(document).ready(function(){
 		var filepath=$('#FILEPATH').val();
 		var filename=$('#FILENAME').val();
 
-		//console.log(genre);
-		//console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
-		//console.log("genre" +genre);
+		////console.log(genre);
+		////console.log(finalfolder + ' and ' + filepath + ' and ' + filename);
+		////console.log("genre" +genre);
 
 		if((titre != '' && url_video != '' && artiste_video != '' && annee != '' && album != '') || (genre=='Logo' && titre!='' && url_video!=''))
 		{
@@ -81,8 +81,8 @@ $(document).ready(function(){
 				},
 			function(data)
 				{
-					console.log(finalfolder);
-					console.log("existante :" + data);
+					//console.log(finalfolder);
+					//console.log("existante :" + data);
 					var existante = data;
 					if ( existante >= 1){
 						alert ("Vidéo déjà enregistrée");
@@ -99,23 +99,23 @@ $(document).ready(function(){
 
 			if(titre == ''){
 				$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré de titre, veuillez en entrer un</span></strong>');
-					console.log('PAS DE TITRE');
+					//console.log('PAS DE TITRE');
 			}else{
 				if(url_video== ''){
 					$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'url pour la vidéo, veuillez en entrer une</span></strong>');
-					console.log('PAS D\'URL');
+					//console.log('PAS D\'URL');
 				}else{
 					if(artiste_video == ''){
 						$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas entré d\'artiste pour la vidéo, veuillez en entrer un</span></strong>');
-					console.log('PAS D\'ARTISTE');
+					//console.log('PAS D\'ARTISTE');
 					}else{
 						if(annee == ''){
 							$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné d\'année pour la vidéo, veuillez en entrer une</span></strong>');
-					console.log('PAS D\'ANNEE');
+					//console.log('PAS D\'ANNEE');
 						}else{
 							if(album == ''){
 								$('#warning-insertion').append('<strong><span style="color:red;">Vous n\'avez pas sélectionné d\'album pour la vidéo, veuillez en entrer un</span></strong>');
-					console.log('PAS D\'ALBUM');
+					//console.log('PAS D\'ALBUM');
 							}
 						}
 					}

@@ -30,7 +30,7 @@ $(document).ready(function(){
     audioFullScreen: true,
 
   });
-  console.log("PAGE CHARGEE");
+
 
   $('#affichage_playlist-page-client').click(function(){
   $('#jp-playlits-id-page-client').toggle('fast');
@@ -76,7 +76,6 @@ function generer_la_playlist(){
 				playlist_a_lire = response;
 		})
 	).then(function(){
-		console.log("il existe une playlist = "+playlist_a_lire);
 		if(playlist_a_lire == false)
 		{
 			charger_playlist_par_defaut();
@@ -122,7 +121,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 	// On détermine si il faut lire dans la playlist par défaut ou playlist clip, et si il faut
 	// la regénérer ou juste continuer la lecture
 
-	console.log("on_joue_la_playlist_par_defaut = "+on_joue_la_playlist_par_defaut);
 
 	//														 		--true-> 	generer+lancer cette playlist
 	//			--true-> 	existe une PC autour de cette heure?	--false-> 	continuer PPD
@@ -150,11 +148,9 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			{	// Si il existe une playlist clip à cet horaire, on lance la requête SQL de
 				// génération dans la BDD, puis on recharge la playlist dans le player
 
-				console.log("Il y a une playlist_a_lire");
 				verifier_et_génerer_playlist_clip();
 			} else
 			{
-				console.log("Aucune playlist_a_lire");
 				myPlaylist.play();
 				on_joue_la_playlist_par_defaut = true;
 				continuer_playlist_par_defaut();
@@ -170,7 +166,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 			  'action': 'verifier_playlist_clip_charger_dans_la_table'
 			},
 			function(response){
-				console.log("playlist terminée? "+response);
 				if(response!=false)	// Si les dates coïncident (heure de fin pas encore arrivée et bonne playlist_clip chargée)
 				{
 					myPlaylist.play();
@@ -185,7 +180,6 @@ jQuery("#player_video").bind(jQuery.jPlayer.event.ended, function (event)
 						  'demande':'bool'
 						},
 						function(response2){
-							console.log("Une autre playlist a cette heure? "+response2);
 							if(response2==false)	// Si aucune autre playlist à cette heure
 							{
 								charger_playlist_par_defaut();
@@ -236,8 +230,8 @@ function charger_playlist_par_defaut()
 			on_joue_la_playlist_par_defaut = true; // première occurence au chargement de la page
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-		  console.log(xhr.status);
-		  console.log(thrownError);
+		  //console.log(xhr.status);
+		  //console.log(thrownError);
 		}
 	});
 }
@@ -257,7 +251,6 @@ function verifier_et_génerer_playlist_clip()
 			},
 			function(response){
 				nom_playlist_a_lire = response;
-				console.log("a lire : "+nom_playlist_a_lire);
 			}
 		)
 	).then(function(){
@@ -267,7 +260,6 @@ function verifier_et_génerer_playlist_clip()
 			  'action': 'verifier_playlist_clip_charger_dans_la_table'
 			},
 			function(response){
-				console.log(response);
 				if(response==false)	// Si les dates ne coïncident pas avec la date actuelle
 				{
 					$.post(			// On la génère dans la bdd
@@ -277,7 +269,7 @@ function verifier_et_génerer_playlist_clip()
 						  'nom_playlist': nom_playlist_a_lire
 						},
 						function(is_success){
-							console.log(is_success);
+							//console.log(is_success);
 						}
 					);
 				}
@@ -308,12 +300,12 @@ function verifier_et_génerer_playlist_clip()
 						});
 					});
 					myPlaylist.play();// permet de s'affranchir du bouton play lors du chargmenent de la page.
-					console.log("chargement clips");
+					//console.log("chargement clips");
 					on_joue_la_playlist_par_defaut = false; // première occurence au chargement de la page
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					console.log(xhr.status);
-					console.log(thrownError);
+					//console.log(xhr.status);
+					//console.log(thrownError);
 				}
 			});
 		}, 1000);
@@ -549,21 +541,21 @@ function continuer_playlist_clip()
 				'url_clip_courant' :url_clip_courant
 			},
 			function(response){
-				//console.log("reponse: " + response);
+				////console.log("reponse: " + response);
 				var reponse = response;
-				console.log("reponse " +reponse);
+				//console.log("reponse " +reponse);
 				switch (reponse) {
 					case 'b':
-						console.log("entrée dans b : ");
+						//console.log("entrée dans b : ");
 						myPlaylist.remove(current+1);
 						break;
 					case 'c':
-						console.log("entrée dans c : ");
+						//console.log("entrée dans c : ");
 						myPlaylist.remove(current);
 						myPlaylist.next();
 						break;
 					default:
-						console.log("aucun pb rencontrés");
+						//console.log("aucun pb rencontrés");
 				}
 			}
 		);

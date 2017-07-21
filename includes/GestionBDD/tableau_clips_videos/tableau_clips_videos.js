@@ -15,7 +15,7 @@ $(document).ready(function(){
     },
     dataType: 'JSON',
     success: function(data){
-      //console.log(data);
+      ////console.log(data);
       let ligne;
       let compteur=1;
       // Création tableau de clips
@@ -29,7 +29,7 @@ $(document).ready(function(){
       $('#tableau_corps').append(ligne);
     },
     error: function(){
-      console.log('ERREUR recupération clips depuis la bdd');
+      //console.log('ERREUR recupération clips depuis la bdd');
     }
   });
 
@@ -67,12 +67,12 @@ $(document).ready(function(){
             },function(response){
               $("#tableau_corps tr:has(:checked)").each(function(){
                 $(this).remove();
-                console.log(response);
+                //console.log(response);
               });
             });
           };
         });
-        //console.log(JSON.stringify(data));
+        ////console.log(JSON.stringify(data));
       }
 
     });
@@ -90,9 +90,9 @@ $(document).ready(function(){
       if($(this).attr("contenteditable")=="true"){
         contenu_avant = $(this).text();
         champ_bdd = $(this).attr("name");
-        //console.log("TEST OK");
-        //console.log(contenu_avant);
-        //console.log(champ_bdd);
+        ////console.log("TEST OK");
+        ////console.log(contenu_avant);
+        ////console.log(champ_bdd);
       }
     }
     else if ($(this).attr("name")=="Genre"){
@@ -100,7 +100,7 @@ $(document).ready(function(){
       champ_bdd=$(this).attr("name");
       titre=$(this).closest('tr').children('td:eq(1)').text();
       $(this).replaceWith("<td name='Genre'><select><option value='Pop-Rock'>Pop-Rock</option><option value='Hip-hop & Reggae'>Hip-hop & Reggae</option><option value='Jazz & Blues'>Jazz & Blues</option><option value='Musique du monde'>Musique du Monde</option><option value='Hard-rock & Metal'>Hard-rock & Metal</option><option value='Musique electronique'>Musique electronique</option><option value='Chanson française'>Chanson Française</option><option value='Autre'>Autre</option></select></td>");
-      //console.log(titre);
+      ////console.log(titre);
     }
     else if($(this).attr("name")=="qualite"){
       contenu_avant=$(this).text();
@@ -116,12 +116,12 @@ $(document).ready(function(){
     if ($(this).attr("name")!="Genre" && $(this).attr("name")!="qualite"){
       $(this).prop('contenteditable', false);
       contenu_apres = $(this).text();
-      //console.log(contenu_apres);
+      ////console.log(contenu_apres);
       if (contenu_avant != contenu_apres) {
         let update_data={"champ" : champ_bdd,
         "before" : contenu_avant,
         "after" : contenu_apres};
-        //console.log(update_data);
+        ////console.log(update_data);
         $.post(
           ajaxurl,
           {
