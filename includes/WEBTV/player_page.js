@@ -32,8 +32,8 @@ $(document).ready(function(){
   });
   console.log("PAGE CHARGEE");
 
-  $('#affichage_playlist_homepage').click(function(){
-  $('#jp-playlits-id-homepage').toggle('fast');
+  $('#affichage_playlist-page-client').click(function(){
+  $('#jp-playlits-id-page-client').toggle('fast');
   });
 
 /*
