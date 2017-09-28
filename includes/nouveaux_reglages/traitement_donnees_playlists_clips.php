@@ -132,8 +132,7 @@ function generer_la_playlist_clips(){
         $wpdb->query($inserer);
     }
 
-    print_r($titres);
-    wp_die();
+
 }
 
 
