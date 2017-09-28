@@ -1,6 +1,6 @@
 # WEBTV Le FIL
 
-Nowadays, forwarding informations with new technologies is fundamental. The project is base on a plug-in Wordpress which generates a WebtV. This one can diffuse many video in playlists whit help a database like PhpMyAdmin.
+Nowadays, forwarding informations with new technologies is fundamental. The project is base on a plug-in Wordpress which generates a WebtV. This one can diffuse many tracks video in playlists whit help a database like PhpMyAdmin.
 
 ## Getting Started
 
