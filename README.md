@@ -12,7 +12,7 @@ Nowadays, forwarding informations with new technologies is fundamental. The proj
 
 ## Built With
 
-* [javascript] (https://developer.mozilla.org/fr/docs/Web/JavaScript) - the langage allows to creat dynamic interface
+* [javascript](https://developer.mozilla.org/fr/docs/Web/JavaScript) - the langage allows to creat dynamic interface
 * [PHP](https://fr.wikipedia.org/wiki/PHP) - langage allows to communicate with the database
 * HTML and CSS
 * [Wordpress](https://wordpress.org/download/)- The Web framework used
