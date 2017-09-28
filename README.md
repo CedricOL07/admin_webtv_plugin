@@ -12,13 +12,13 @@
 
 ## Installing
 
-You must to donwload the plug-in by means of github wherever you want on your computer : 
+You must donwload the plug-in by means of github wherever you want on your computer : 
 
 ```
 git clone https://github.com/CedricOL07/admin_webtv_plugin.git
 ```
 
-Then you must to zip your folder. Once done, you have to go on you wordpress admin, add an extension, ant put the zip folder in the fill blank.
+Then you must zip your folder. Once done, you have to go on your wordpress admin, add an extension, and set the zip folder in the fill blank.
 
 
 ## Built With
