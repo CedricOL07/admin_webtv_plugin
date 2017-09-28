@@ -8,7 +8,7 @@
 
 ## Prerequisites
 
- To run the plug-in, you need to download [Wordpress](https://wordpress.org/download/). If you are on windows you need to download [WAMP](http://www.wampserver.com/en/download-wampserver-64bits/) or if you are on Mac OSX, you need to download [MAMP](https://www.mamp.info/en/downloads/), at last if you are on LINUX, just you need to download [Apache](https://doc.ubuntu-fr.org/installer_un_serveur_debian), MySQL et PhpMyAdmin. 
+ To run the plug-in, you need to download [Wordpress](https://wordpress.org/download/). If you are on windows, you need to download [WAMP](http://www.wampserver.com/en/download-wampserver-64bits/), or if you are on Mac OSX you need to download [MAMP](https://www.mamp.info/en/downloads/), at last if you are on LINUX, just you need to download [Apache](https://doc.ubuntu-fr.org/installer_un_serveur_debian), MySQL et PhpMyAdmin. 
 
 ## Installing
 
